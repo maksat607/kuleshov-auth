@@ -6,7 +6,7 @@ namespace Maksatsaparbekov\KuleshovAuth\Traits;
 use Maksatsaparbekov\KuleshovAuth\Models\AccessToken;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
-
+use Illuminate\Support\Facades\Log;
 trait UserTrait
 {
     public $plainTextToken;
@@ -60,6 +60,12 @@ trait UserTrait
             ]);
             $this->plainTextToken = $token;
         } else {
+            // Log failed response for debugging
+            Log::error('HTTP request failed with status code: ' . $response->status());
+            Log::error('Response body: ' . $response->body());
+
+            // Throw HTTP exception with error message
+            abort(401, 'Unauthorized');
             abort(401, 'Unauthorized');
         }
     }
