@@ -42,6 +42,7 @@ trait UserTrait
 
     public function sync($type)
     {
+
         $password = request()->get('password');
         $response = Http::withHeaders($this->header)->post($this->url . '/' . $type, [
             'phone' => $this->phone,
@@ -61,11 +62,14 @@ trait UserTrait
             $this->plainTextToken = $token;
         } else {
             // Log failed response for debugging
+            Log::error(' request: ' . json_encode( [
+                    'phone' => $this->phone,
+                    'password' => $password
+                ]));
             Log::error('HTTP request failed with status code: ' . $response->status());
             Log::error('Response body: ' . $response->body());
 
             // Throw HTTP exception with error message
-            abort(401, 'Unauthorized');
             abort(401, 'Unauthorized');
         }
     }
