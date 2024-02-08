@@ -14,5 +14,7 @@
             "email": "maksat607@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "maksatsaparbekov/kuleshov-auth": "dev-master"
+    }
 }
