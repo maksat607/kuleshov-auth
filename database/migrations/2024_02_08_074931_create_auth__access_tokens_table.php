@@ -15,7 +15,7 @@ class CreateAuthAccessTokensTable extends Migration
     {
         Schema::create('auth__access_tokens', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id')->nullable()->index('user_id_index');
+            $table->unsignedBigInteger('user_id')->nullable()->index('index_user_id');
             $table->timestamp('created_at')->nullable();
             $table->timestamp('expired_at')->nullable();
             $table->string('token')->nullable()->index('user_id_index');
