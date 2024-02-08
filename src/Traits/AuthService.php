@@ -32,10 +32,10 @@ trait AuthService
     public function createToken($str = '')
     {
         if (strpos(request()->url(), 'login') !== false) {
-            return $this->sync('login');
+            $this->sync('login');
         }
         if (strpos(request()->url(), 'register') !== false) {
-            return $this->sync('register');
+            $this->sync('register');
         }
         return $this;
     }

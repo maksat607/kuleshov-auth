@@ -2,10 +2,10 @@
 
 namespace Maksatsaparbekov\KuleshovAuth\Http\Middleware;
 
-use App\Models\AccessToken;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maksatsaparbekov\KuleshovAuth\Models\AccessToken;
 use Symfony\Component\HttpFoundation\Response;
 
 
