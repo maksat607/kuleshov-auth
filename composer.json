@@ -21,8 +21,7 @@
             ]
         }
     },
-    "require": {
-        "maksatsaparbekov/kuleshov-auth": "dev-master"
-    },
-    "minimum-stability": "dev-master"
+    "require": {},
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
