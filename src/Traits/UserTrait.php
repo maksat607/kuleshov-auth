@@ -60,9 +60,7 @@ trait UserTrait
             ]);
             $this->plainTextToken = $token;
         } else {
-            abort(
-                ['error' => 'Unauthorized'], 401
-            );
+            abort(401, 'Unauthorized');
         }
     }
 
