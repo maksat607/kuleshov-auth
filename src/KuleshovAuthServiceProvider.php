@@ -13,7 +13,9 @@ class KuleshovAuthServiceProvider extends ServiceProvider
     {
         $router = $this->app['router'];
         $router->aliasMiddleware('auth.access_token', \Maksatsaparbekov\KuleshovAuth\Http\Middleware\AuthenticateAccessToken::class);
-        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
+        $this->publishes([
+            __DIR__.'/../database/migrations' => database_path('migrations'),
+        ], 'kuleshov-auth-migrations');
     }
 }
 
