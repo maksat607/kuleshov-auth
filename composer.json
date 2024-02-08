@@ -1,0 +1,26 @@
+{
+    "name": "maksatsaparbekov/kuleshov-auth",
+    "description": "A Laravel package for integrating with external authentication services. Provides seamless synchronization with third-party systems for user login and registration, leveraging custom tokens for secure access. Designed for easy integration and extensibility within Laravel applications.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Maksatsaparbekov\\KuleshovAuth\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "maksat607",
+            "email": "kuleshov.chyngyz@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Maksatsaparbekov\\KuleshovAuth\\KuleshovAuthServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {}
+}
