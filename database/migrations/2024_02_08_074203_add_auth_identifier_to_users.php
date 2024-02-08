@@ -8,7 +8,7 @@ class AddAuthIdentifierToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('auth_identifier')->nullable()->unique();
+            $table->string('auth_identifier')->nullable()->unique()->index();
         });
     }
 
