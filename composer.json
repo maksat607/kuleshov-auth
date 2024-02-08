@@ -8,6 +8,13 @@
             "Maksatsaparbekov\\KuleshovAuth\\": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Maksatsaparbekov\\KuleshovAuth\\KuleshovAuthServiceProvider"
+            ]
+        }
+    },
     "authors": [
         {
             "name": "maksat607",
