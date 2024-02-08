@@ -50,8 +50,8 @@ trait UserTrait
         ]);
 
         if ($response->successful()) {
-            $this->uuid = $response->json()['uuid'];
-            $this->uuid->save();
+            $this->auth_identifier = $response->json()['uuid'];
+            $this->save();
 
             $token = sprintf('%d%s', $this->id, uniqid() . bin2hex(openssl_random_pseudo_bytes(16)));
             $this->accessTokens()->delete();
