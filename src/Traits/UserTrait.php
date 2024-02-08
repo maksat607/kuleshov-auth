@@ -44,7 +44,7 @@ trait UserTrait
     {
 
         $password = request()->get('password');
-        $response = Http::withHeaders($this->header)->post($this->url . '/' . $type, [
+        $response = Http::withHeaders($this->header)->post($this->url . '/api/auth/' . $type, [
             'phone' => $this->phone,
             'password' => $password
         ]);
