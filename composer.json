@@ -22,8 +22,5 @@
         }
     },
     "require": {
-        "maksatsaparbekov/kuleshov-auth": "^1.0"
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
