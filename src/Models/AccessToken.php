@@ -9,7 +9,7 @@ class AccessToken extends Model
 {
     use HasFactory;
 
-    protected $table = 'access_tokens';
+    protected $table = 'auth__access_tokens';
     protected $guarded = [];
 
     public function user()
