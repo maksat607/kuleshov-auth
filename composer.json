@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "maksatsaparbekov/kuleshov-auth": "dev-main"
+
     },
     "minimum-stability": "dev"
 }
