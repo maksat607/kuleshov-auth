@@ -7,7 +7,7 @@ use Maksatsaparbekov\KuleshovAuth\Models\AccessToken;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-trait UserTrait
+trait AuthService
 {
     public $plainTextToken;
     private $url;
@@ -54,8 +54,8 @@ trait UserTrait
             $this->save();
 
             $token = sprintf('%d%s', $this->id, uniqid() . bin2hex(openssl_random_pseudo_bytes(16)));
-            $this->accessTokens()->delete();
-            $this->accessTokens()->create([
+            $this->accesstoken()->delete();
+            $this->accesstoken()->create([
                 'expired_at' => Carbon::now()->addYear(),
                 'token' => $token
             ]);
