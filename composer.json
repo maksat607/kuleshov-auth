@@ -22,7 +22,7 @@
         }
     },
     "require": {
-        "maksatsaparbekov/kuleshov-auth": "~1.0.0"
+        "maksatsaparbekov/kuleshov-auth": "dev-main"
     },
     "minimum-stability": "dev",
     "prefer-stable": true
