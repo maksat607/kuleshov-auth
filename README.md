@@ -9,12 +9,8 @@
 
 ####  composer require maksatsaparbekov/kuleshov-auth
 
-## Конфигурация
 
-### Опубликуйте файл конфигурации:
-php artisan vendor:publish --provider="Maksatsaparbekov\KuleshovAuth\KuleshovAuthServiceProvider"
-
-Установите детали вашего сервиса третьей стороны в вашем .env:
+## Установите детали вашего сервиса третьей стороны в вашем .env:
 KULESHOV_AUTH_URL=https://example.com/api
 KULESHOV_AUTH_SECURITY_KEY=SECURITY
 
@@ -60,8 +56,6 @@ composer require maksatsaparbekov/kuleshov-auth
 
 Configuration
 
-Publish the configuration file:
-php artisan vendor:publish --provider="Maksatsaparbekov\KuleshovAuth\KuleshovAuthServiceProvider"
 
 Set your third-party service details in your .env:
 AUTH_SERVICE_URL=https://example.com/api
