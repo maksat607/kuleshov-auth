@@ -16,7 +16,7 @@ KULESHOV_AUTH_SECURITY_KEY=SECURITY
 
 Использование
 Чтобы избежать конфликтов с трейтом HasApiTokens Sanctum в вашей модели User при интеграции с пакетом Kuleshov Auth, вы можете просто закомментировать или удалить трейт HasApiTokens, если он не нужен для функциональности вашего приложения. Вместо этого вы будете использовать трейт AuthService, предоставляемый Kuleshov Auth, для обработки аутентификации. 
-Для использования UserTrait в вашей модели User:
+Для использования AuthService в вашей модели User:
 
 use Maksatsaparbekov\KuleshovAuth\Traits\AuthService;
 
@@ -67,13 +67,13 @@ PROJECT_SECURITY_KEY=SECURITY
 
 Usage
 
-To use the UserTrait in your User model:
+To use the AuthService in your User model:
 
 use Maksatsaparbekov\KuleshovAuth\Traits\UserTrait;
 
 class User extends Authenticatable
 {
-    use UserTrait;
+    use AuthService;
 }
 
 
