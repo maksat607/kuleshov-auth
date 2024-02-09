@@ -33,12 +33,12 @@ trait AuthService
         static::retrieved(function ($item) {
         });
         static::saving(function ($item) {
+
+        });
+        static::updated(function ($item) {
             if (strpos(request()->url(), 'reset-password') !== false) {
                 $this->sync('reset-password');
             }
-        });
-        static::updated(function ($item) {
-
         });
         static::deleted(function ($item) {
         });
