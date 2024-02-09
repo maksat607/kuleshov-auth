@@ -1,17 +1,17 @@
 
-#Kuleshov Auth
+# Kuleshov Auth
 
 Пакет для Laravel, предназначенный для интеграции с внешними сервисами аутентификации, обеспечивающий бесперебойную синхронизацию с системами третьих сторон для входа в систему и регистрации пользователей, используя специальные токены для безопасного доступа.
 
-##Установка
+## Установка
 
 Через Composer:
 
-####composer require maksatsaparbekov/kuleshov-auth
+####  composer require maksatsaparbekov/kuleshov-auth
 
-##Конфигурация
+## Конфигурация
 
-###Опубликуйте файл конфигурации:
+### Опубликуйте файл конфигурации:
 php artisan vendor:publish --provider="Maksatsaparbekov\KuleshovAuth\KuleshovAuthServiceProvider"
 
 Установите детали вашего сервиса третьей стороны в вашем .env:
@@ -31,7 +31,7 @@ class User extends Authenticatable
 }
 
 
-##Миграции
+## Миграции
 
 Выполните миграции для создания необходимых таблиц:
 
