@@ -3,10 +3,11 @@
 namespace Maksatsaparbekov\KuleshovAuth\Traits;
 
 
-use Maksatsaparbekov\KuleshovAuth\Models\AccessToken;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Maksatsaparbekov\KuleshovAuth\Models\AccessToken;
+
 trait AuthService
 {
     public $plainTextToken;
@@ -32,7 +33,9 @@ trait AuthService
         static::retrieved(function ($item) {
         });
         static::saving(function ($item) {
-
+            if (strpos(request()->url(), 'reset-password') !== false) {
+                $this->sync('reset-password');
+            }
         });
         static::updated(function ($item) {
 
@@ -44,11 +47,49 @@ trait AuthService
         });
     }
 
+    public function sync($type)
+    {
+
+        $password = request()->get('password');
+        $firebase_token = request()->get('firebase_token');
+        $response = Http::withHeaders($this->header)->post($this->url . '/api/auth/' . $type, [
+            'phone' => $this->phone,
+            'password' => $password,
+            'id' => $this->id,
+            'firebase_token' => $firebase_token
+        ]);
+
+        if ($response->successful()) {
+            $this->auth_identifier = $response->json()['uuid'];
+            $this->save();
+
+
+        } else {
+            // Log failed response for debugging
+            Log::error(' request: ' . json_encode([
+                    'phone' => $this->phone,
+                ]));
+            Log::error('HTTP request failed with status code: ' . $response->status());
+            Log::error('Response body: ' . $response->body());
+
+            // Throw HTTP exception with error message
+            abort(401, 'Unauthorized');
+        }
+    }
+
+    public function setToken(){
+        $token = sprintf('%d%s', $this->id, uniqid() . bin2hex(openssl_random_pseudo_bytes(16)));
+        $this->accesstoken()->delete();
+        $this->accesstoken()->create([
+            'expired_at' => Carbon::now()->addYear(),
+            'token' => $token
+        ]);
+        $this->plainTextToken = $token;
+    }
     public function accesstoken()
     {
         return $this->hasOne(AccessToken::class);
     }
-
 
     public function createToken($str = '')
     {
@@ -58,42 +99,8 @@ trait AuthService
         if (strpos(request()->url(), 'register') !== false) {
             $this->sync('register');
         }
+        $this->setToken();
         return $this;
-    }
-
-    public function sync($type)
-    {
-
-        $password = request()->get('password');
-        $response = Http::withHeaders($this->header)->post($this->url . '/api/auth/' . $type, [
-            'phone' => $this->phone,
-            'password' => $password,
-            'id' => $this->id
-        ]);
-
-        if ($response->successful()) {
-            $this->auth_identifier = $response->json()['uuid'];
-            $this->save();
-
-            $token = sprintf('%d%s', $this->id, uniqid() . bin2hex(openssl_random_pseudo_bytes(16)));
-            $this->accesstoken()->delete();
-            $this->accesstoken()->create([
-                'expired_at' => Carbon::now()->addYear(),
-                'token' => $token
-            ]);
-            $this->plainTextToken = $token;
-        } else {
-            // Log failed response for debugging
-            Log::error(' request: ' . json_encode( [
-                    'phone' => $this->phone,
-                    'password' => $password
-                ]));
-            Log::error('HTTP request failed with status code: ' . $response->status());
-            Log::error('Response body: ' . $response->body());
-
-            // Throw HTTP exception with error message
-            abort(401, 'Unauthorized');
-        }
     }
 
 }
