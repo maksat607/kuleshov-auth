@@ -24,29 +24,6 @@ trait AuthService
         ];
     }
 
-    public static function boot()
-    {
-
-        parent::boot();
-
-
-        static::retrieved(function ($item) {
-        });
-        static::saving(function ($item) {
-
-        });
-        static::updated(function ($item) {
-            if (strpos(request()->url(), 'reset-password') !== false) {
-                $this->sync('reset-password');
-            }
-        });
-        static::deleted(function ($item) {
-        });
-        static::created(function ($item) {
-
-        });
-    }
-
     public function sync($type)
     {
 
