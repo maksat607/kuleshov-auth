@@ -1,4 +1,4 @@
 <?php
-public interface IBrakeBehavior {
+interface  {
     public void brake();
 }
