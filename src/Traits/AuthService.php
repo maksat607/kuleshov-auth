@@ -24,6 +24,18 @@ trait AuthService
         ];
     }
 
+    public function createToken($str = '')
+    {
+        if (strpos(request()->url(), 'login') !== false) {
+            $this->sync('login');
+        }
+        if (strpos(request()->url(), 'register') !== false) {
+            $this->sync('register');
+        }
+        $this->setToken();
+        return $this;
+    }
+
     public function sync($type)
     {
 
@@ -37,11 +49,11 @@ trait AuthService
         ]);
 
         if ($response->successful()) {
-            if ($response->json()['uuid']){
-                $this->auth_identifier = $response->json()['uuid'];
+            $result = $response->json();
+            if (isset($result['uuid'])) {
+                $this->auth_identifier = $result['uuid'];
                 $this->save();
             }
-
 
 
         } else {
@@ -57,7 +69,8 @@ trait AuthService
         }
     }
 
-    public function setToken(){
+    public function setToken()
+    {
         $token = sprintf('%d%s', $this->id, uniqid() . bin2hex(openssl_random_pseudo_bytes(16)));
         $this->accesstoken()->delete();
         $this->accesstoken()->create([
@@ -66,21 +79,10 @@ trait AuthService
         ]);
         $this->plainTextToken = $token;
     }
+
     public function accesstoken()
     {
         return $this->hasOne(AccessToken::class);
-    }
-
-    public function createToken($str = '')
-    {
-        if (strpos(request()->url(), 'login') !== false) {
-            $this->sync('login');
-        }
-        if (strpos(request()->url(), 'register') !== false) {
-            $this->sync('register');
-        }
-        $this->setToken();
-        return $this;
     }
 
 }
