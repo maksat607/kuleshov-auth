@@ -23,6 +23,27 @@ trait AuthService
         ];
     }
 
+    public static function boot()
+    {
+
+        parent::boot();
+
+
+        static::retrieved(function ($item) {
+        });
+        static::saving(function ($item) {
+
+        });
+        static::updated(function ($item) {
+
+        });
+        static::deleted(function ($item) {
+        });
+        static::created(function ($item) {
+
+        });
+    }
+
     public function accesstoken()
     {
         return $this->hasOne(AccessToken::class);
@@ -46,7 +67,8 @@ trait AuthService
         $password = request()->get('password');
         $response = Http::withHeaders($this->header)->post($this->url . '/api/auth/' . $type, [
             'phone' => $this->phone,
-            'password' => $password
+            'password' => $password,
+            'id' => $this->id
         ]);
 
         if ($response->successful()) {
