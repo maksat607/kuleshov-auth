@@ -37,8 +37,11 @@ trait AuthService
         ]);
 
         if ($response->successful()) {
-            $this->auth_identifier = $response->json()['uuid'];
-            $this->save();
+            if ($response->json()['uuid']){
+                $this->auth_identifier = $response->json()['uuid'];
+                $this->save();
+            }
+
 
 
         } else {
