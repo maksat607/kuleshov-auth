@@ -33,16 +33,20 @@ class User extends Authenticatable
 
 php artisan migrate
 
-Последний шаг - использование событий модели Eloquent:
+## Последний шаг - использование событий модели Eloquent:
+## используйте
 
 $user = User::where('phone', $phone)->first();
 $user->update([
 'password' => Hash::make($password),
 ]);
-вместо $user = User::where('phone', $phone)->update([
+
+вместо использования метода update напрямую на результате запроса:
+$user = User::where('phone', $phone)->update([
 'password' => Hash::make($password),
 ]);
 
+Этот подход предпочтительнее, так как он позволяет сначала извлечь экземпляр модели, а затем обновить его. Это важно, потому что таким образом запускаются события модели Eloquent, такие как saving, saved, updating, и updated, что не происходит при использовании второго подхода.
 # Kuleshov Auth
 
 A Laravel package for integrating with external authentication services, providing seamless synchronization with third-party systems for user login and registration, leveraging custom tokens for secure access.
