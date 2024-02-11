@@ -55,7 +55,7 @@ A Laravel package for integrating with external authentication services, providi
 
 Via Composer:
 
-composer require maksatsaparbekov/kuleshov-auth
+composer require maksatsaparbekov/kuleshov-auth:dev-main
 
 
 Configuration
