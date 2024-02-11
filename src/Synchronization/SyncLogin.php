@@ -10,7 +10,7 @@ class SyncLogin extends Synchronizator
         parent::__construct([
             'phone' => request()->get('phone'),
             'password' => request()->get('password'),
-            'firebase_token' => request()->get('password')
+            'firebase_token' => request()->get('firebase_token')
         ]);
         $this->endpoint = 'auth/login';
     }
