@@ -24,6 +24,8 @@ class KuleshovAuthServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config/kuleshov-auth.php' => config_path('kuleshov-auth.php'),
         ], 'config');
+
+        $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
     }
 }
 
