@@ -4,6 +4,7 @@ namespace Maksatsaparbekov\KuleshovAuth\Traits;
 
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Maksatsaparbekov\KuleshovAuth\Models\AccessToken;
 use Maksatsaparbekov\KuleshovAuth\Synchronization\RequestEndpoints;
 use Illuminate\Support\Facades\Log;
@@ -30,13 +31,13 @@ trait AuthService
 
     public function setToken()
     {
-        $token = sprintf('%d%s', $this->id, uniqid() . bin2hex(openssl_random_pseudo_bytes(16)));
+
         $this->accesstoken()->delete();
         $this->accesstoken()->create([
             'expired_at' => Carbon::now()->addYear(),
-            'token' => $token
+            'token' => $this->plainTextToken = sprintf('%s%s',$entropy = Str::random(40),hash('crc32b', $entropy))
         ]);
-        $this->plainTextToken = $token;
+
     }
 
 }
