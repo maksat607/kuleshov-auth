@@ -11,7 +11,7 @@ class ChatRoomResource extends JsonResource
         return [
             'id' => $this->id,
             'messages' => MessageResource::collection($this->whenLoaded('messages')),
-            'users' => new UserResource($this->whenLoaded('user')),
+//            'users' => new UserResource($this->whenLoaded('user')),
         ];
     }
 }

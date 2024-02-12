@@ -10,6 +10,7 @@ class MessageResource extends JsonResource
             'id' => $this->id,
             'chat_room_id' => $this->chat_room_id,
             'user_id' => $this->user_id,
+            'users' => new UserResource($this->whenLoaded('user')),
             'content' => $this->content,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),

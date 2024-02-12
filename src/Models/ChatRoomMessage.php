@@ -1,7 +1,7 @@
 <?php
 
 namespace Maksatsaparbekov\KuleshovAuth\Models;
-
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,4 +18,9 @@ class ChatRoomMessage extends Model
     {
         return $this->hasOne(ChatRoomMessageReadStatus::class,'id','chat_room_message_id');
     }
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+
 }
