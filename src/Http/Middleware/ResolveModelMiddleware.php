@@ -4,6 +4,7 @@ namespace Maksatsaparbekov\KuleshovAuth\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ResolveModelMiddleware
 {
@@ -14,7 +15,7 @@ class ResolveModelMiddleware
 
         if (class_exists($modelNamespace)) {
             $modelId = $request->route('id');
-            $modelInstance = $modelNamespace::find($modelId);
+            $modelInstance = app($modelNamespace)::find($modelId);
 
             if ($modelInstance) {
                 $request->merge(['modelInstance' => $modelInstance]);

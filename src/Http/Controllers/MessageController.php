@@ -12,8 +12,10 @@ class MessageController
         $this->chatService = new ChatService();
     }
 
-    public function create(Model $model,ChatRequest $request)
+    public function create(ChatRequest $request)
     {
+        $modelInstance = $request->modelInstance; // Now you can use the resolved model instance
+        return response()->json($modelInstance);
         $validated = $request->validated();
         try {
             $message = $this->chatService->create(

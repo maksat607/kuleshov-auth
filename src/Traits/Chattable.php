@@ -1,8 +1,7 @@
 <?php
 
 namespace Maksatsaparbekov\KuleshovAuth\Traits;
-
-use App\Models\ChatRoom;
+use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
 
 trait Chattable
 {
