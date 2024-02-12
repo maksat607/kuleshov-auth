@@ -5,9 +5,21 @@ namespace Maksatsaparbekov\KuleshovAuth\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+
 class ChatRoom extends Model
 {
     use HasFactory;
+
+    public function getCreatedAtAttribute($value)
+    {
+        return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value, 'UTC');
+
+    }
+
+    public function getUpdatedAtAttribute($value)
+    {
+        return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value, 'UTC');
+    }
 
     protected $guarded = [];
 

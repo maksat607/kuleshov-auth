@@ -9,6 +9,16 @@ class ChatRoomMessage extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    public function getCreatedAtAttribute($value)
+    {
+        return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value, 'UTC');
+
+    }
+
+    public function getUpdatedAtAttribute($value)
+    {
+        return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value, 'UTC');
+    }
     public function chatRoom()
     {
         return $this->belongsTo(ChatRoom::class,'chat_room_id','id');
