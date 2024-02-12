@@ -8,6 +8,6 @@ class CreateChatRoomAction
 {
     public function execute(Model $model,$userId)
     {
-        return $model->chattable()->create(['sender_id'=>$userId]);
+        return $model->chatRooms()->create(['sender_id'=>$userId]);
     }
 }

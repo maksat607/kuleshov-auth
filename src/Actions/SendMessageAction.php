@@ -14,9 +14,6 @@ class SendMessageAction
             'content' => $content,
         ]);
 
-        if (auth()->id() !== $chatRoom->chattable?->user_id) {
-            (new MessageReadAction())->execute($message->id, $userId);
-        }
         return $message;
     }
 

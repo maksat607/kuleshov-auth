@@ -1,6 +1,7 @@
 <?php
 
 namespace Maksatsaparbekov\KuleshovAuth\Traits;
+
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
 
 trait Chattable
@@ -10,3 +11,4 @@ trait Chattable
         return $this->morphMany(ChatRoom::class, 'chattable');
     }
 }
+
