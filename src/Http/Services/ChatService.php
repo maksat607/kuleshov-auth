@@ -10,9 +10,9 @@ class ChatService
     {
         DB::beginTransaction();
         try {
-            $chatRoom = (new CreateChatRoomAction())->execute($model);
+            $chatRoom = (new CreateChatRoomAction())->execute($model,$userId);
             $participant = (new AddParticipantAction())->execute($chatRoom,$userId);
-            $message = (new SendMessageAction())->execute($chatRoom, $userId, $content,$type);
+            $message = (new SendMessageAction())->execute($chatRoom, $userId, $content,$type='text');
             DB::commit();
             return $message;
         } catch (\Exception $e) {

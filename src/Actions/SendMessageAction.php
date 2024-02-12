@@ -10,13 +10,22 @@ class SendMessageAction
     {
         $message = $chatRoom->messages()->create([
             'user_id' => $userId,
-            'type' => 'text',
+            'type' => $this->manageFile() ? 'file' : 'text',
             'content' => $content,
         ]);
 
-        if (auth()->id() !== $userId) {
-            (new MessageReadAction())->execute($message->id,$userId);
+        if (auth()->id() !== $chatRoom->chattable?->user_id) {
+            (new MessageReadAction())->execute($message->id, $userId);
         }
+        return $message;
+    }
 
+    public function manageFile()
+    {
+        if (request()->hasFile('file')) {
+            $file = request()->file('file');
+//            $path = $file->store('store');
+        }
+        return false;
     }
 }
