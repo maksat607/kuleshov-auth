@@ -12,8 +12,8 @@ class MessageResource extends JsonResource
             'user_id' => $this->user_id,
             'users' => new UserResource($this->whenLoaded('user')),
             'content' => $this->content,
-            'created_at' => $this->created_at->toDateTimeString(),
-            'updated_at' => $this->updated_at->toDateTimeString(),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
             "__typename"=> "Message"
         ];
     }
