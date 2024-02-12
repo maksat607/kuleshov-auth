@@ -1,6 +1,7 @@
 <?php
 namespace Maksatsaparbekov\KuleshovAuth\Http\Controllers;
 use Maksatsaparbekov\KuleshovAuth\Http\Requests\ChatRequest;
+use Maksatsaparbekov\KuleshovAuth\Http\Resources\ChatRoomResource;
 use Maksatsaparbekov\KuleshovAuth\Http\Services\ChatService;
 
 class MessageController
@@ -12,7 +13,7 @@ class MessageController
         $this->chatService = new ChatService();
     }
 
-    public function create(ChatRequest $request)
+    public function store(ChatRequest $request)
     {
         $model = $request->modelInstance; // Now you can use the resolved model instance
         $validated = $request->validated();
@@ -28,5 +29,13 @@ class MessageController
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to create message', 'details' => $e->getMessage()], 500);
         }
+    }
+    public function index()
+    {
+        $model = request()->modelInstance;
+
+        $chatRooms = $model->chatRooms->load('messages','user');
+        return ChatRoomResource::collection($chatRooms);
+
     }
 }

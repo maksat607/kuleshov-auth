@@ -4,7 +4,7 @@ namespace Maksatsaparbekov\KuleshovAuth\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\User;
 class ChatRoom extends Model
 {
     use HasFactory;
@@ -23,6 +23,22 @@ class ChatRoom extends Model
     public function participants()
     {
         return $this->hasMany(ChatRoomParticipant::class);
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class,'sender_id','id');
+    }
+
+    public function users()
+    {
+//        return $this->hasManyThrough(
+//            User::class,
+//            Message::class,
+//            'chat_room_id', // Foreign key on messages table...
+//            'id', // Foreign key on users table...
+//            'id', // Local key on chat_rooms table...
+//            'user_id' // Local key on messages table...
+//        );
     }
 
 }
