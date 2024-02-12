@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ChatRoom extends Model
 {
     use HasFactory;
-
+    protected $guarded = [];
     public function chattable()
     {
         return $this->morphTo();

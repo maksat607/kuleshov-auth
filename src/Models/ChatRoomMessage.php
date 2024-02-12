@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ChatRoomMessage extends Model
 {
     use HasFactory;
+    protected $guarded = [];
     public function chatRoom()
     {
         return $this->belongsTo(ChatRoom::class,'chat_room_id','id');
