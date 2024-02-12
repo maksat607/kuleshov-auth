@@ -14,6 +14,7 @@ class MessageResource extends JsonResource
             'content' => $this->content,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
+            "__typename"=> "Message"
         ];
     }
 }

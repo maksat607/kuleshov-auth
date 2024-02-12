@@ -13,6 +13,7 @@ class UserResource extends JsonResource
             // Include additional user attributes you want to expose
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
+            "__typename"=> "User"
         ];
     }
 }

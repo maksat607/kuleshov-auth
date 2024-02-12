@@ -34,7 +34,7 @@ class MessageController
     {
         $model = request()->modelInstance;
 
-        $chatRooms = $model->chatRooms->load('messages','user');
+        $chatRooms = $model->chatRooms->load('messages','messages.user');
         return ChatRoomResource::collection($chatRooms);
 
     }
