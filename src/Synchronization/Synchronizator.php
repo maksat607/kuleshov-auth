@@ -41,7 +41,7 @@ class Synchronizator implements Synchronization
     {
         Log::error('HTTP request failed with status code: ' . $this->response->status());
         Log::error('Response body: ' . $this->response->body());
-        abort(401, 'Unauthorized error from kuleshov auth service');
+        abort(401, 'Unauthorized error from kuleshov auth service: '.$this->response->body());
     }
 
     public function handleResponse()
