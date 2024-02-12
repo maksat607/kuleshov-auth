@@ -7,6 +7,6 @@ Route::get('/package', function() {
 
 
 
-Route::group(['middleware' => ['auth.access_token']], function () {
-    Route::post('/messages', [Maksatsaparbekov\KuleshovAuth\Http\Controllers\MessageController::class, 'create']);
+Route::group(['middleware' => ['auth.access_token','resolveModel']], function () {
+    Route::post('/model/{model}/messages', [Maksatsaparbekov\KuleshovAuth\Http\Controllers\MessageController::class, 'create']);
 });

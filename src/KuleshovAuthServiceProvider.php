@@ -16,6 +16,7 @@ class KuleshovAuthServiceProvider extends ServiceProvider
         User::observe(UserObserver::class);
         $router = $this->app['router'];
         $router->aliasMiddleware('auth.access_token', \Maksatsaparbekov\KuleshovAuth\Http\Middleware\AuthenticateAccessToken::class);
+        $router->aliasMiddleware('resolveModel', \Maksatsaparbekov\KuleshovAuth\Http\Middleware\ResolveModelMiddleware::class);
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
 
