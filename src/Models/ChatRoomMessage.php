@@ -12,11 +12,11 @@ class ChatRoomMessage extends Model
 
     public function getCreatedAtAttribute($value)
     {
-        return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('H:i:s d.m.Y');
+        return \Carbon\Carbon::parse($value)->format('H:i:s d.m.Y');
     }
     public function getUpdatedAtAttribute($value)
     {
-        return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('H:i:s d.m.Y');
+        return \Carbon\Carbon::parse($value)->format('H:i:s d.m.Y');
     }
 
     public function chatRoom()
