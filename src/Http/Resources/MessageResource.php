@@ -8,12 +8,13 @@ class MessageResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'chat_room_id' => $this->chat_room_id,
-            'user_id' => $this->user_id,
-            'users' => new UserResource($this->whenLoaded('user')),
             'content' => $this->content,
+            'id' => $this->user->id,
+            'name' => $this->user->name,
+            'phone' => $this->user->phone,
+            'role' => $this->user?->getRoleNames()[0] ?? '',
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+//            'users' => new UserResource($this->whenLoaded('user')),
             "__typename"=> "Message"
         ];
     }
