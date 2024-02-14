@@ -3,37 +3,45 @@
 namespace Maksatsaparbekov\KuleshovAuth\Http\Controllers;
 
 use Maksatsaparbekov\KuleshovAuth\Http\Requests\ChatRequest;
-use Maksatsaparbekov\KuleshovAuth\Http\Resources\ChatRoomResource;
 use Maksatsaparbekov\KuleshovAuth\Http\Services\ChatService;
 
 class MessageController
 {
     protected $chatService;
+    protected $model;
+    protected $auth_user;
 
     public function __construct()
     {
+        $this->model = request()->modelInstance;
         $this->chatService = new ChatService();
+        $this->auth_user = auth()->user();
     }
 
     public function store(ChatRequest $request)
     {
-        $model = $request->modelInstance; // Now you can use the resolved model instance
-        $validated = $request->validated();
-
         $message = $this->chatService->create(
-            $model,
-            auth()->id(),
-            $validated['content'],
+            $this->model,
+            $this->auth_user->id,
+            $request['content'],
             'text'
         );
-
         return response()->json(['message' => 'Message created successfully', 'data' => $message], 201);
     }
 
-    public function index()
+    public function modelMessages()
     {
-        $model = request()->modelInstance;
-        $chatRooms = $model->chatRooms->load('messages', 'messages.user');
-        return ChatRoomResource::collection($chatRooms);
+        return $this->model->chatRooms;
     }
+
+    public function modelMessagesByUser()
+    {
+        return $this->model->senderChatRoom;
+    }
+
+    public function userMessages()
+    {
+        return $this->auth_user->chatRooms;
+    }
+
 }

@@ -8,8 +8,31 @@ use App\Models\User;
 
 class ChatRoom extends Model
 {
+    use \Awobaz\Compoships\Compoships;
     use HasFactory;
+    protected $appends = ['model_id','model_type' ,'chat_creator_id'];
+    protected $visible = ['model_id','model_type', 'chat_creator_id','messages','messages.user'];
 
+
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->with = ['chattable','messages','messages.user'];
+    }
+    public function getChatCreatorIdAttribute()
+    {
+        return $this->sender_id;
+    }
+
+    public function getModelIdAttribute()
+    {
+        return $this->chattable->id;
+    }
+    public function getModelTypeAttribute()
+    {
+        return class_basename($this->chattable);
+    }
     public function getCreatedAtAttribute($value)
     {
         return \Carbon\Carbon::parse($value)->format('H:i:s d.m.Y');
@@ -37,18 +60,6 @@ class ChatRoom extends Model
 
     public function user(){
         return $this->belongsTo(User::class,'sender_id','id');
-    }
-
-    public function users()
-    {
-//        return $this->hasManyThrough(
-//            User::class,
-//            Message::class,
-//            'chat_room_id', // Foreign key on messages table...
-//            'id', // Foreign key on users table...
-//            'id', // Local key on chat_rooms table...
-//            'user_id' // Local key on messages table...
-//        );
     }
 
 }

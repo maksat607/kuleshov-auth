@@ -6,16 +6,13 @@ namespace Maksatsaparbekov\KuleshovAuth\Traits;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Maksatsaparbekov\KuleshovAuth\Models\AccessToken;
+use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
 use Maksatsaparbekov\KuleshovAuth\Synchronization\RequestEndpoints;
-use Illuminate\Support\Facades\Log;
+
 trait AuthService
 {
     public $plainTextToken;
 
-    public function accesstoken()
-    {
-        return $this->hasOne(AccessToken::class);
-    }
     public function createToken($str = '')
     {
         if (str_contains(request()->url(), 'login')) {
@@ -28,14 +25,23 @@ trait AuthService
         return $this;
     }
 
-
     public function setToken()
     {
         $this->accesstoken()->delete();
         $this->accesstoken()->create([
             'expired_at' => Carbon::now()->addYear(),
-            'token' => $this->plainTextToken = sprintf('%s%s',$entropy = Str::random(40),hash('crc32b', $entropy))
+            'token' => $this->plainTextToken = sprintf('%s%s', $entropy = Str::random(40), hash('crc32b', $entropy))
         ]);
+    }
+
+    public function accesstoken()
+    {
+        return $this->hasOne(AccessToken::class);
+    }
+
+    public function chatRooms()
+    {
+        return $this->hasMany(ChatRoom::class, 'sender_id', 'id');
     }
 
 }

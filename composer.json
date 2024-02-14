@@ -1,28 +1,28 @@
 {
-    "name": "maksatsaparbekov/kuleshov-auth",
-    "description": "A Laravel package for integrating with external authentication services.",
-    "type": "library",
-    "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Maksatsaparbekov\\KuleshovAuth\\": "src/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Maksatsaparbekov\\KuleshovAuth\\KuleshovAuthServiceProvider"
-            ]
-        }
-    },
-    "authors": [
-        {
-            "name": "maksat607",
-            "email": "maksat607@gmail.com"
-        }
-    ],
-    "require": {
-
-    },
-    "minimum-stability": "dev"
+  "name": "maksatsaparbekov/kuleshov-auth",
+  "description": "A Laravel package for integrating with external authentication services.",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Maksatsaparbekov\\KuleshovAuth\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Maksatsaparbekov\\KuleshovAuth\\KuleshovAuthServiceProvider"
+      ]
+    }
+  },
+  "authors": [
+    {
+      "name": "maksat607",
+      "email": "maksat607@gmail.com"
+    }
+  ],
+  "require": {
+    "awobaz/compoships": "^2.2"
+  },
+  "minimum-stability": "dev"
 }

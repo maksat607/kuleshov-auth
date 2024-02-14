@@ -8,10 +8,11 @@ class ChatRoomResource extends JsonResource
 {
     public function toArray($request)
     {
+        $model_id = strtolower(class_basename(get_class($this->chattable))).'_id';
         return [
-            'id' => $this->id,
+            $model_id=> $this->chattable->id,
+            'chat_creator_id' => $this->sender_id,
             'messages' => MessageResource::collection($this->whenLoaded('messages')),
-//            'users' => new UserResource($this->whenLoaded('user')),
             "__typename"=> "ChatRoom"
         ];
     }
