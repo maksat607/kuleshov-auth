@@ -27,6 +27,10 @@ class KuleshovAuthServiceProvider extends ServiceProvider
         ], 'config');
 
         $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
+
+        $this->publishes([
+            __DIR__.'/Policies/ChatPolicy.php' => app_path('Policies/ChatPolicy.php')
+        ], 'kuleshov-auth-policies');
     }
 }
 

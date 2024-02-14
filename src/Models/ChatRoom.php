@@ -10,8 +10,8 @@ class ChatRoom extends Model
 {
     use \Awobaz\Compoships\Compoships;
     use HasFactory;
-    protected $appends = ['model_id','model_type' ,'chat_creator_id'];
-    protected $visible = ['model_id','model_type', 'chat_creator_id','messages','messages.user'];
+    protected $appends = ['chat_room_id','model_id','model_type' ,'chat_creator_id'];
+    protected $visible = ['chat_room_id','model_id','model_type', 'chat_creator_id','messages','messages.user'];
 
 
 
@@ -19,6 +19,10 @@ class ChatRoom extends Model
     {
         parent::__construct($attributes);
         $this->with = ['chattable','messages','messages.user'];
+    }
+    public function getChatRoomIdAttribute()
+    {
+        return $this->id;
     }
     public function getChatCreatorIdAttribute()
     {

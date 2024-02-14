@@ -4,8 +4,9 @@ namespace Maksatsaparbekov\KuleshovAuth\Http\Controllers;
 
 use Maksatsaparbekov\KuleshovAuth\Http\Requests\ChatRequest;
 use Maksatsaparbekov\KuleshovAuth\Http\Services\ChatService;
+use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
 
-class MessageController
+class ChatController
 {
     protected $chatService;
     protected $model;
@@ -18,7 +19,7 @@ class MessageController
         $this->auth_user = auth()->user();
     }
 
-    public function store(ChatRequest $request)
+    public function createMessage(ChatRequest $request)
     {
         $message = $this->chatService->create(
             $this->model,
@@ -29,7 +30,18 @@ class MessageController
         return response()->json(['message' => 'Message created successfully', 'data' => $message], 201);
     }
 
-    public function modelMessages()
+    public function replyToChat(ChatRequest $request, ChatRoom $chatRoom)
+    {
+        $message = $this->chatService->joinChat(
+            $chatRoom,
+            $this->auth_user->id,
+            $request['content'],
+            'text'
+        );
+        return response()->json(['message' => 'Message created successfully', 'data' => $message], 201);
+    }
+
+    public function modelUserChats()
     {
         return $this->model->chatRooms;
     }
@@ -39,9 +51,19 @@ class MessageController
         return $this->model->senderChatRoom;
     }
 
-    public function userMessages()
+    public function userChats()
     {
         return $this->auth_user->chatRooms;
+    }
+
+    public function viewAllChatsForModel()
+    {
+        return app(request()->modelNamespace)::where('user_id', $this->auth_user->id)->load('chatRooms')->get();
+    }
+
+    public function viewChatMessages(ChatRoom $chatRoom)
+    {
+        return $chatRoom;
     }
 
 }

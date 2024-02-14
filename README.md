@@ -60,6 +60,8 @@ composer require maksatsaparbekov/kuleshov-auth:dev-main
 
 Configuration
 
+php artisan vendor:publish --provider="Maksatsaparbekov\KuleshovAuth\KuleshovAuthServiceProvider" --tag="config"
+php artisan vendor:publish --tag=kuleshov-auth-policies
 
 Set your third-party service details in your .env:
 AUTH_SERVICE_URL=https://example.com/api

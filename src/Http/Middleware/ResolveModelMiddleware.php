@@ -18,7 +18,7 @@ class ResolveModelMiddleware
             return response()->json(['error' => 'Invalid model name'], 404);
         }
 
-        $modelId = (int)($request->route('id'));
+        $modelId = (int)($request->route('modelId'));
 
         if ($modelId != null) {
             $modelInstance = app($modelNamespace)::find($modelId);
@@ -29,6 +29,8 @@ class ResolveModelMiddleware
             }
 
             $request->merge(['modelInstance' => $modelInstance]);
+            $request->merge(['modelName' => strtolower($modelName)]);
+            $request->merge(['modelNamespace' => $modelNamespace]);
         }
 
         return $next($request);
