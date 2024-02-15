@@ -6,6 +6,24 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @OA\Schema(
+ *     schema="ChatRoomMessage",
+ *     type="object",
+ *     title="Chat Room Message",
+ *     description="Represents a message within a chat room.",
+ *     @OA\Property(property="content", type="string", description="The content of the message"),
+ *     @OA\Property(property="sender_user_id", type="integer", description="The ID of the user who sent the message"),
+ *     @OA\Property(property="name", type="string", description="The name of the user who sent the message"),
+ *     @OA\Property(property="phone", type="string", description="The phone number of the user who sent the message"),
+ *     @OA\Property(property="role", type="string", description="The role of the user who sent the message"),
+ *     @OA\Property(property="time_diff", type="string", description="The time difference since the message was created"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", description="The creation date and time of the message"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", description="The last update date and time of the message"),
+ * )
+ */
+
+
 class ChatRoomMessage extends Model
 {
     use HasFactory;

@@ -130,7 +130,7 @@ class ChatController
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="message", type="string", description="A success message"),
-     *             @OA\Property(property="data", ref="#/components/schemas/ChatMessage")
+     *             @OA\Property(property="data", ref="#/components/schemas/ChatRoomMessage")
      *         )
      *     ),
      *     security={{"bearerAuth": {}}}
