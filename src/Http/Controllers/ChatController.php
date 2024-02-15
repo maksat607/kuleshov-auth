@@ -97,16 +97,23 @@ class ChatController
 
     /**
      * @OA\Post(
-     *     path="/chats/{chatRoom}/messages",
-     *     operationId="createMessageForGivenChatRoom",
+     *     path="/{model}/{modelId}/messages",
+     *     operationId="createChatOrMessageForGivenModel",
      *     tags={"Chats"},
-     *     summary="Post a message to a specific chat room",
-     *     description="Creates a new message in the given chat room and returns the message details.",
+     *     summary="Create a new chat message or chat room for a given model",
+     *     description="Creates a new chat message or chat room for the specified model and returns the message details.",
      *     @OA\Parameter(
-     *         name="chatRoom",
+     *         name="model",
      *         in="path",
-     *         description="The ID of the chat room where the message will be posted",
      *         required=true,
+     *         description="The type of the Eloquent Model (e.g., 'User', 'Project','Application') that are chattable.",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="modelId",
+     *         in="path",
+     *         required=true,
+     *         description="The ID of the model instance related to the chat.",
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\RequestBody(
@@ -118,13 +125,18 @@ class ChatController
      *         )
      *     ),
      *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(ref="#/components/schemas/ChatRoomMessage")
+     *         response=201,
+     *         description="Message created successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", description="A success message"),
+     *             @OA\Property(property="data", ref="#/components/schemas/ChatMessage")
+     *         )
      *     ),
      *     security={{"bearerAuth": {}}}
      * )
      */
+
 
     public function createChatOrMessageForGivenModel(ChatRequest $request)
     {
