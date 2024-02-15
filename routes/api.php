@@ -6,7 +6,7 @@ use Maksatsaparbekov\KuleshovAuth\Http\Controllers\ChatController;
 
 
 Route::middleware(['auth.access_token', 'resolveModel'])->group(function () {
-    // Managers view all messages within a specific chat
+
     Route::get('/chats/{chatRoom}/messages', [ChatController::class, 'viewChatMessagesForGivenChatRoom'])
         ->name('viewChatMessagesForGivenChatRoom')
         ->where('chatRoom', '[0-9]+');

@@ -27,8 +27,8 @@ class ChatController
      *     path="/chats/{chatRoom}/messages",
      *     operationId="viewChatMessagesForGivenChatRoom",
      *     tags={"Chats"},
-     *     summary="View all messages within a specific chat room",
-     *     description="Retrieves the chat room details along with all messages from the specified chat room.",
+     *     summary="Извлекает детали чат-комнаты вместе со всеми сообщениями из указанной чат-комнаты",
+     *     description="Это предназначено для приоритетных пользователей (ролей), таких как менеджер или администратор. Они могут просматривать детали любых чатов.",
      *     @OA\Parameter(
      *         name="chatRoom",
      *         in="path",
@@ -57,8 +57,8 @@ class ChatController
      *     path="/chats/{chatRoom}/messages",
      *     operationId="createMessageForGivenChatRoom",
      *     tags={"Chats"},
-     *     summary="Post a message to a specific chat room",
-     *     description="Creates a new message in the given chat room and returns the message details.",
+     *     summary="Отправить сообщение в определенный чат",
+     *     description="Создает новое сообщение в указанной комнате чата и возвращает детали сообщения.",
      *     @OA\Parameter(
      *         name="chatRoom",
      *         in="path",
@@ -100,8 +100,8 @@ class ChatController
      *     path="/{model}/{modelId}/messages",
      *     operationId="createChatOrMessageForGivenModel",
      *     tags={"Chats"},
-     *     summary="Create a new chat message or chat room for a given model",
-     *     description="Creates a new chat message or chat room for the specified model and returns the message details.",
+     *     summary=""Создать новое сообщение чата или комнату чата для указанной модели",
+     *     description="Создает новую комнату чата и создает сообщение, если комнаты чата для указанной модели не существует. Если комната чата для данной модели уже существует, то просто создает сообщение.",
      *     @OA\Parameter(
      *         name="model",
      *         in="path",
@@ -157,8 +157,8 @@ class ChatController
      *     path="/{model}/{modelId}/chats",
      *     operationId="viewChatsMessagesOfAllUsersForGivenModel",
      *     tags={"Chats"},
-     *     summary="View all chats for a given model",
-     *     description="Retrieves all chat rooms associated with a specific model and model ID, accessible by managers.",
+     *     summary="Просмотр всех чатов для указанной модели",
+     *    description="Извлекает все комнаты чата вместе с сообщениями, связанные с определенной моделью и идентификатором модели, доступные приоритетным пользователям (ролям)"
      *     @OA\Parameter(
      *         name="model",
      *         in="path",
@@ -198,9 +198,9 @@ class ChatController
      *     path="/{model}/{modelId}/chat",
      *     operationId="viewChatMessagesOfAuthUserForGiventModel",
      *     tags={"Chats"},
-     *     summary="View chat messages for the authenticated user for a given model",
-     *     description="Retrieves chat room details along with messages where the authenticated user is the sender, based on the specified model type and model ID.",
-     *     @OA\Parameter(
+   * summary="Просмотр сообщений чата для аутентифицированного пользователя для указанной модели",
+   * description="Извлекает детали комнаты чата вместе с сообщениями аутентифицированного пользователя, на основе указанного типа модели и id модели."
+         *     @OA\Parameter(
      *         name="model",
      *         in="path",
      *         required=true,
@@ -237,8 +237,8 @@ class ChatController
      *     path="/{model}/auth-user-chats",
      *     operationId="viewChatMessagesOfAuthUser",
      *     tags={"Chats"},
-     *     summary="View chat messages for the authenticated user",
-     *     description="Retrieves chat room details along with messages where the authenticated user is a participant.",
+    *      summary="Просмотр сообщений чата для аутентифицированного пользователя",
+    *     description="Извлекает все чаты и детали вместе с сообщениями для указанного типа модели аутентифицированного пользователя."
      *     @OA\Parameter(
      *         name="model",
      *         in="path",
@@ -270,9 +270,8 @@ class ChatController
      *     path="/{model}/chats",
      *     operationId="viewAllChatMessagesForGivenModelType",
      *     tags={"Chats"},
-     *     summary="View all chat messages for a given model type",
-     *         description="The type of the Eloquent Model (e.g., 'User', 'Project','Application') that are chattable.",
-     *     @OA\Parameter(
+     *     summary="Просмотр всех чатов с сообщениями для указанного типа модели",
+     *    description="Тип Eloquent Model (например, 'User', 'Project', 'Application'), которые могут быть предметом чата. Доступно для приоритетных пользователей (ролей), таких как менеджеры или администраторы."
      *         name="model",
      *         in="path",
      *         required=true,
