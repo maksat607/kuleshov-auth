@@ -1,0 +1,63 @@
+
+### View Chat Messages Of Auth User For Given Model
+GET http://{{host}}/{{model}}/{{modelId}}/chat
+Content-Type: application/json
+Accept: application/json
+Project-Security-Key: {{projectSecurityKey}}
+Authorization: {{authorization}}
+
+
+### Create Chat Or Message For Given Model
+POST http://{{host}}/{{model}}/{{modelId}}/messages
+Content-Type: application/json
+Accept: application/json
+Project-Security-Key: {{projectSecurityKey}}
+Authorization: {{authorization}}
+
+{
+  "content": "Your message content here"
+}
+
+
+### View Chat Messages Of Auth User
+GET http://{{host}}/{{model}}/auth-user-chats
+Content-Type: application/json
+Accept: application/json
+Project-Security-Key: {{projectSecurityKey}}
+Authorization: {{authorization}}
+
+
+### View Chats Messages Of All Users For Given Model
+GET http://{{host}}/{{model}}/{{modelId}}/chats
+Content-Type: application/json
+Accept: application/json
+Project-Security-Key: {{projectSecurityKey}}
+Authorization: {{authorization}}
+
+
+### View All Chat Messages For Given Model Type
+GET http://{{host}}/{{model}}/chats
+Content-Type: application/json
+Accept: application/json
+Project-Security-Key: {{projectSecurityKey}}
+Authorization: {{authorization}}
+
+
+### View Chat Messages For Given Chat Room
+GET http://{{host}}/chats/{{chatRoom}}/messages
+Content-Type: application/json
+Accept: application/json
+Project-Security-Key: {{projectSecurityKey}}
+Authorization: {{authorization}}
+
+
+### Create Message For Given Chat Room
+POST http://{{host}}/chats/{{chatRoom}}/messages
+Content-Type: application/json
+Accept: application/json
+Project-Security-Key: {{projectSecurityKey}}
+Authorization: {{authorization}}
+
+{
+  "content": "Your reply message here"
+}

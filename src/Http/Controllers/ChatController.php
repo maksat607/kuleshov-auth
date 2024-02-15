@@ -2,6 +2,7 @@
 
 namespace Maksatsaparbekov\KuleshovAuth\Http\Controllers;
 
+use App\Models\ChatMessages;
 use Maksatsaparbekov\KuleshovAuth\Http\Requests\ChatRequest;
 use Maksatsaparbekov\KuleshovAuth\Http\Services\ChatService;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
@@ -15,22 +16,75 @@ class ChatController
     public function __construct()
     {
         $this->model = request()->modelInstance;
+        $this->modelNamespace = request()->modelNamespace;
         $this->chatService = new ChatService();
         $this->auth_user = auth()->user();
     }
 
-    public function createMessage(ChatRequest $request)
+
+    /**
+     * @OA\Get(
+     *     path="/chats/{chatRoom}/messages",
+     *     operationId="viewChatMessagesForGivenChatRoom",
+     *     tags={"Chats"},
+     *     summary="View all messages within a specific chat room",
+     *     description="Retrieves the chat room details along with all messages from the specified chat room.",
+     *     @OA\Parameter(
+     *         name="chatRoom",
+     *         in="path",
+     *         required=true,
+     *         description="The ID of the chat room",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/ChatRoom")
+     *     ),
+     *     security={{"bearerAuth": {}}}
+     * )
+     */
+
+
+    public function viewChatMessagesForGivenChatRoom($chatRoom)
     {
-        $message = $this->chatService->create(
-            $this->model,
-            $this->auth_user->id,
-            $request['content'],
-            'text'
-        );
-        return response()->json(['message' => 'Message created successfully', 'data' => $message], 201);
+
+        return ChatRoom::findOrFail($chatRoom);
     }
 
-    public function replyToChat(ChatRequest $request, ChatRoom $chatRoom)
+    /**
+     * @OA\Post(
+     *     path="/chats/{chatRoom}/messages",
+     *     operationId="createMessageForGivenChatRoom",
+     *     tags={"Chats"},
+     *     summary="Post a message to a specific chat room",
+     *     description="Creates a new message in the given chat room and returns the message details.",
+     *     @OA\Parameter(
+     *         name="chatRoom",
+     *         in="path",
+     *         description="The ID of the chat room where the message will be posted",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="Message content to be posted to the chat room",
+     *         @OA\JsonContent(
+     *             required={"content"},
+     *             @OA\Property(property="content", type="string", description="The content of the message")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/ChatRoomMessage")
+     *     ),
+     *     security={{"bearerAuth": {}}}
+     * )
+     */
+
+
+    public function createMessageForGivenChatRoom(ChatRequest $request, ChatRoom $chatRoom)
     {
         $message = $this->chatService->joinChat(
             $chatRoom,
@@ -41,29 +95,194 @@ class ChatController
         return response()->json(['message' => 'Message created successfully', 'data' => $message], 201);
     }
 
-    public function modelUserChats()
+    /**
+     * @OA\Post(
+     *     path="/chats/{chatRoom}/messages",
+     *     operationId="createMessageForGivenChatRoom",
+     *     tags={"Chats"},
+     *     summary="Post a message to a specific chat room",
+     *     description="Creates a new message in the given chat room and returns the message details.",
+     *     @OA\Parameter(
+     *         name="chatRoom",
+     *         in="path",
+     *         description="The ID of the chat room where the message will be posted",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="Message content to be posted to the chat room",
+     *         @OA\JsonContent(
+     *             required={"content"},
+     *             @OA\Property(property="content", type="string", description="The content of the message")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/ChatRoomMessage")
+     *     ),
+     *     security={{"bearerAuth": {}}}
+     * )
+     */
+
+    public function createChatOrMessageForGivenModel(ChatRequest $request)
+    {
+
+        $message = $this->chatService->create(
+            $this->model,
+            $this->auth_user->id,
+            $request['content'],
+            'text'
+        );
+        return response()->json(['message' => 'Message created successfully', 'data' => $message], 201);
+    }
+
+
+
+    /**
+     * @OA\Get(
+     *     path="/{model}/{modelId}/chats",
+     *     operationId="viewChatsMessagesOfAllUsersForGivenModel",
+     *     tags={"Chats"},
+     *     summary="View all chats for a given model",
+     *     description="Retrieves all chat rooms associated with a specific model and model ID, accessible by managers.",
+     *     @OA\Parameter(
+     *         name="model",
+     *         in="path",
+     *         required=true,
+     *         description="The type of the Eloquent Model (e.g., 'User', 'Project','Application') that are chattable.",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="modelId",
+     *         in="path",
+     *         required=true,
+     *         description="The unique identifier of the model instance",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/ChatRoom")
+     *         )
+     *     ),
+     *     security={{"bearerAuth": {}}}
+     * )
+     */
+
+
+
+    public function viewChatsMessagesOfAllUsersForGivenModel()
     {
         return $this->model->chatRooms;
     }
 
-    public function modelMessagesByUser()
+
+    /**
+     * @OA\Get(
+     *     path="/{model}/{modelId}/chat",
+     *     operationId="viewChatMessagesOfAuthUserForGiventModel",
+     *     tags={"Chats"},
+     *     summary="View chat messages for the authenticated user for a given model",
+     *     description="Retrieves chat room details along with messages where the authenticated user is the sender, based on the specified model type and model ID.",
+     *     @OA\Parameter(
+     *         name="model",
+     *         in="path",
+     *         required=true,
+     *         description="The type of the Eloquent Model (e.g., 'User', 'Project','Application') that are chattable.",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="modelId",
+     *         in="path",
+     *         required=true,
+     *         description="The unique identifier of the model instance.",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             ref="#/components/schemas/ChatRoom"
+     *         )
+     *     ),
+     *     security={{"bearerAuth": {}}}
+     * )
+     */
+
+
+    public function viewChatMessagesOfAuthUserForGiventModel()
     {
         return $this->model->senderChatRoom;
     }
 
-    public function userChats()
+    /**
+     * @OA\Get(
+     *     path="/{model}/auth-user-chats",
+     *     operationId="viewChatMessagesOfAuthUser",
+     *     tags={"Chats"},
+     *     summary="View chat messages for the authenticated user",
+     *     description="Retrieves chat room details along with messages where the authenticated user is a participant.",
+     *     @OA\Parameter(
+     *         name="model",
+     *         in="path",
+     *         required=true,
+     *         description="The type of the Eloquent Model (e.g., 'User', 'Project','Application') that are chattable.",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             ref="#/components/schemas/ChatRoom"
+     *         )
+     *     ),
+     *     security={{"bearerAuth": {}}}
+     * )
+     */
+
+
+    public function viewChatMessagesOfAuthUser()
     {
         return $this->auth_user->chatRooms;
     }
 
-    public function viewAllChatsForModel()
-    {
-        return app(request()->modelNamespace)::where('user_id', $this->auth_user->id)->load('chatRooms')->get();
-    }
 
-    public function viewChatMessages(ChatRoom $chatRoom)
+    /**
+     * @OA\Get(
+     *     path="/{model}/chats",
+     *     operationId="viewAllChatMessagesForGivenModelType",
+     *     tags={"Chats"},
+     *     summary="View all chat messages for a given model type",
+     *         description="The type of the Eloquent Model (e.g., 'User', 'Project','Application') that are chattable.",
+     *     @OA\Parameter(
+     *         name="model",
+     *         in="path",
+     *         required=true,
+     *         description="The type of the model (e.g., 'users', 'projects') specifying the context of the chats.",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/ChatRoom")
+     *         )
+     *     ),
+     *     security={{"bearerAuth": {}}}
+     * )
+     */
+
+
+    public function viewAllChatMessagesForGivenModelType()
     {
-        return $chatRoom;
+        return ChatRoom::where('chattable_type', $this->modelNamespace)->get();
     }
 
 }

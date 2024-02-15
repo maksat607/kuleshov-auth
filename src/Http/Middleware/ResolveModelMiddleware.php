@@ -10,6 +10,10 @@ class ResolveModelMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
+        if ($request->route('model') == '') {
+            return $next($request);
+        }
+
         $modelName = ucfirst($request->route('model'));
         $modelNamespace = "App\\Models\\" . $modelName;
 
@@ -29,10 +33,10 @@ class ResolveModelMiddleware
             }
 
             $request->merge(['modelInstance' => $modelInstance]);
-            $request->merge(['modelName' => strtolower($modelName)]);
-            $request->merge(['modelNamespace' => $modelNamespace]);
-        }
 
+        }
+        $request->merge(['modelName' => strtolower($modelName)]);
+        $request->merge(['modelNamespace' => $modelNamespace]);
         return $next($request);
     }
 
