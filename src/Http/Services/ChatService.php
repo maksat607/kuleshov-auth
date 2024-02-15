@@ -23,4 +23,19 @@ class ChatService
             throw $e;
         }
     }
+    public function joinChat($chatRoom, $userId, $content,$type)
+    {
+        DB::beginTransaction();
+        try {
+            $participant = (new AddParticipantAction())->execute($chatRoom,$userId);
+            $message = (new SendMessageAction())->execute($chatRoom, $userId, $content,$type='text');
+//            (new MessageReadAction())->execute($message->id, $userId);
+
+            DB::commit();
+            return $message;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
 }

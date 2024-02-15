@@ -3,7 +3,10 @@
 namespace Maksatsaparbekov\KuleshovAuth;
 use App\Models\User;
 use Illuminate\Support\ServiceProvider;
+use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
 use Maksatsaparbekov\KuleshovAuth\Observers\UserObserver;
+use Illuminate\Support\Facades\Gate;
+use Maksatsaparbekov\KuleshovAuth\Policies\ChatPolicy;
 
 class KuleshovAuthServiceProvider extends ServiceProvider
 {
@@ -31,6 +34,8 @@ class KuleshovAuthServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/Policies/ChatPolicy.php' => app_path('Policies/ChatPolicy.php')
         ], 'kuleshov-auth-policies');
+
+        Gate::policy(ChatRoom::class, ChatPolicy::class);
     }
 }
 

@@ -19,7 +19,6 @@ use Illuminate\Database\Eloquent\Model;
  *     @OA\Property(property="role", type="string", description="The role of the user who sent the message"),
  *     @OA\Property(property="time_diff", type="string", description="The time difference since the message was created"),
  *     @OA\Property(property="created_at", type="string", format="date-time", description="The creation date and time of the message"),
- *     @OA\Property(property="updated_at", type="string", format="date-time", description="The last update date and time of the message"),
  * )
  */
 

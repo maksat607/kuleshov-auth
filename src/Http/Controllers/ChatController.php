@@ -48,7 +48,7 @@ class ChatController
 
     public function viewChatMessagesForGivenChatRoom($chatRoom)
     {
-
+        $this->authorize('viewChatMessagesForGivenChatRoom', $chatRoom);
         return ChatRoom::findOrFail($chatRoom);
     }
 
@@ -77,22 +77,27 @@ class ChatController
      *     @OA\Response(
      *         response=200,
      *         description="Successful operation",
-     *         @OA\JsonContent(ref="#/components/schemas/ChatRoomMessage")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             ref="#/components/schemas/ChatRoomMessage"
+     *         )
+     *     ),
      *     ),
      *     security={{"bearerAuth": {}}}
      * )
      */
 
 
-    public function createMessageForGivenChatRoom(ChatRequest $request, ChatRoom $chatRoom)
+    public function createMessageForGivenChatRoom(ChatRequest $request, $chatRoom)
     {
+        $chatRoom = ChatRoom::findOrFail($chatRoom);
         $message = $this->chatService->joinChat(
             $chatRoom,
             $this->auth_user->id,
             $request['content'],
             'text'
         );
-        return response()->json(['message' => 'Message created successfully', 'data' => $message], 201);
+        return response()->json($message, 201);
     }
 
     /**
@@ -125,12 +130,11 @@ class ChatController
      *         )
      *     ),
      *     @OA\Response(
-     *         response=201,
-     *         description="Message created successfully",
+     *         response=200,
+     *         description="Successful operation",
      *         @OA\JsonContent(
      *             type="object",
-     *             @OA\Property(property="message", type="string", description="A success message"),
-     *             @OA\Property(property="data", ref="#/components/schemas/ChatRoomMessage")
+     *             ref="#/components/schemas/ChatRoomMessage"
      *         )
      *     ),
      *     security={{"bearerAuth": {}}}

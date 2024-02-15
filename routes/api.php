@@ -11,7 +11,6 @@ Route::middleware(['auth.access_token', 'resolveModel'])->group(function () {
         ->name('viewChatMessagesForGivenChatRoom')
         ->where('chatRoom', '[0-9]+');
 
-    // Managers send a reply within a chat
     Route::post('/chats/{chatRoom}/messages', [ChatController::class, 'createMessageForGivenChatRoom'])
         ->name('createMessageForGivenChatRoom')
         ->where('chatRoom', '[0-9]+');
@@ -22,7 +21,6 @@ Route::middleware(['auth.access_token', 'resolveModel'])->group(function () {
         ->where('model', '^(?!chats$).*')
         ->where('modelId', '[0-9]+');
 
-    // Managers can see all the chats of the given model
     Route::get('/{model}/{modelId}/chats', [ChatController::class, 'viewChatsMessagesOfAllUsersForGivenModel'])
         ->where('model', '^(?!chats$).*')
         ->where('modelId', '[0-9]+')
@@ -36,9 +34,6 @@ Route::middleware(['auth.access_token', 'resolveModel'])->group(function () {
 
     Route::get('{model}/auth-user-chats', [ChatController::class, 'viewChatMessagesOfAuthUser'])
         ->name('viewChatMessagesOfAuthUser');
-
-
-
 
 
     Route::get('/{model}/chats', [ChatController::class, 'viewAllChatMessagesForGivenModelType'])
