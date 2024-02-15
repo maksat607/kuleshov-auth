@@ -100,7 +100,7 @@ class ChatController
      *     path="/{model}/{modelId}/messages",
      *     operationId="createChatOrMessageForGivenModel",
      *     tags={"Chats"},
-     *     summary=""Создать новое сообщение чата или комнату чата для указанной модели",
+     *     summary="Создать новое сообщение чата или комнату чата для указанной модели",
      *     description="Создает новую комнату чата и создает сообщение, если комнаты чата для указанной модели не существует. Если комната чата для данной модели уже существует, то просто создает сообщение.",
      *     @OA\Parameter(
      *         name="model",
@@ -158,12 +158,12 @@ class ChatController
      *     operationId="viewChatsMessagesOfAllUsersForGivenModel",
      *     tags={"Chats"},
      *     summary="Просмотр всех чатов для указанной модели",
-     *    description="Извлекает все комнаты чата вместе с сообщениями, связанные с определенной моделью и идентификатором модели, доступные приоритетным пользователям (ролям)"
+     *     description="Извлекает все комнаты чата вместе с сообщениями, связанные с определенной моделью и идентификатором модели, доступные приоритетным пользователям (ролям)",
      *     @OA\Parameter(
      *         name="model",
      *         in="path",
      *         required=true,
-     *         description="The type of the Eloquent Model (e.g., 'User', 'Project','Application') that are chattable.",
+     *         description="The type of the Eloquent Model e.g., 'User', 'Project','Application' that are chattable.",
      *         @OA\Schema(type="string")
      *     ),
      *     @OA\Parameter(
@@ -198,9 +198,9 @@ class ChatController
      *     path="/{model}/{modelId}/chat",
      *     operationId="viewChatMessagesOfAuthUserForGiventModel",
      *     tags={"Chats"},
-   * summary="Просмотр сообщений чата для аутентифицированного пользователя для указанной модели",
-   * description="Извлекает детали комнаты чата вместе с сообщениями аутентифицированного пользователя, на основе указанного типа модели и id модели."
-         *     @OA\Parameter(
+     *     summary="Просмотр сообщений чата для аутентифицированного пользователя для указанной модели",
+     *     description="Извлекает детали комнаты чата вместе с сообщениями аутентифицированного пользователя, на основе указанного типа модели и id модели.",
+     *     @OA\Parameter(
      *         name="model",
      *         in="path",
      *         required=true,
@@ -237,8 +237,8 @@ class ChatController
      *     path="/{model}/auth-user-chats",
      *     operationId="viewChatMessagesOfAuthUser",
      *     tags={"Chats"},
-    *      summary="Просмотр сообщений чата для аутентифицированного пользователя",
-    *     description="Извлекает все чаты и детали вместе с сообщениями для указанного типа модели аутентифицированного пользователя."
+     *     summary="Просмотр сообщений чата для аутентифицированного пользователя",
+     *     description="Извлекает все чаты и детали вместе с сообщениями для указанного типа модели аутентифицированного пользователя.",
      *     @OA\Parameter(
      *         name="model",
      *         in="path",
@@ -259,6 +259,7 @@ class ChatController
      */
 
 
+
     public function viewChatMessagesOfAuthUser()
     {
         return $this->auth_user->chatRooms;
@@ -271,7 +272,8 @@ class ChatController
      *     operationId="viewAllChatMessagesForGivenModelType",
      *     tags={"Chats"},
      *     summary="Просмотр всех чатов с сообщениями для указанного типа модели",
-     *    description="Тип Eloquent Model (например, 'User', 'Project', 'Application'), которые могут быть предметом чата. Доступно для приоритетных пользователей (ролей), таких как менеджеры или администраторы."
+     *     description="Тип Eloquent Model (например, 'User', 'Project', 'Application'), которые могут быть предметом чата. Доступно для приоритетных пользователей (ролей), таких как менеджеры или администраторы.",
+     *     @OA\Parameter(
      *         name="model",
      *         in="path",
      *         required=true,
@@ -289,6 +291,7 @@ class ChatController
      *     security={{"bearerAuth": {}}}
      * )
      */
+
 
 
     public function viewAllChatMessagesForGivenModelType()
