@@ -8,7 +8,7 @@ use Maksatsaparbekov\KuleshovAuth\Http\Requests\ChatRequest;
 use Maksatsaparbekov\KuleshovAuth\Http\Services\ChatService;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
 
-class ChatController extends Controller
+class ChatController
 {
     use AuthorizesRequests;
     protected $chatService;
@@ -93,7 +93,7 @@ class ChatController extends Controller
     public function createMessageForGivenChatRoom(ChatRequest $request, $chatRoom)
     {
         $chatRoom = ChatRoom::findOrFail($chatRoom);
-        $this->authorize('viewChatMessagesForGivenChatRoom', $chatRoom);
+        $this->authorize('createMessageForGivenChatRoom', $chatRoom);
         $message = $this->chatService->joinChat(
             $chatRoom,
             $this->auth_user->id,
@@ -147,7 +147,7 @@ class ChatController extends Controller
 
     public function createChatOrMessageForGivenModel(ChatRequest $request)
     {
-        $this->authorize('viewChatMessagesForGivenChatRoom', ChatRoom::class);
+        $this->authorize('createChatOrMessageForGivenModel', new ChatRoom());
         $message = $this->chatService->create(
             $this->model,
             $this->auth_user->id,
@@ -196,7 +196,7 @@ class ChatController extends Controller
 
     public function viewChatsMessagesOfAllUsersForGivenModel()
     {
-        $this->authorize('viewChatMessagesForGivenChatRoom', ChatRoom::class);
+        $this->authorize('viewChatsMessagesOfAllUsersForGivenModel', new ChatRoom());
         return $this->model->chatRooms;
     }
 
@@ -237,7 +237,7 @@ class ChatController extends Controller
 
     public function viewChatMessagesOfAuthUserForGiventModel()
     {
-        $this->authorize('viewChatMessagesForGivenChatRoom', ChatRoom::class);
+        $this->authorize('viewChatMessagesOfAuthUserForGiventModel', new ChatRoom());
         return $this->model->senderChatRoom;
     }
 
@@ -271,7 +271,7 @@ class ChatController extends Controller
 
     public function viewChatMessagesOfAuthUser()
     {
-        $this->authorize('viewChatMessagesForGivenChatRoom', ChatRoom::class);
+        $this->authorize('viewChatMessagesOfAuthUser', new ChatRoom());
         return $this->auth_user->chatRooms;
     }
 
@@ -306,7 +306,7 @@ class ChatController extends Controller
 
     public function viewAllChatMessagesForGivenModelType()
     {
-        $this->authorize('viewChatMessagesForGivenChatRoom', ChatRoom::class);
+        $this->authorize('viewAllChatMessagesForGivenModelType', new ChatRoom());
         return ChatRoom::where('chattable_type', $this->modelNamespace)->get();
     }
 
