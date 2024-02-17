@@ -35,7 +35,9 @@ class KuleshovAuthServiceProvider extends ServiceProvider
             __DIR__.'/Policies/ChatPolicy.php' => app_path('Policies/ChatPolicy.php')
         ], 'kuleshov-auth-policies');
 
-        Gate::policy(ChatRoom::class, ChatPolicy::class);
+//        Gate::policy(ChatRoom::class, ChatPolicy::class);
+        Gate::policy(ChatRoom::class, config('kuleshov-auth.policies.chat_room', ChatPolicy::class));
+
     }
 }
 

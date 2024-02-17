@@ -50,8 +50,9 @@ class ChatController
 
     public function viewChatMessagesForGivenChatRoom($chatRoom)
     {
+        $chatRoom = ChatRoom::findOrFail($chatRoom);
         $this->authorize('viewChatMessagesForGivenChatRoom', $chatRoom);
-        return ChatRoom::findOrFail($chatRoom);
+        return $chatRoom;
     }
 
     /**
