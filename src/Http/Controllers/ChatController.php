@@ -1,7 +1,7 @@
 <?php
 
 namespace Maksatsaparbekov\KuleshovAuth\Http\Controllers;
-
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Routing\Controller;
 use App\Models\ChatMessages;
 use Maksatsaparbekov\KuleshovAuth\Http\Requests\ChatRequest;
@@ -10,6 +10,7 @@ use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
 
 class ChatController extends Controller
 {
+    use AuthorizesRequests;
     protected $chatService;
     protected $model;
     protected $auth_user;
