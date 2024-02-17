@@ -2,12 +2,13 @@
 
 namespace Maksatsaparbekov\KuleshovAuth\Http\Controllers;
 
+use Illuminate\Routing\Controller;
 use App\Models\ChatMessages;
 use Maksatsaparbekov\KuleshovAuth\Http\Requests\ChatRequest;
 use Maksatsaparbekov\KuleshovAuth\Http\Services\ChatService;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
 
-class ChatController
+class ChatController extends Controller
 {
     protected $chatService;
     protected $model;
