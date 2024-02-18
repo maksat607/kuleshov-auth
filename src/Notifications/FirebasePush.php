@@ -15,7 +15,7 @@ class FirebasePush
      * @param string $title
      * @return $this
      */
-    public function setTitle(string $title): self
+    public function setTitle(string $title='Новое сообщение'): self
     {
         $this->title = $title;
         return $this;
@@ -27,7 +27,7 @@ class FirebasePush
      * @param string $body
      * @return $this
      */
-    public function setBody(string $body): self
+    public function setBody(string $body='У вас есть новое сообщение в приложении. Откройте, чтобы прочитать.'): self
     {
         $this->body = $body;
         return $this;

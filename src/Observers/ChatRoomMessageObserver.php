@@ -12,7 +12,7 @@ class ChatRoomMessageObserver
     {
         $push = (new FirebasePush())
             ->setTitle('Новое сообщение')
-            ->setBody(Str::limit($message->message, 20, '...'))
+            ->setBody(Str::limit($message->content, 20, '...'))
             ->setData([
                 'sender_id' => $message->user_id,
                 'chat_id' => $message->chatRoom->id
