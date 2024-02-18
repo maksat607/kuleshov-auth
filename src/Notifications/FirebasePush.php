@@ -45,6 +45,17 @@ class FirebasePush
         return $this;
     }
 
+    /**
+     * Sets the recipient of the notification.
+     *
+     * @param array $registration_ids Device token, topic, or condition.
+     * @return $this
+     */
+    public function setTo(array $registration_ids): self
+    {
+        $this->registration_ids = $registration_ids;
+        return $this;
+    }
 
     /**
      * Prepares the payload for sending the notification.
