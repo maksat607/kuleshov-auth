@@ -19,7 +19,7 @@ class FirebasePushService
         );
 
         $headers = [
-            'Authorization' => "key={$serverKey}",
+            'Authorization' => $serverKey,
             'Content-Type' => 'application/json',
         ];
 
