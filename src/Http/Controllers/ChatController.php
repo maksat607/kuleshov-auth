@@ -8,6 +8,7 @@ use Maksatsaparbekov\KuleshovAuth\Http\Requests\ChatRequest;
 use Maksatsaparbekov\KuleshovAuth\Http\Services\ChatService;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
 
+
 class ChatController
 {
     use AuthorizesRequests;
@@ -21,6 +22,7 @@ class ChatController
         $this->modelNamespace = request()->modelNamespace;
         $this->chatService = new ChatService();
         $this->auth_user = auth()->user();
+
     }
 
 
