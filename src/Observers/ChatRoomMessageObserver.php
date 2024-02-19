@@ -1,7 +1,6 @@
 <?php
 
-namespace App\Observers;
-
+namespace Maksatsaparbekov\KuleshovAuth\Observers;
 
 use App\Models\Firebase;
 use Illuminate\Support\Facades\Log;
