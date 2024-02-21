@@ -7,7 +7,7 @@
 
 Через Composer:
 
-####  composer require maksatsaparbekov/kuleshov-auth
+####  composer require maksatsaparbekov/kuleshov-auth:dev-main
 
 #### php artisan vendor:publish --provider="Maksatsaparbekov\KuleshovAuth\KuleshovAuthServiceProvider" --tag=config --force
 
@@ -56,6 +56,15 @@ $user = User::where('phone', $phone)->update([
     'annotations' => [
     base_path('vendor/maksatsaparbekov/kuleshov-auth/src/Http/Controllers'), // добавьте это
     base_path('vendor/maksatsaparbekov/kuleshov-auth/src/Models'), // добавьте это],
+
+` use Chattablel; <-добавьте это внутри модели`
+Модель, к которой вы применяете трейт, должна быть логически способна участвовать в обмене сообщениями. 
+Например, модель Application  может быть чатабельной.
+Этот подход позволяет модели заранее загружать связанные данные, 
+такие как чат-комнаты, используя метод Eloquent Laravel with(). 
+Например, `Model::with('chatRooms')` извлекает список всех чат-комнат, связанных с моделью, в то время как `Model::with('senderChatRoom')` получает чат-комнату, созданную аутентифицированным пользователем для данной модели.
+
+
 
 Затем выполните команду:
 php artisan l5-swagger:generate
