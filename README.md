@@ -57,7 +57,7 @@ $user = User::where('phone', $phone)->update([
     base_path('vendor/maksatsaparbekov/kuleshov-auth/src/Http/Controllers'), // добавьте это
     base_path('vendor/maksatsaparbekov/kuleshov-auth/src/Models'), // добавьте это],
 
-` use Chattablel; <-добавьте это внутри модели`
+` use Chattable; <-добавьте это внутри модели`
 Модель, к которой вы применяете трейт, должна быть логически способна участвовать в обмене сообщениями. 
 Например, модель Application  может быть чатабельной.
 Этот подход позволяет модели заранее загружать связанные данные, 
