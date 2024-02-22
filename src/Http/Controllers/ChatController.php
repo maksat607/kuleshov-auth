@@ -21,7 +21,7 @@ class ChatController
         $this->model = request()->modelInstance;
         $this->modelNamespace = request()->modelNamespace;
         $this->chatService = new ChatService();
-        $this->auth_user = auth()->user();
+        $this->auth_user = request()->user();
 
     }
 
