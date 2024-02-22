@@ -18,10 +18,8 @@ class ChatController
 
     public function __construct()
     {
-        $this->model = request()->modelInstance;
-        $this->modelNamespace = request()->modelNamespace;
+
         $this->chatService = new ChatService();
-        $this->auth_user = request()->user();
 
     }
 
@@ -99,7 +97,7 @@ class ChatController
         $this->authorize('createMessageForGivenChatRoom', $chatRoom);
         $message = $this->chatService->joinChat(
             $chatRoom,
-            $this->auth_user->id,
+            request()->user()->id,
             $request['content'],
             'text'
         );
@@ -152,8 +150,8 @@ class ChatController
     {
         $this->authorize('createChatOrMessageForGivenModel', new ChatRoom());
         $message = $this->chatService->create(
-            $this->model,
-            $this->auth_user->id,
+            request()->modelInstance,
+            request()->user()->id,
             $request['content'],
             'text'
         );
@@ -200,7 +198,7 @@ class ChatController
     public function viewChatsMessagesOfAllUsersForGivenModel()
     {
         $this->authorize('viewChatsMessagesOfAllUsersForGivenModel', new ChatRoom());
-        return $this->model->chatRooms;
+        return request()->modelInstance->chatRooms;
     }
 
 
@@ -241,7 +239,7 @@ class ChatController
     public function viewChatMessagesOfAuthUserForGiventModel()
     {
         $this->authorize('viewChatMessagesOfAuthUserForGiventModel', new ChatRoom());
-        return $this->model->senderChatRoom;
+        return request()->modelInstance->senderChatRoom;
     }
 
     /**
@@ -310,7 +308,7 @@ class ChatController
     public function viewAllChatMessagesForGivenModelType()
     {
         $this->authorize('viewAllChatMessagesForGivenModelType', new ChatRoom());
-        return ChatRoom::where('chattable_type', $this->modelNamespace)->get();
+        return ChatRoom::where('chattable_type', request()->modelInstanceNamespace)->get();
     }
 
 }
