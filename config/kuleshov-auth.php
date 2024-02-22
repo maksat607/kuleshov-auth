@@ -8,4 +8,7 @@ return [
     'observers' => [
         'chat_room_message' => \Maksatsaparbekov\KuleshovAuth\Observers\ChatRoomMessageObserver::class,// Укажите ваш собственный класс
     ],
+    'routes' => [
+        'middleware' => ['auth.access_token', 'resolveModel'],
+    ],
 ];
