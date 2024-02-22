@@ -22,7 +22,7 @@ class ChatRoomMessageObserver
             ]);
         $participants = $message->chatRoom
             ->participants()
-            ->where('user_id', '!=', auth()->id())
+            ->where('user_id', '!=', request()->user()->id)
             ->pluck('user_id');
 
         $tokens = Firebase::whereIn('user_id', $participants)->pluck('firebase');

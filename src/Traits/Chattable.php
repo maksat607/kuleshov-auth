@@ -10,7 +10,7 @@ trait Chattable
 
     public function getAuthUserIdAttribute()
     {
-        return auth()->id();
+        return request()->user()->id;
     }
 
     public function getTypeAttribute()
