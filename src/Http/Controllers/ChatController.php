@@ -85,7 +85,6 @@ class ChatController
      *             ref="#/components/schemas/ChatRoomMessage"
      *         )
      *     ),
-     *     ),
      *     security={{"bearerAuth": {}}}
      * )
      */
