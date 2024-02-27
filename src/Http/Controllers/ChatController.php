@@ -272,7 +272,7 @@ class ChatController
     public function viewChatMessagesOfAuthUser()
     {
         $this->authorize('viewChatMessagesOfAuthUser', new ChatRoom());
-        return $this->auth_user->chatRooms;
+        return request()->user()->chatRooms;
     }
 
 
@@ -307,7 +307,7 @@ class ChatController
     public function viewAllChatMessagesForGivenModelType()
     {
         $this->authorize('viewAllChatMessagesForGivenModelType', new ChatRoom());
-        return ChatRoom::where('chattable_type', request()->modelInstanceNamespace)->get();
+        return ChatRoom::where('chattable_type', request()->modelNamespace)->get();
     }
 
 }
