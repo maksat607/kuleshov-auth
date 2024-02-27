@@ -17,7 +17,7 @@ class ChatService
 //            (new MessageReadAction())->execute($message->id, $userId);
 
             DB::commit();
-            return $message->chatRoomId = $chatRoom->id;
+            return $message;
         } catch (\Exception $e) {
             DB::rollBack();
             throw $e;
