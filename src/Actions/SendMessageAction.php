@@ -28,6 +28,6 @@ class SendMessageAction
     public function manageFile()
     {
         $file = request()->file('content');
-        return $file->store('store');
+        return $file->store('uploads');
     }
 }
