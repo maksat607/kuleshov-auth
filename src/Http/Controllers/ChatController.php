@@ -151,7 +151,7 @@ class ChatController
         $message = $this->chatService->create(
             request()->modelInstance,
             request()->user()->id,
-            $request['content'],
+            $request['content'] ?? '',
             'text'
         );
         return response()->json(['message' => 'Message created successfully', 'data' => $message], 201);

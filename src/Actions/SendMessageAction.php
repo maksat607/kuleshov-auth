@@ -8,21 +8,26 @@ class SendMessageAction
 {
     public function execute(ChatRoom $chatRoom, $userId, $content)
     {
-        $message = $chatRoom->messages()->create([
+        $data = [
             'user_id' => $userId,
-            'type' => $this->manageFile() ? 'file' : 'text',
+            'type' => 'text',
             'content' => $content,
-        ]);
+        ];
+        if (request()->hasFile('content')) {
+            $data = [
+                'user_id' => $userId,
+                'type' => 'file',
+                'content' => $this->manageFile()
+            ];
+        }
+        $message = $chatRoom->messages()->create($data);
 
         return $message;
     }
 
     public function manageFile()
     {
-        if (request()->hasFile('file')) {
-            $file = request()->file('file');
-//            $path = $file->store('store');
-        }
-        return false;
+        $file = request()->file('content');
+        return $file->store('store');
     }
 }
