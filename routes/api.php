@@ -6,7 +6,7 @@ use Maksatsaparbekov\KuleshovAuth\Http\Controllers\ChatController;
 
 
 //Route::middleware(['auth.access_token', 'resolveModel'])->group(function () {
-Route::middleware(config('kuleshov-auth.routes.middleware'))->group(function () {
+Route::prefix('api')->middleware(config('kuleshov-auth.routes.middleware'))->group(function () {
 
 
     Route::get('/chats/{chatRoom}/messages', [ChatController::class, 'viewChatMessagesForGivenChatRoom'])
