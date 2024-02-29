@@ -29,7 +29,7 @@ trait AuthService
     {
         $this->accesstoken()->delete();
         $this->accesstoken()->create([
-            'expired_at' => Carbon::now()->addYear(),
+            'expired_at' => Carbon::now()->addYears(2),
             'token' => $this->plainTextToken = sprintf('%s%s', $entropy = Str::random(40), hash('crc32b', $entropy))
         ]);
     }

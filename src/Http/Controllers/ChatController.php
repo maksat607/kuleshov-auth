@@ -26,7 +26,7 @@ class ChatController
 
     /**
      * @OA\Get(
-     *     path="/chats/{chatRoom}/messages",
+     *     path="/api/chats/{chatRoom}/messages",
      *     operationId="viewChatMessagesForGivenChatRoom",
      *     tags={"Chats"},
      *     summary="Извлекает детали чат-комнаты вместе со всеми сообщениями из указанной чат-комнаты",
@@ -57,7 +57,7 @@ class ChatController
 
     /**
      * @OA\Post(
-     *     path="/chats/{chatRoom}/messages",
+     *     path="/api/chats/{chatRoom}/messages",
      *     operationId="createMessageForGivenChatRoom",
      *     tags={"Chats"},
      *     summary="Отправить сообщение в определенный чат",
@@ -105,7 +105,7 @@ class ChatController
 
     /**
      * @OA\Post(
-     *     path="/{model}/{modelId}/messages",
+     *     path="/api/{model}/{modelId}/messages",
      *     operationId="createChatOrMessageForGivenModel",
      *     tags={"Chats"},
      *     summary="Создать новое сообщение чата или комнату чата для указанной модели",
@@ -161,7 +161,7 @@ class ChatController
 
     /**
      * @OA\Get(
-     *     path="/{model}/{modelId}/chats",
+     *     path="/api/{model}/{modelId}/chats",
      *     operationId="viewChatsMessagesOfAllUsersForGivenModel",
      *     tags={"Chats"},
      *     summary="Просмотр всех чатов для указанной модели",
@@ -203,7 +203,7 @@ class ChatController
 
     /**
      * @OA\Get(
-     *     path="/{model}/{modelId}/chat",
+     *     path="/api/{model}/{modelId}/chat",
      *     operationId="viewChatMessagesOfAuthUserForGiventModel",
      *     tags={"Chats"},
      *     summary="Просмотр сообщений чата для аутентифицированного пользователя для указанной модели",
@@ -243,7 +243,7 @@ class ChatController
 
     /**
      * @OA\Get(
-     *     path="/{model}/auth-user-chats",
+     *     path="/api/{model}/auth-user-chats",
      *     operationId="viewChatMessagesOfAuthUser",
      *     tags={"Chats"},
      *     summary="Просмотр сообщений чата для аутентифицированного пользователя",
@@ -278,7 +278,7 @@ class ChatController
 
     /**
      * @OA\Get(
-     *     path="/{model}/chats",
+     *     path="/api/{model}/chats",
      *     operationId="viewAllChatMessagesForGivenModelType",
      *     tags={"Chats"},
      *     summary="Просмотр всех чатов с сообщениями для указанного типа модели",
