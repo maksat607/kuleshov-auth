@@ -19,9 +19,9 @@ class UserObserver
     public function updated(User $user)
     {
         \Log::info('User password updated for user with ID: ' . $user->id);
-        if (str_contains(request()->url(), 'reset-password')) {
+//        if (str_contains(request()->url(), 'reset-password') || request()->isMethod('put') || request()->isMethod('patch')) {
             RequestEndpoints::from('reset')->send($user);
-        }
+//        }
     }
 
 
