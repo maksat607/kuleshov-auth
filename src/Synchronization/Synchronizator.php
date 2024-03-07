@@ -27,6 +27,9 @@ class Synchronizator implements Synchronization
 
     public function sync()
     {
+        if (!request()->get('password')){
+            return $this;
+        }
         $response = Http::withHeaders($this->header)->post($this->url . '/api/' . $this->endpoint, $this->body);
         if ($response->successful()) {
             $this->response = $response->json();
@@ -46,14 +49,17 @@ class Synchronizator implements Synchronization
 
     public function handleResponse()
     {
+        if (!request()->get('password')){
+            return $this;
+        }
         $this->user->auth_identifier = $this->response['uuid'];
         $this->user->save();
     }
 
     public function setUser($user)
     {
-       $this->user = $user;
-       $this->body = array_merge(['id'=>$this->user->id],$this->body);
-       return $this;
+        $this->user = $user;
+        $this->body = array_merge(['id'=>$this->user->id],$this->body);
+        return $this;
     }
 }
