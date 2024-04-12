@@ -29,8 +29,8 @@ class ChatRoomMessage extends Model
 
     protected $guarded = [];
 
-    protected $appends = ['name','read', 'phone', 'role', 'time_diff', 'sender_user_id', 'part_id'];
-    protected $visible = ['id','read', 'chat_room_id', 'content', 'sender_user_id', 'name', 'phone', 'role', 'time_diff', 'created_at', 'part_id', 'messageReadStatuses'];
+    protected $appends = ['name','seen', 'phone', 'role', 'time_diff', 'sender_user_id', 'part_id'];
+    protected $visible = ['id','seen', 'chat_room_id', 'content', 'sender_user_id', 'name', 'phone', 'role', 'time_diff', 'created_at', 'part_id', 'messageReadStatuses'];
 
     public function __construct(array $attributes = [])
     {
@@ -141,7 +141,7 @@ class ChatRoomMessage extends Model
         return $this->hasOne(ChatRoomMessageReadStatus::class, ['chat_room_message_id', 'chat_room_participant_id'], ['id', 'part_id']);
     }
 
-    public function getReadAttribute()
+    public function getSeenAttribute()
     {
         return $this->forAuthUser()
                 ->whereDoesntHave('messageReadStatuses', function ($query) {
