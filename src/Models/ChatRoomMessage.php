@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
-use Maksatsaparbekov\KuleshovAuth\Jobs\MessageReadJob;
 
 /**
  * @OA\Schema(
@@ -30,8 +29,8 @@ class ChatRoomMessage extends Model
 
     protected $guarded = [];
 
-    protected $appends = ['name', 'phone', 'role', 'time_diff', 'sender_user_id','part_id'];
-    protected $visible = ['id','chat_room_id','content', 'sender_user_id', 'name', 'phone', 'role', 'time_diff', 'created_at','part_id','messageReadStatuses'];
+    protected $appends = ['name','read', 'phone', 'role', 'time_diff', 'sender_user_id', 'part_id'];
+    protected $visible = ['id','read', 'chat_room_id', 'content', 'sender_user_id', 'name', 'phone', 'role', 'time_diff', 'created_at', 'part_id', 'messageReadStatuses'];
 
     public function __construct(array $attributes = [])
     {
@@ -54,7 +53,7 @@ class ChatRoomMessage extends Model
 
     public function scopeForAuthUser($query)
     {
-        return $query->where('user_id','!=',$this->auth_id);
+        return $query->where('user_id', '!=', $this->auth_id);
     }
 
     public function getAuthIdAttribute()
@@ -71,6 +70,7 @@ class ChatRoomMessage extends Model
     {
         return \Carbon\Carbon::parse($value)->format('H:i:s d.m.Y');
     }
+
     public function getParticipantIdAttribute()
     {
         if ($this->participant) {
@@ -135,9 +135,18 @@ class ChatRoomMessage extends Model
     {
         return $this->belongsTo(User::class);
     }
+
     public function messageReadStatus()
     {
         return $this->hasOne(ChatRoomMessageReadStatus::class, ['chat_room_message_id', 'chat_room_participant_id'], ['id', 'part_id']);
     }
 
+    public function getReadAttribute()
+    {
+        return $this->forAuthUser()
+                ->whereDoesntHave('messageReadStatuses', function ($query) {
+                    $query->where('chat_room_participant_id', $this->participant->id);
+                })
+                ->count() > 0;
+    }
 }
