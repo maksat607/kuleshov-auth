@@ -9,17 +9,16 @@ class MessageReadAction
     /**
      * Обрабатывает действие для сообщения в чате, основываясь на ID сообщения и ID участника чата.
      *
-     * @param int $chat_room_message_id ID сообщения в чате.
+     * @param  $chat_room_message сообщения в чате.
      * @param int $chat_room_participant_id ID участника чата.
      * @return mixed Возвращает результат выполнения метода.
      */
-    public function execute(int $chat_room_message_id, int $chat_room_participant_id)
+    public function execute( $chat_room_message, int $chat_room_participant_id)
     {
-        return ChatRoomMessageReadStatus::create([
-            'chat_room_message_id' => $chat_room_message_id,
-            'chat_room_participant_id' => $chat_room_participant_id,
-            'read_status' => false,
-            'read_at' => now(),
-        ]);
+        if (!$chat_room_message->messageReadStatus()->exists()) {
+            $chat_room_message->messageReadStatus()->create([
+                'chat_room_participant_id'=>$chat_room_participant_id
+            ]);
+        }
     }
 }

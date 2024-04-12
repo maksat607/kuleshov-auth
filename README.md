@@ -80,6 +80,45 @@ $user = User::where('phone', $phone)->update([
 Например, `Model::with('chatRooms')` извлекает список всех чат-комнат, связанных с моделью, в то время как `Model::with('senderChatRoom')` получает чат-комнату, созданную аутентифицированным пользователем для данной модели.
 
 
+### Метод getTitleAttribute
+
+Этот метод возвращает название чата.
+
+### Описание
+
+Метод `getTitleAttribute` используется для получения названия чата из модели `chattable`. Если у вас есть собственный атрибут `car_title`, он будет использоваться для возврата названия чата. В противном случае будет использован атрибут по умолчанию.
+
+### Пример использования
+
+```php
+public function getTitleAttribute()
+{
+    if ($this->chattable->car_title){
+        return $this->chattable->car_title;
+    }
+    return $this->chattable?->car_title;
+}
+```
+
+### Метод getTitleAttribute
+
+Этот метод возвращает название чата.
+
+#### Описание
+
+Метод `getTitleAttribute` используется для получения названия чата из модели `chattable`. Если у вас есть собственный атрибут `car_title`, он будет использоваться для возврата названия чата. В противном случае будет использован атрибут по умолчанию.
+
+#### Пример использования
+
+```php
+public function getTitleAttribute()
+{
+    if ($this->chattable->car_title){
+        return $this->chattable->car_title;
+    }
+    return $this->chattable?->car_title;
+}
+```
 
 Затем выполните команду:
 php artisan l5-swagger:generate

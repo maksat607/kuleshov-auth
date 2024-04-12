@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ChatRoomMessageReadStatus extends Model
 {
+    use \Awobaz\Compoships\Compoships;
     use HasFactory;
     protected $guarded = [];
     public function chatRoomMessage()

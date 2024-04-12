@@ -2,10 +2,9 @@
 
 namespace Maksatsaparbekov\KuleshovAuth\Models;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
-
 
 
 /**
@@ -46,26 +45,27 @@ use App\Models\User;
  *     )
  * )
  */
-
 class ChatRoom extends Model
 {
     use \Awobaz\Compoships\Compoships;
     use HasFactory;
+
+    protected $appends = ['chat_room_id', 'model_id', 'model_type', 'chat_creator_id', 'route_name', 'unread_count'];
+    protected $visible = ['chat_room_id', 'model_id', 'model_type', 'chat_creator_id', 'messages', 'messages.user', 'route_name', 'unread_count'];
+    protected $guarded = [];
+
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->with = ['chattable','messages','messages.user'];
+        $this->with = ['chattable', 'messages', 'messages.user'];
     }
-    protected $appends = ['chat_room_id','model_id','model_type' ,'chat_creator_id','route_name'];
-    protected $visible = ['chat_room_id','model_id','model_type', 'chat_creator_id','messages','messages.user','route_name'];
-
-
-
 
     public function getChatRoomIdAttribute()
     {
         return $this->id;
     }
+
     public function getChatCreatorIdAttribute()
     {
         return $this->sender_id;
@@ -75,43 +75,121 @@ class ChatRoom extends Model
     {
         return $this->chattable->id;
     }
+
     public function getModelTypeAttribute()
     {
         return class_basename($this->chattable);
     }
+
+    public function scopeForAuthUser($query)
+    {
+        return $query->whereHas('participants', function ($query) {
+            $query->where('user_id', '!=', $this->auth_id);
+        });
+    }
+
+    public function getUnreadCountAttribute()
+    {
+        return $this->messages()
+            ->forAuthUser()
+            ->whereDoesntHave('messageReadStatuses', function ($query)  {
+                $query->where('chat_room_participant_id', $this->participant->id);
+            })
+            ->count();
+    }
+    public function getUnreadMessagesAttribute()
+    {
+        return $this->messages()
+            ->forAuthUser()
+            ->whereDoesntHave('messageReadStatuses', function ($query) {
+                $query->where('chat_room_participant_id',$this->participant->id);
+            })
+            ->get();
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(ChatRoomMessage::class)->orderBy('updated_at');
+    }
+
     public function getCreatedAtAttribute($value)
     {
         return \Carbon\Carbon::parse($value)->format('H:i:s d.m.Y');
     }
+
     public function getUpdatedAtAttribute($value)
     {
         return \Carbon\Carbon::parse($value)->format('H:i:s d.m.Y');
     }
 
-    protected $guarded = [];
-
     public function chattable()
     {
         return $this->morphTo();
     }
-    public function messages()
+
+    public function getTitleAttribute()
     {
-        return $this->hasMany(ChatRoomMessage::class);
+        if ($this->chattable->car_title){
+            return $this->chattable->car_title;
+        }
+        return $this->chattable?->car_title;
     }
+    public function getThumbnailAttribute()
+    {
+        if ($this->chattable->thumbnail_url){
+            return $this->chattable->thumbnail_url;
+        }
+        return $this->chattable?->attachments?->first()?->thumbnail_url;
+    }
+
 
     public function participants()
     {
-        return $this->hasMany(ChatRoomParticipant::class);
+        return $this->hasMany(ChatRoomParticipant::class, 'chat_room_id');
     }
 
-    public function user(){
-        return $this->belongsTo(User::class,'sender_id','id');
+    public function participant()
+    {
+        return $this->hasOne(ChatRoomParticipant::class, ['chat_room_id', 'user_id'], ['id', 'auth_id']);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'sender_id', 'id');
     }
 
 
     public function getRouteNameAttribute()
     {
-        return request()->route()->getName();
+        if (request()->route()) {
+            return request()->route()->getName();
+        }
+
+        return null;
     }
+
+    public function getAuthIdAttribute()
+    {
+
+        if (request()->user()) {
+            return request()->user()->id;
+        }
+
+        return null;
+    }
+
+
+//    public function users()
+//    {
+//        // Assuming you need to use an additional column in the relationship
+//        return $this->hasManyThrough(
+//            User::class,
+//            ChatRoomParticipant::class,
+//            'chat_room_id', // Foreign key on ChatRoomParticipant table
+//            'id', // Foreign key on User table
+//            'id', // Local key on ChatRoom table
+//            'user_id' // Local key on ChatRoomParticipant table
+//        );
+//    }
 
 }
