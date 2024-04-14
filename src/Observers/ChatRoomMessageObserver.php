@@ -8,16 +8,19 @@ use Illuminate\Support\Str;
 use Maksatsaparbekov\KuleshovAuth\Jobs\MessageReadJob;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoomMessage;
 use Maksatsaparbekov\KuleshovAuth\Notifications\FirebasePush;
-use Maksatsaparbekov\KuleshovAuth\Services\FirebasePushService;
 
 class ChatRoomMessageObserver
 {
 
     public function retrieved(ChatRoomMessage $message)
     {
-        if (request()->user() && Route::currentRouteName() === 'viewChatMessagesForGivenChatRoom' && !$message->messageReadStatus) {
-            $userId = request()->user()->id;
-            MessageReadJob::dispatch($userId, $message)->delay(now()->addSeconds(5));
+        if (request()->user() && !$message->messageReadStatus) {
+            if (Route::currentRouteName() === 'viewChatMessagesForGivenChatRoom'
+                || Route::currentRouteName() === 'viewChatMessagesOfAuthUserForGiventModel'
+            ) {
+                $userId = request()->user()->id;
+                MessageReadJob::dispatch($userId, $message)->delay(now()->addSeconds(5));
+            }
         }
     }
 
