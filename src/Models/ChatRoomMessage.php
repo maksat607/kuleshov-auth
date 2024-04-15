@@ -68,7 +68,8 @@ class ChatRoomMessage extends Model
 
     public function getCreatedAtAttribute($value)
     {
-        return \Carbon\Carbon::parse($value)->format('H:i:s d.m.Y');
+        return \Carbon\Carbon::parse($value)->format('d.m.Y H:i');
+//            ->format('H:i:s d.m.Y');
     }
 
     public function getParticipantIdAttribute()
