@@ -24,11 +24,6 @@ trait Chattable
         return $this->hasOne(ChatRoom::class, ['sender_id', 'chattable_id', 'chattable_type'], ['auth_user_id', 'id', 'type']);
     }
 
-
-//    public function chatRooms()
-//    {
-//        return $this->morphMany(ChatRoom::class, 'chattable');
-//    }
     public function chatRooms()
     {
         return $this->morphMany(ChatRoom::class, 'chattable')->orderByDesc(function ($query) {
@@ -40,6 +35,9 @@ trait Chattable
         });
     }
 
-
+//    public function chatRooms()
+//    {
+//        return $this->morphMany(ChatRoom::class, 'chattable');
+//    }
 }
 

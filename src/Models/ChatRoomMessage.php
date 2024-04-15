@@ -5,7 +5,6 @@ namespace Maksatsaparbekov\KuleshovAuth\Models;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Log;
 
 /**
  * @OA\Schema(
@@ -29,8 +28,8 @@ class ChatRoomMessage extends Model
 
     protected $guarded = [];
 
-    protected $appends = ['name','seen', 'phone', 'role', 'time_diff', 'sender_user_id', 'part_id'];
-    protected $visible = ['id','seen', 'chat_room_id', 'content', 'sender_user_id', 'name', 'phone', 'role', 'time_diff', 'created_at', 'part_id', 'messageReadStatuses'];
+    protected $appends = ['name', 'seen', 'phone', 'role', 'time_diff', 'sender_user_id', 'part_id'];
+    protected $visible = ['id', 'seen', 'chat_room_id', 'content', 'sender_user_id', 'name', 'phone', 'role', 'time_diff', 'created_at', 'part_id', 'messageReadStatuses'];
 
     public function __construct(array $attributes = [])
     {
@@ -144,10 +143,19 @@ class ChatRoomMessage extends Model
 
     public function getSeenAttribute()
     {
-        return $this->forAuthUser()
+        return !(ChatRoomMessage::where('id', $this->id)
+                ->forAuthUser()
                 ->whereDoesntHave('messageReadStatuses', function ($query) {
                     $query->where('chat_room_participant_id', $this->participant->id);
                 })
+                ->count()>0);
+    }
+
+    public function getSeenMessagesAttribute()
+    {
+        return ChatRoomMessage::where('id', $this->id)
+                ->forAuthUser()
+                ->whereDoesntHave('messageReadStatuses')
                 ->count() > 0;
     }
 }

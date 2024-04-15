@@ -15,9 +15,10 @@ class MessageReadAction
      */
     public function execute( $chat_room_message, int $chat_room_participant_id)
     {
-        if (!$chat_room_message->messageReadStatus()->exists()) {
-            $chat_room_message->messageReadStatus()->create([
-                'chat_room_participant_id'=>$chat_room_participant_id
+        if (ChatRoomMessageReadStatus::where('chat_room_message_id',$chat_room_message->id)->where('chat_room_participant_id',$chat_room_participant_id)->count()==0) {
+            ChatRoomMessageReadStatus::create([
+                'chat_room_participant_id'=>$chat_room_participant_id,
+                'chat_room_message_id'=>$chat_room_message->id
             ]);
         }
     }

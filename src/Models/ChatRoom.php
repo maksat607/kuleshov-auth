@@ -109,7 +109,7 @@ class ChatRoom extends Model
 
     public function messages()
     {
-        $sortOrder = request()->input('messageSort', 'asc');
+        $sortOrder = request()->input('messageSort', 'desc');
         return $this->hasMany(ChatRoomMessage::class)->orderBy('updated_at',$sortOrder);
     }
 
