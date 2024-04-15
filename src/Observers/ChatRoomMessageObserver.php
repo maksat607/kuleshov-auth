@@ -17,6 +17,8 @@ class ChatRoomMessageObserver
         if (request()->user() && !$message->messageReadStatus) {
             if (Route::currentRouteName() === 'viewChatMessagesForGivenChatRoom'
                 || Route::currentRouteName() === 'viewChatMessagesOfAuthUserForGiventModel'
+                || Route::currentRouteName() === 'viewChatsMessagesOfAllUsersForGivenModel'
+                || Route::currentRouteName() === 'viewChatMessagesOfAuthUser'
             ) {
                 $userId = request()->user()->id;
                 MessageReadJob::dispatch($userId, $message)->delay(now()->addSeconds(5));

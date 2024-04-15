@@ -109,7 +109,8 @@ class ChatRoom extends Model
 
     public function messages()
     {
-        return $this->hasMany(ChatRoomMessage::class)->orderBy('updated_at');
+        $sortOrder = request()->input('messageSort', 'asc');
+        return $this->hasMany(ChatRoomMessage::class)->orderBy('updated_at',$sortOrder);
     }
 
     public function getCreatedAtAttribute($value)
