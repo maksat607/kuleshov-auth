@@ -12,22 +12,7 @@ use Maksatsaparbekov\KuleshovAuth\Notifications\FirebasePush;
 class ChatRoomMessageObserver
 {
 
-    public function retrieved(ChatRoomMessage $message)
-    {
-        if (request()->user() && !$message->messageReadStatus) {
-            Log::info('request()->user() && !$message->messageReadStatus');
-            Log::info(131313131313);
-            if (Route::currentRouteName() === 'viewChatMessagesForGivenChatRoom'
-                || Route::currentRouteName() === 'viewChatMessagesOfAuthUserForGiventModel'
-                || Route::currentRouteName() === 'viewChatsMessagesOfAllUsersForGivenModel'
-                || Route::currentRouteName() === 'viewChatMessagesOfAuthUser'
-            ) {
-                Log::info(12121212121212);
-                $userId = request()->user()->id;
-                MessageReadJob::dispatch($userId, $message)->delay(now()->addSeconds(5));
-            }
-        }
-    }
+
 
     public function created(ChatRoomMessage $message)
     {

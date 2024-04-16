@@ -5,6 +5,8 @@ namespace Maksatsaparbekov\KuleshovAuth\Models;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Maksatsaparbekov\KuleshovAuth\Jobs\MessageReadJob;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @OA\Schema(
@@ -40,7 +42,21 @@ class ChatRoomMessage extends Model
     protected static function boot()
     {
         parent::boot();
-        static::retrieved(function ($chatRoomMessage) {
+        static::retrieved(function ($message) {
+            Log::info(1414141414);
+            if (request()->user() && !$message->messageReadStatus) {
+                Log::info('request()->user() && !$message->messageReadStatus');
+                Log::info(131313131313);
+                if (Route::currentRouteName() === 'viewChatMessagesForGivenChatRoom'
+                    || Route::currentRouteName() === 'viewChatMessagesOfAuthUserForGiventModel'
+                    || Route::currentRouteName() === 'viewChatsMessagesOfAllUsersForGivenModel'
+                    || Route::currentRouteName() === 'viewChatMessagesOfAuthUser'
+                ) {
+                    Log::info(12121212121212);
+                    $userId = request()->user()->id;
+                    MessageReadJob::dispatch($userId, $message)->delay(now()->addSeconds(5));
+                }
+            }
 
         });
     }
@@ -148,7 +164,7 @@ class ChatRoomMessage extends Model
                 ->whereDoesntHave('messageReadStatuses', function ($query) {
                     $query->where('chat_room_participant_id', $this->participant->id);
                 })
-                ->count()>0);
+                ->count() > 0);
     }
 
     public function getSeenMessagesAttribute()
