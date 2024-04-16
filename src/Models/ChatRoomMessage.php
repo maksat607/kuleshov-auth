@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Maksatsaparbekov\KuleshovAuth\Jobs\MessageReadJob;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
 
 /**
  * @OA\Schema(
