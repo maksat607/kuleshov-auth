@@ -44,19 +44,14 @@ class ChatRoomMessage extends Model
     {
         parent::boot();
         static::retrieved(function ($message) {
-            Log::info(1414141414);
             if (request()->user() && !$message->messageReadStatus) {
-                Log::info('request()->user() && !$message->messageReadStatus');
-                Log::info(131313131313);
+
                 if (Route::currentRouteName() === 'viewChatMessagesForGivenChatRoom'
                     || Route::currentRouteName() === 'viewChatMessagesOfAuthUserForGiventModel'
                     || Route::currentRouteName() === 'viewChatsMessagesOfAllUsersForGivenModel'
                     || Route::currentRouteName() === 'viewChatMessagesOfAuthUser'
                 ) {
-                    Log::info(12121212121212);
                     $userId = request()->user()->id;
-                    Log::info($userId);
-                    Log::info($message->id);
                     MessageReadJob::dispatch($userId, $message)->delay(now()->addSeconds(5));
                 }
             }
