@@ -6,6 +6,7 @@ use Illuminate\Routing\Controller;
 use App\Models\ChatMessages;
 use Maksatsaparbekov\KuleshovAuth\Http\Requests\ChatRequest;
 use Maksatsaparbekov\KuleshovAuth\Http\Services\ChatService;
+use Maksatsaparbekov\KuleshovAuth\Jobs\MessageReadJob;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
 
 
@@ -21,6 +22,19 @@ class ChatController
 
         $this->chatService = new ChatService();
 
+    }
+
+
+
+    public function makeReadChatMessagesForGivenChatRoom($chatRoom)
+    {
+        $chatRoom = ChatRoom::findOrFail($chatRoom);
+
+        $this->authorize('viewChatMessagesForGivenChatRoom', $chatRoom);
+
+        $userId = request()->user()->id;
+        MessageReadJob::dispatch($userId, $chatRoom)->delay(now()->addSeconds(5));
+        return $chatRoom;
     }
 
 

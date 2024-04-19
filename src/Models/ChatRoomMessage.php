@@ -48,7 +48,7 @@ class ChatRoomMessage extends Model
 
                 if (Route::currentRouteName() === 'viewChatMessagesForGivenChatRoom'
                     || Route::currentRouteName() === 'viewChatMessagesOfAuthUserForGiventModel'
-                    || Route::currentRouteName() === 'viewChatsMessagesOfAllUsersForGivenModel'
+//                    || Route::currentRouteName() === 'viewChatsMessagesOfAllUsersForGivenModel'
                     || Route::currentRouteName() === 'viewChatMessagesOfAuthUser'
                 ) {
                     $userId = request()->user()->id;

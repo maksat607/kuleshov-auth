@@ -16,12 +16,12 @@ class MessageReadJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $userId;
-    protected $chatRoomMessage;
+    protected $chatRoom;
 
-    public function __construct($userId, $chatRoomMessage)
+    public function __construct($userId, $chatRoom)
     {
         $this->userId = $userId;
-        $this->chatRoomMessage = $chatRoomMessage;
+        $this->chatRoom = $chatRoom;
     }
 
     /**
@@ -29,8 +29,9 @@ class MessageReadJob implements ShouldQueue
      */
     public function handle(): void
     {
+
         DB::transaction(function () {
-            $participant = (new AddParticipantAction())->execute($this->chatRoomMessage->chatRoom, $this->userId);
+            $participant = (new AddParticipantAction())->execute($this->chatRoom, $this->userId);
             (new MessageReadAction())->execute($this->chatRoomMessage, $participant->id);
         });
     }

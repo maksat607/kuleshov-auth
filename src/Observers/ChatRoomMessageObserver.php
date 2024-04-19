@@ -35,8 +35,10 @@ class ChatRoomMessageObserver
 //            }
 //        }
 //
-//        $tokens = Firebase::whereIn('user_id', $participants)->pluck('firebase')->toArray();
-//        (new FirebasePushService())->send($push, $tokens);
+
+
+        $tokens = Firebase::whereIn('user_id', $participants)->pluck('firebase')->toArray();
+        (new FirebasePushService())->send($push, $tokens);
 
     }
 }
