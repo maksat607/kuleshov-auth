@@ -332,7 +332,15 @@ class ChatController
     public function viewAllChatMessagesForGivenModelType()
     {
         $this->authorize('viewAllChatMessagesForGivenModelType', new ChatRoom());
-        return ChatRoom::where('chattable_type', request()->modelNamespace)->get();
+        $chatRooms = ChatRoom::where('chattable_type', request()->modelNamespace)->get();
+
+        $totalUnreadCount = $chatRooms->sum('unread_count');
+
+        foreach ($chatRooms as $chatRoom) {
+            $chatRoom->total_unread_count = $totalUnreadCount;
+        }
+
+        return $chatRooms;
     }
 
 }
