@@ -50,8 +50,8 @@ class ChatRoom extends Model
     use \Awobaz\Compoships\Compoships;
     use HasFactory;
 
-    protected $appends = ['chat_room_id','title', 'thumbnail' ,'model_id', 'model_type', 'chat_creator_id', 'route_name', 'unread_count'];
-    protected $visible = ['chat_room_id','title', 'thumbnail' , 'model_id', 'model_type', 'chat_creator_id', 'messages', 'messages.user', 'route_name', 'unread_count'];
+    protected $appends = ['chat_room_id','title', 'thumbnail' ,'model_id', 'model_type', 'chat_creator_id', 'route_name', 'unread_count','total_count'];
+    protected $visible = ['chat_room_id','title', 'thumbnail' , 'model_id', 'model_type', 'chat_creator_id', 'messages', 'messages.user', 'route_name', 'unread_count','unread_count','total_count'];
     protected $guarded = [];
 
 
@@ -179,7 +179,10 @@ class ChatRoom extends Model
         return null;
     }
 
-
+    public function getTotalCountAttribute()
+    {
+        return $this->total_unread_count;
+    }
 //    public function users()
 //    {
 //        // Assuming you need to use an additional column in the relationship

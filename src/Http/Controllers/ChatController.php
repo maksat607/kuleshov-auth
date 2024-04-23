@@ -8,6 +8,7 @@ use Maksatsaparbekov\KuleshovAuth\Http\Requests\ChatRequest;
 use Maksatsaparbekov\KuleshovAuth\Http\Services\ChatService;
 use Maksatsaparbekov\KuleshovAuth\Jobs\MessageReadJob;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
+use Maksatsaparbekov\KuleshovAuth\Models\ChatRoomMessage;
 
 
 class ChatController
@@ -285,9 +286,19 @@ class ChatController
 
     public function viewChatMessagesOfAuthUser()
     {
+
         $this->authorize('viewChatMessagesOfAuthUser', new ChatRoom());
-        return request()->user()->chatRooms;
+        $chatRooms = request()->user()->chatRooms;
+
+        $totalUnreadCount = $chatRooms->sum('unread_count');
+
+        foreach ($chatRooms as $chatRoom) {
+            $chatRoom->total_unread_count = $totalUnreadCount;
+        }
+
+        return $chatRooms;
     }
+
 
 
     /**
