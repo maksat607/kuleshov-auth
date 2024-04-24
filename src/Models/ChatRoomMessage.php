@@ -161,7 +161,7 @@ class ChatRoomMessage extends Model
         return !(ChatRoomMessage::where('id', $this->id)
                 ->forAuthUser()
                 ->whereDoesntHave('messageReadStatuses', function ($query) {
-                    $query->where('chat_room_participant_id', $this->participant->id);
+                    $query->where('chat_room_participant_id', $this?->participant?->id);
                 })
                 ->count() > 0);
     }
