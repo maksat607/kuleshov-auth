@@ -6,7 +6,7 @@
   "autoload": {
     "psr-4": {
       "Maksatsaparbekov\\KuleshovAuth\\": "src/",
-      "Maksatsaparbekov\\KuleshovAuth\\": "database/"
+      "Database\\Factories\\": "database/factories/"
     }
   },
   "extra": {

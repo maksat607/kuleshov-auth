@@ -1,6 +1,6 @@
 <?php
 
-namespace Maksatsaparbekov\KuleshovAuth\factories;
+namespace Database\Factories;
 
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoomParticipant;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Maksatsaparbekov\KuleshovAuth\factories;
+namespace Database\Factories;
 
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoomMessage;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoomMessageReadStatus;
