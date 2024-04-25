@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Maksatsaparbekov\KuleshovAuth\Models\FakeUser;
 
-class FakeUserFactory extends BaseFactory
+class FakeUserFactory extends Factory
 {
     protected $model = FakeUser::class;
 
