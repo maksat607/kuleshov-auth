@@ -22,7 +22,8 @@
     }
   ],
   "require": {
-    "awobaz/compoships": "^2.2"
+    "awobaz/compoships": "^2.2",
+    "phpunit/phpunit": "^x.x"
   },
   "minimum-stability": "dev"
 }

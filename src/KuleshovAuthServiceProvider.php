@@ -14,6 +14,7 @@ class KuleshovAuthServiceProvider extends ServiceProvider
 {
     public function register()
     {
+        $this->app->make(EloquentFactory::class)->load(__DIR__.'/../src/factories');
     }
 
     public function boot()
@@ -43,5 +44,6 @@ class KuleshovAuthServiceProvider extends ServiceProvider
         Gate::policy(ChatRoom::class, config('kuleshov-auth.policies.chat_room', ChatPolicy::class));// Укажите ваш собственный класс политики
 
     }
+
 }
 
