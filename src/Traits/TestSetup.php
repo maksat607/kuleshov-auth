@@ -12,7 +12,7 @@ Trait TestSetup
     public function setUp(): void
     {
         parent::setUp();
-        Artisan::call('migrate', ['--database' => 'sqlite']);
+        Artisan::call('migrate', ['--database' => 'sqlite', '--path' => 'maksatsaparbekov/kuleshov-auth/database/migrations']);
 
     }
 
