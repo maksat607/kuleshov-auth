@@ -3,6 +3,7 @@
 namespace Maksatsaparbekov\KuleshovAuth\Models;
 
 use App\Models\User;
+use Database\Factories\ChatRoomFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -50,8 +51,8 @@ class ChatRoom extends Model
     use \Awobaz\Compoships\Compoships;
     use HasFactory;
 
-    protected $appends = ['chat_room_id','title', 'thumbnail' ,'model_id', 'model_type', 'chat_creator_id', 'route_name', 'unread_count','total_count'];
-    protected $visible = ['chat_room_id','title', 'thumbnail' , 'model_id', 'model_type', 'chat_creator_id', 'messages', 'messages.user', 'route_name', 'unread_count','unread_count','total_count'];
+    protected $appends = ['chat_room_id', 'title', 'thumbnail', 'model_id', 'model_type', 'chat_creator_id', 'route_name', 'unread_count', 'total_count'];
+    protected $visible = ['chat_room_id', 'title', 'thumbnail', 'model_id', 'model_type', 'chat_creator_id', 'messages', 'messages.user', 'route_name', 'unread_count', 'unread_count', 'total_count'];
     protected $guarded = [];
 
 
@@ -59,6 +60,11 @@ class ChatRoom extends Model
     {
         parent::__construct($attributes);
         $this->with = ['chattable', 'messages', 'messages.user'];
+    }
+
+    protected static function newFactory()
+    {
+        return ChatRoomFactory::class;
     }
 
     public function getChatRoomIdAttribute()
@@ -92,25 +98,26 @@ class ChatRoom extends Model
     {
         return $this->messages()
             ->forAuthUser()
-            ->whereDoesntHave('messageReadStatuses', function ($query)  {
+            ->whereDoesntHave('messageReadStatuses', function ($query) {
                 $query->where('chat_room_participant_id', $this?->participant?->id);
             })
             ->count();
-    }
-    public function getUnreadMessagesAttribute()
-    {
-        return $this->messages()
-            ->forAuthUser()
-            ->whereDoesntHave('messageReadStatuses', function ($query) {
-                $query->where('chat_room_participant_id',$this->participant->id);
-            })
-            ->get();
     }
 
     public function messages()
     {
         $sortOrder = request()->input('messageSort', 'desc');
-        return $this->hasMany(ChatRoomMessage::class)->orderBy('updated_at',$sortOrder);
+        return $this->hasMany(ChatRoomMessage::class)->orderBy('updated_at', $sortOrder);
+    }
+
+    public function getUnreadMessagesAttribute()
+    {
+        return $this->messages()
+            ->forAuthUser()
+            ->whereDoesntHave('messageReadStatuses', function ($query) {
+                $query->where('chat_room_participant_id', $this->participant->id);
+            })
+            ->get();
     }
 
     public function getCreatedAtAttribute($value)
@@ -130,14 +137,15 @@ class ChatRoom extends Model
 
     public function getTitleAttribute()
     {
-        if ($this->chattable->car_title){
+        if ($this->chattable->car_title) {
             return $this->chattable->car_title;
         }
         return $this->chattable?->car_title;
     }
+
     public function getThumbnailAttribute()
     {
-        if ($this->chattable->thumbnail_url){
+        if ($this->chattable->thumbnail_url) {
             return $this->chattable->thumbnail_url;
         }
         return $this->chattable?->attachments?->first()?->thumbnail_url;

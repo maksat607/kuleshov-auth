@@ -3,11 +3,12 @@
 namespace Maksatsaparbekov\KuleshovAuth\Models;
 
 use App\Models\User;
+use Database\Factories\ChatRoomMessageFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Maksatsaparbekov\KuleshovAuth\Jobs\MessageReadJob;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+use Maksatsaparbekov\KuleshovAuth\Jobs\MessageReadJob;
 
 /**
  * @OA\Schema(
@@ -40,6 +41,11 @@ class ChatRoomMessage extends Model
         $this->with = ['user'];
     }
 
+    protected static function newFactory()
+    {
+        return ChatRoomMessageFactory::class;
+    }
+
     protected static function boot()
     {
         parent::boot();
@@ -48,7 +54,7 @@ class ChatRoomMessage extends Model
 
                 if (
 //                    Route::currentRouteName() === 'viewChatMessagesForGivenChatRoom'
-                     Route::currentRouteName() === 'viewChatMessagesOfAuthUserForGiventModel'
+                    Route::currentRouteName() === 'viewChatMessagesOfAuthUserForGiventModel'
 //                    || Route::currentRouteName() === 'viewChatsMessagesOfAllUsersForGivenModel'
 //                    || Route::currentRouteName() === 'viewChatMessagesOfAuthUser'
                 ) {
