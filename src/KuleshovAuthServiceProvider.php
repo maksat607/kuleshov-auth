@@ -9,13 +9,13 @@ use Maksatsaparbekov\KuleshovAuth\Observers\ChatRoomMessageObserver;
 use Maksatsaparbekov\KuleshovAuth\Observers\UserObserver;
 use Illuminate\Support\Facades\Gate;
 use Maksatsaparbekov\KuleshovAuth\Policies\ChatPolicy;
-use Illuminate\Database\Eloquent\Factories\Factory as EloquentFactory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class KuleshovAuthServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->make(EloquentFactory::class)->load(__DIR__.'/../src/factories');
+        $this->app->make(Factory::class)->load(__DIR__.'/../src/factories');
     }
 
     public function boot()
