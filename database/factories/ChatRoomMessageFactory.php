@@ -6,7 +6,7 @@ use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoomMessage;
 use Maksatsaparbekov\KuleshovAuth\Models\FakeUser;
 
-class ChatRoomMessageFactory extends Factory
+class ChatRoomMessageFactory extends BaseFactory
 {
     /**
      * The name of the factory's corresponding model.

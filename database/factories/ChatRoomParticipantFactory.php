@@ -6,7 +6,7 @@ use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoomParticipant;
 use Maksatsaparbekov\KuleshovAuth\Models\FakeUser;
 
-class ChatRoomParticipantFactory
+class ChatRoomParticipantFactory extends BaseFactory
 {
     protected $model = ChatRoomParticipant::class;
 

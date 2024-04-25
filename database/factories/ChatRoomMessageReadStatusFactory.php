@@ -6,7 +6,7 @@ use Maksatsaparbekov\KuleshovAuth\Models\ChatRoomMessage;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoomMessageReadStatus;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoomParticipant;
 
-class ChatRoomMessageReadStatusFactory
+class ChatRoomMessageReadStatusFactory extends BaseFactory
 {
     protected $model = ChatRoomMessageReadStatus::class;
     public function definition()
