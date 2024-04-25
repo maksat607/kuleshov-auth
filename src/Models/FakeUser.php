@@ -11,7 +11,7 @@ class FakeUser extends Model
 {
     use AuthService;
     use HasFactory;
-    protected $table = 'users';
+    protected $table = 'fake_users';
     protected static function newFactory(){
         return FakeUserFactory::new();
     }

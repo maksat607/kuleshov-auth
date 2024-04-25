@@ -8,7 +8,7 @@ use Maksatsaparbekov\KuleshovAuth\Database\Factories\ChattableFactory;
 class Chattable extends Model
 {
     use \Maksatsaparbekov\KuleshovAuth\Traits\Chattable;
-    protected $table = 'application';
+    protected $table = 'chattable';
     use HasFactory;
 
     protected static function newFactory()

@@ -16,7 +16,7 @@ class CreateFakeUsersTable extends Migration
     public function up()
     {
         if (App::runningUnitTests()) {
-            Schema::create('users', function (Blueprint $table) {
+            Schema::create('fake_users', function (Blueprint $table) {
                 $table->id();
                 $table->string('name');
                 $table->string('email')->unique();
@@ -36,7 +36,7 @@ class CreateFakeUsersTable extends Migration
     public function down()
     {
         if (App::runningUnitTests()) {
-            Schema::dropIfExists('users');
+            Schema::dropIfExists('fake_users');
         }
     }
 }

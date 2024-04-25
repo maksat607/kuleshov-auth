@@ -16,7 +16,7 @@ class CreateFakeChattableTable extends Migration
     public function up()
     {
         if (App::runningUnitTests()) {
-            Schema::create('applications', function (Blueprint $table) {
+            Schema::create('chattable', function (Blueprint $table) {
                 $table->id();
                 $table->string('title');
                 $table->timestamps();
@@ -32,7 +32,7 @@ class CreateFakeChattableTable extends Migration
     public function down()
     {
         if (App::runningUnitTests()) {
-            Schema::dropIfExists('application');
+            Schema::dropIfExists('chattable');
         }
     }
 }
