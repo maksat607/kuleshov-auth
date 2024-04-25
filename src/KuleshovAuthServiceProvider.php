@@ -9,6 +9,7 @@ use Maksatsaparbekov\KuleshovAuth\Observers\ChatRoomMessageObserver;
 use Maksatsaparbekov\KuleshovAuth\Observers\UserObserver;
 use Illuminate\Support\Facades\Gate;
 use Maksatsaparbekov\KuleshovAuth\Policies\ChatPolicy;
+use Illuminate\Database\Eloquent\Factories\Factory as EloquentFactory;
 
 class KuleshovAuthServiceProvider extends ServiceProvider
 {
