@@ -43,7 +43,7 @@ class ChatRoomMessage extends Model
 
     protected static function newFactory()
     {
-        return ChatRoomMessageFactory::class;
+        return ChatRoomMessageFactory::new();
     }
 
     protected static function boot()

@@ -12,7 +12,7 @@ class Chattable
 
     protected static function newFactory()
     {
-        return ChattableFactory::class;
+        return ChattableFactory::new();
     }
 
 }

@@ -64,7 +64,7 @@ class ChatRoom extends Model
 
     protected static function newFactory()
     {
-        return ChatRoomFactory::class;
+        return ChatRoomFactory::new();
     }
 
     public function getChatRoomIdAttribute()

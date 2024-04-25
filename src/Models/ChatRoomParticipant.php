@@ -15,7 +15,7 @@ class ChatRoomParticipant extends Model
 
     protected static function newFactory()
     {
-        return ChatRoomParticipantFactory::class;
+        return ChatRoomParticipantFactory::new();
     }
 
     public function chatRoom()

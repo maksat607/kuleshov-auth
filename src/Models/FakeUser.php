@@ -10,7 +10,7 @@ class FakeUser
     use AuthService;
 
     protected static function newFactory(){
-        return FakeUserFactory::class;
+        return FakeUserFactory::new();
     }
 
 }

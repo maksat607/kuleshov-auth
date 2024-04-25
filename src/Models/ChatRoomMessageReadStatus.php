@@ -15,7 +15,7 @@ class ChatRoomMessageReadStatus extends Model
 
     protected static function newFactory()
     {
-        return ChatRoomMessageReadStatusFactory::class;
+        return ChatRoomMessageReadStatusFactory::new();
     }
 
     public function chatRoomMessage()
