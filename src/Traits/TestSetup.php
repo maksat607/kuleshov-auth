@@ -2,6 +2,7 @@
 
 namespace Maksatsaparbekov\KuleshovAuth\Traits;
 use Illuminate\Support\Facades\Artisan;
+
 Trait TestSetup
 {
     private $user;

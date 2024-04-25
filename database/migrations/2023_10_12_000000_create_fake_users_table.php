@@ -15,7 +15,7 @@ class CreateFakeUsersTable extends Migration
      */
     public function up()
     {
-        if (App::environment(['local'])) {
+        if (App::runningUnitTests()) {
             Schema::create('fake_users', function (Blueprint $table) {
                 $table->id();
                 $table->string('name');

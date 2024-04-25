@@ -15,7 +15,7 @@ class CreateFakeChattableTable extends Migration
      */
     public function up()
     {
-        if (App::environment(['local'])) {
+        if (App::runningUnitTests()) {
             Schema::create('application', function (Blueprint $table) {
                 $table->id();
                 $table->string('title');
