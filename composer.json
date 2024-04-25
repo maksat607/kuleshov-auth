@@ -5,7 +5,8 @@
   "license": "MIT",
   "autoload": {
     "psr-4": {
-      "Maksatsaparbekov\\KuleshovAuth\\": "src/"
+      "Maksatsaparbekov\\KuleshovAuth\\": "src/",
+      "Database\\Factories\\": "database/"
     }
   },
   "extra": {

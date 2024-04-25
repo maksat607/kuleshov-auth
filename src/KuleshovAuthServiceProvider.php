@@ -15,7 +15,7 @@ class KuleshovAuthServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->make(Factory::class)->load(__DIR__.'/../src/factories');
+        $this->app->make(Factory::class)->load(__DIR__ . '/../src/factories');
     }
 
     public function boot()
