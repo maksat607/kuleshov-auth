@@ -3,9 +3,9 @@
 namespace Maksatsaparbekov\KuleshovAuth\Models;
 
 use App\Models\User;
-use Database\Factories\ChatRoomFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Maksatsaparbekov\KuleshovAuth\Database\Factories\ChatRoomFactory;
 
 
 /**

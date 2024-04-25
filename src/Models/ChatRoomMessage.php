@@ -3,11 +3,11 @@
 namespace Maksatsaparbekov\KuleshovAuth\Models;
 
 use App\Models\User;
-use Database\Factories\ChatRoomMessageFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+use Maksatsaparbekov\KuleshovAuth\Database\Factories\ChatRoomMessageFactory;
 use Maksatsaparbekov\KuleshovAuth\Jobs\MessageReadJob;
 
 /**
