@@ -1,12 +1,12 @@
 <?php
 
-namespace Database\Factories;
+namespace Maksatsaparbekov\KuleshovAuth\Database\Factories;
 
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoomParticipant;
 use Maksatsaparbekov\KuleshovAuth\Models\FakeUser;
-
-class ChatRoomParticipantFactory extends BaseFactory
+use Illuminate\Database\Eloquent\Factories\Factory;
+class ChatRoomParticipantFactory extends Factory
 {
     protected $model = ChatRoomParticipant::class;
 

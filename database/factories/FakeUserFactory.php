@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace Maksatsaparbekov\KuleshovAuth\Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Maksatsaparbekov\KuleshovAuth\Models\FakeUser;

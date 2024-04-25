@@ -1,12 +1,12 @@
 <?php
 
-namespace Database\Factories;
+namespace Maksatsaparbekov\KuleshovAuth\Database\Factories;
 
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoomMessage;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoomMessageReadStatus;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoomParticipant;
-
-class ChatRoomMessageReadStatusFactory extends BaseFactory
+use Illuminate\Database\Eloquent\Factories\Factory;
+class ChatRoomMessageReadStatusFactory extends Factory
 {
     protected $model = ChatRoomMessageReadStatus::class;
     public function definition()
