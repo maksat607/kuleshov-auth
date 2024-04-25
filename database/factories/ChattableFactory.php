@@ -8,14 +8,12 @@ use Maksatsaparbekov\KuleshovAuth\Models\FakeUser;
 use Illuminate\Database\Eloquent\Factories\Factory;
 class ChattableFactory extends Factory
 {
-    protected $model = ChatRoom::class;
+    protected $model = Chattable::class;
 
     public function definition()
     {
         return [
-            'sender_id' => FakeUser::factory()->create()->id,
-            'chattable_id' => Chattable::factory()->create()->id,
-            'chattable_type' => 'Maksatsaparbekov\KuleshovAuth\Models\Chattable',
+            'title'=>fake()->title
         ];
     }
 

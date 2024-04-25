@@ -1,20 +1,19 @@
 <?php
 
-namespace Maksatsaparbekov\KuleshovAuth\Database\Factories;
+namespace Maksatsaparbekov\KuleshovAuth\Models;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Maksatsaparbekov\KuleshovAuth\Database\Factories\ChattableFactory;
 
-
-use Maksatsaparbekov\KuleshovAuth\Models\Chattable;
-
-use Illuminate\Database\Eloquent\Factories\Factory;
-class ChattableFactory extends Factory
+class Chattable extends Model
 {
-    protected $model = Chattable::class;
+    use \Maksatsaparbekov\KuleshovAuth\Traits\Chattable;
+    protected $table = 'application';
+    use HasFactory;
 
-    public function definition()
+    protected static function newFactory()
     {
-        return [
-            'title'=>fake()->title
-        ];
+        return ChattableFactory::new();
     }
 
 }
