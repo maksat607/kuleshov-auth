@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maksatsaparbekov\KuleshovAuth\Models\AccessToken;
 use Symfony\Component\HttpFoundation\Response;
-
+use Illuminate\Support\Facades\App;
 
 class AuthenticateAccessToken
 {
