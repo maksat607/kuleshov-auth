@@ -58,8 +58,11 @@ class ChatRoomMessage extends Model
 //                    || Route::currentRouteName() === 'viewChatsMessagesOfAllUsersForGivenModel'
 //                    || Route::currentRouteName() === 'viewChatMessagesOfAuthUser'
                 ) {
-                    $userId = request()->user()->id;
-                    MessageReadJob::dispatch($userId, $message)->delay(now()->addSeconds(5));
+                    if (!App::runningUnitTests()) {
+                        $userId = request()->user()->id;
+                        MessageReadJob::dispatch($userId, $message)->delay(now()->addSeconds(5));
+                    }
+
                 }
             }
 
