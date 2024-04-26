@@ -19,4 +19,8 @@ class FakeUser extends Model implements AuthenticatableContract
         return FakeUserFactory::new();
     }
 
+    public function getRoleNames(){
+        return '';
+    }
+
 }
