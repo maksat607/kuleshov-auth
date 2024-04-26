@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Maksatsaparbekov\KuleshovAuth\Database\Factories\ChatRoomMessageFactory;
 use Maksatsaparbekov\KuleshovAuth\Jobs\MessageReadJob;
-
+use Illuminate\Support\Facades\App;
 /**
  * @OA\Schema(
  *     schema="ChatRoomMessage",
@@ -154,6 +154,9 @@ class ChatRoomMessage extends Model
 
     public function user()
     {
+        if (App::runningUnitTests()) {
+            return $this->belongsTo(FakeUser::class);
+        }
         return $this->belongsTo(User::class);
     }
 
