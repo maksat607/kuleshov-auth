@@ -16,6 +16,9 @@ class ResolveModelMiddleware
 
         $modelName = ucfirst($request->route('model'));
         $modelNamespace = "App\\Models\\" . $modelName;
+        if (App::runningUnitTests()) {
+            $modelNamespace = "Maksatsaparbekov\\KuleshovAuth\\Models\\" . $modelName;
+        }
 
         if (!class_exists($modelNamespace)) {
             Log::error('Model class does not exist', ['modelNamespace' => $modelNamespace]);
