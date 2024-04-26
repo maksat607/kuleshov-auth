@@ -5,6 +5,7 @@ namespace Maksatsaparbekov\KuleshovAuth\Models;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 use Maksatsaparbekov\KuleshovAuth\Database\Factories\ChatRoomFactory;
 
 
@@ -51,8 +52,8 @@ class ChatRoom extends Model
     use \Awobaz\Compoships\Compoships;
     use HasFactory;
 
-    protected $appends = ['chat_room_id', 'title', 'thumbnail', 'model_id', 'model_type', 'chat_creator_id', 'route_name', 'unread_count', 'total_count'];
-    protected $visible = ['chat_room_id', 'title', 'thumbnail', 'model_id', 'model_type', 'chat_creator_id', 'messages', 'messages.user', 'route_name', 'unread_count', 'unread_count', 'total_count'];
+    protected $appends = ['chat_room_id', 'title', 'thumbnail', 'model_id', 'model_type', 'chat_creator_id','chat_creator_name', 'route_name', 'unread_count', 'total_count'];
+    protected $visible = ['chat_room_id', 'title', 'thumbnail', 'model_id', 'model_type', 'chat_creator_id','chat_creator_name' ,'messages', 'messages.user', 'route_name', 'unread_count', 'unread_count', 'total_count'];
     protected $guarded = [];
 
 
@@ -75,6 +76,11 @@ class ChatRoom extends Model
     public function getChatCreatorIdAttribute()
     {
         return $this->sender_id;
+    }
+
+    public function getChatCreatorNameAttribute()
+    {
+        return $this->user->name;
     }
 
     public function getModelIdAttribute()
@@ -164,6 +170,9 @@ class ChatRoom extends Model
 
     public function user()
     {
+        if (App::runningUnitTests()) {
+            return $this->belongsTo(FakeUser::class, 'sender_id', 'id');
+        }
         return $this->belongsTo(User::class, 'sender_id', 'id');
     }
 
