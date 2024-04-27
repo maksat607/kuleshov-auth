@@ -41,7 +41,9 @@ trait AuthService
 
     public function chatRooms()
     {
-        return $this->hasMany(ChatRoom::class, 'sender_id', 'id')->orderByDesc(function ($query) {
+        return $this->hasMany(ChatRoom::class, 'sender_id', 'id')
+            ->orderByDesc('unread_count')
+            ->orderByDesc(function ($query) {
             $query->select('created_at')
                 ->from('chat_room_messages')
                 ->whereColumn('chat_room_id', 'chat_rooms.id')
