@@ -205,6 +205,17 @@ class ChatRoom extends Model
     {
         return $query->orderBy('unread_count', 'desc');
     }
+
+    public function scopeOrderByLatestMessage($query)
+    {
+        return $query->orderByDesc(function ($query) {
+            $query->select('created_at')
+                ->from('chat_room_messages')
+                ->whereColumn('chat_room_id', 'chat_rooms.id')
+                ->orderByDesc('updated_at')
+                ->limit(1);
+        });
+    }
 //    public function users()
 //    {
 //        // Assuming you need to use an additional column in the relationship
