@@ -288,7 +288,9 @@ class ChatController
     {
 
         $this->authorize('viewChatMessagesOfAuthUser', new ChatRoom());
-        $chatRooms = request()->user()->chatRooms;
+        $chatRooms = request()->user()->chatRooms
+            ->sortByDesc('unread_count')
+        ;
 
         $totalUnreadCount = $chatRooms->sum('unread_count');
 

@@ -200,6 +200,11 @@ class ChatRoom extends Model
     {
         return $this->total_unread_count;
     }
+
+    public function scopeOrderByUnreadCount($query)
+    {
+        return $query->orderBy('unread_count', 'desc');
+    }
 //    public function users()
 //    {
 //        // Assuming you need to use an additional column in the relationship
