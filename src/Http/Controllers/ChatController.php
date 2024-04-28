@@ -288,7 +288,7 @@ class ChatController
     {
 
         $this->authorize('viewChatMessagesOfAuthUser', new ChatRoom());
-        $chatRooms = request()->user()->chatRooms
+        $chatRooms = request()->user()->chatRooms()->orderByLatestMessage()->get()
             ->sortByDesc('unread_count')
         ;
 
@@ -334,7 +334,7 @@ class ChatController
     public function viewAllChatMessagesForGivenModelType()
     {
         $this->authorize('viewAllChatMessagesForGivenModelType', new ChatRoom());
-        $chatRooms = ChatRoom::where('chattable_type', request()->modelNamespace)->get();
+        $chatRooms = ChatRoom::where('chattable_type', request()->modelNamespace)->orderByLatestMessage()->get();
 
         $totalUnreadCount = $chatRooms->sum('unread_count');
 
