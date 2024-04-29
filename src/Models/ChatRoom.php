@@ -85,7 +85,7 @@ class ChatRoom extends Model
 
     public function getModelIdAttribute()
     {
-        return $this->chattable->id;
+        return $this->chattable?->id;
     }
 
     public function getModelTypeAttribute()
@@ -143,7 +143,7 @@ class ChatRoom extends Model
 
     public function getTitleAttribute()
     {
-        if ($this->chattable->car_title) {
+        if ($this->chattable?->car_title) {
             return $this->chattable->car_title;
         }
         return $this->chattable?->car_title;
@@ -151,7 +151,7 @@ class ChatRoom extends Model
 
     public function getThumbnailAttribute()
     {
-        if ($this->chattable->thumbnail_url) {
+        if ($this->chattable?->thumbnail_url) {
             return $this->chattable->thumbnail_url;
         }
         return $this->chattable?->attachments?->first()?->thumbnail_url;
