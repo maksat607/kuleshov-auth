@@ -65,6 +65,7 @@ class ChatRoomMessage extends Model
                         MessageReadJob::dispatch($userId, $message)->delay(now()->addSeconds(5));
                     }
 
+
                 }
             }
 

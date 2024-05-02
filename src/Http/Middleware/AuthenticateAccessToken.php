@@ -25,7 +25,8 @@ class AuthenticateAccessToken
         $accessTokenModel = AccessToken::where([
             ['token', $accessToken],
             ['expired_at', '>', now()],
-        ])->first();
+        ])
+            ->first();
 
         if (!$accessTokenModel) {
             return response()->json(['error' => 'invalid_access_token'], 401);

@@ -3,6 +3,7 @@
 namespace Maksatsaparbekov\KuleshovAuth\Traits;
 
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
+use Maksatsaparbekov\KuleshovAuth\Models\CheckableStatus;
 
 trait Chattable
 {
@@ -16,6 +17,14 @@ trait Chattable
     public function getTypeAttribute()
     {
         return get_class($this);
+    }
+
+    public function getHasUnreadAttribute()
+    {
+        if ($this->checkableStatuses()->count()>0){
+            return true;
+        }
+        return false;
     }
 
 
@@ -34,6 +43,15 @@ trait Chattable
                 ->limit(1);
         });
     }
+
+    public function checkableStatuses()
+    {
+        return $this->morphMany(CheckableStatus::class, 'checkable');
+    }
+
+
+
+
 
 //    public function chatRooms()
 //    {

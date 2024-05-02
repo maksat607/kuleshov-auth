@@ -1,6 +1,7 @@
 <?php
 
 namespace Maksatsaparbekov\KuleshovAuth\Http\Controllers;
+use App\Models\Application;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Routing\Controller;
 use App\Models\ChatMessages;
@@ -115,6 +116,11 @@ class ChatController
             $request['content'],
             'text'
         );
+
+        $chatRoom->readables()->firstOrCreate(['role'=>'Manager']);
+
+        $chatRoom->chattable->checkableStatuses()->firstOrCreate(['checked'=>0]);
+
         return response()->json($message, 201);
     }
 
@@ -169,6 +175,9 @@ class ChatController
             $request['content'] ?? '',
             'text'
         );
+        $message->chatRoom->readables()->firstOrCreate(['role'=>'Manager']);
+        request()->modelInstance->checkableStatuses()->firstOrCreate(['checked'=>0]);
+
         return response()->json(['message' => 'Message created successfully', 'data' => $message], 201);
     }
 

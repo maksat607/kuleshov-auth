@@ -2,11 +2,15 @@
 
 namespace Maksatsaparbekov\KuleshovAuth\Models;
 
+use App\Jobs\CheckChattableChatRoomsByManager;
+use App\Models\Readable;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Route;
 use Maksatsaparbekov\KuleshovAuth\Database\Factories\ChatRoomFactory;
+use Maksatsaparbekov\KuleshovAuth\Jobs\MessageReadJob;
 
 
 /**
@@ -52,10 +56,32 @@ class ChatRoom extends Model
     use \Awobaz\Compoships\Compoships;
     use HasFactory;
 
-    protected $appends = ['chat_room_id', 'title', 'thumbnail', 'model_id', 'model_type', 'chat_creator_id','chat_creator_name', 'route_name', 'unread_count', 'total_count'];
-    protected $visible = ['chat_room_id', 'title', 'thumbnail', 'model_id', 'model_type', 'chat_creator_id','chat_creator_name' ,'messages', 'messages.user', 'route_name', 'unread_count', 'unread_count', 'total_count'];
+    protected $appends = ['chat_room_id', 'title', 'thumbnail', 'model_id', 'model_type', 'chat_creator_id', 'chat_creator_name', 'route_name', 'unread_count', 'total_count', 'read_by_manager'];
+    protected $visible = ['chat_room_id', 'title', 'thumbnail', 'model_id', 'model_type', 'chat_creator_id', 'chat_creator_name', 'messages', 'messages.user', 'route_name', 'unread_count', 'unread_count', 'total_count', 'read_by_manager'];
     protected $guarded = [];
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::retrieved(function ($chatRoom) {
+
+
+            if (
+                Route::currentRouteName() === 'viewChatMessagesForGivenChatRoom'
+//                    ||
+//                    Route::currentRouteName() === 'viewChatMessagesOfAuthUserForGiventModel'
+//                    || Route::currentRouteName() === 'viewChatsMessagesOfAllUsersForGivenModel'
+//                    || Route::currentRouteName() === 'viewChatMessagesOfAuthUser'
+            ) {
+                if (!App::runningUnitTests()&& (request()->user()->hasRole('Manager'))) {
+                    CheckChattableChatRoomsByManager::dispatch($chatRoom);
+                }
+
+            }
+
+
+        });
+    }
 
     public function __construct(array $attributes = [])
     {
@@ -134,6 +160,16 @@ class ChatRoom extends Model
     public function getUpdatedAtAttribute($value)
     {
         return \Carbon\Carbon::parse($value)->format('H:i:s d.m.Y');
+    }
+
+    public function getReadByManagerAttribute()
+    {
+        $this->readables()->where('role', 'Manager')->exists();
+    }
+
+    public function readables()
+    {
+        return $this->morphMany(Readable::class, 'readable');
     }
 
     public function chattable()
