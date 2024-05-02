@@ -2,7 +2,7 @@
 
 namespace Maksatsaparbekov\KuleshovAuth\Models;
 
-use App\Jobs\CheckChattableChatRoomsByManager;
+
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Maksatsaparbekov\KuleshovAuth\Database\Factories\ChatRoomFactory;
+use Maksatsaparbekov\KuleshovAuth\Jobs\CheckChattableChatRoomsByManager;
 use Maksatsaparbekov\KuleshovAuth\Jobs\MessageReadJob;
 
 
@@ -73,7 +74,7 @@ class ChatRoom extends Model
 //                    || Route::currentRouteName() === 'viewChatsMessagesOfAllUsersForGivenModel'
 //                    || Route::currentRouteName() === 'viewChatMessagesOfAuthUser'
             ) {
-                if (!App::runningUnitTests()&& (request()->user()->hasRole('Manager'))) {
+                if (!App::runningUnitTests()&& (request()->user()->hasAnyRole(['Manager','Admin']))) {
                     CheckChattableChatRoomsByManager::dispatch($chatRoom);
                 }
 
