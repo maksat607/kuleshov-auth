@@ -3,7 +3,7 @@
 namespace Maksatsaparbekov\KuleshovAuth\Models;
 
 use App\Jobs\CheckChattableChatRoomsByManager;
-use App\Models\Readable;
+
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
