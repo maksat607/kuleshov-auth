@@ -49,6 +49,13 @@ trait Chattable
         return $this->morphMany(CheckableStatus::class, 'checkable');
     }
 
+    public function scopeOrderByUnread($query)
+    {
+        return $query->withCount('checkableStatuses')->orderBy('checkable_statuses_count', 'desc');
+    }
+
+
+
 
 
 
