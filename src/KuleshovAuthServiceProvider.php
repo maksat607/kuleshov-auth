@@ -19,7 +19,7 @@ class KuleshovAuthServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        User::observe(UserObserver::class);
+
         $router = $this->app['router'];
         $router->aliasMiddleware('auth.access_token', \Maksatsaparbekov\KuleshovAuth\Http\Middleware\AuthenticateAccessToken::class);
         $router->aliasMiddleware('resolveModel', \Maksatsaparbekov\KuleshovAuth\Http\Middleware\ResolveModelMiddleware::class);
@@ -44,7 +44,7 @@ class KuleshovAuthServiceProvider extends ServiceProvider
         ], 'kuleshov-auth-policies');
 
         ChatRoomMessage::observe(config('kuleshov-auth.observers.chat_room_message', ChatRoomMessageObserver::class));
-        ChatRoomMessage::observe(config('kuleshov-auth.observers.user_observer', UserObserver::class));
+        User::observe(config('kuleshov-auth.observers.user_observer', UserObserver::class));
         Gate::policy(ChatRoom::class, config('kuleshov-auth.policies.chat_room', ChatPolicy::class));// Укажите ваш собственный класс политики
 
     }
