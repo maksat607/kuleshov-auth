@@ -44,6 +44,7 @@ class KuleshovAuthServiceProvider extends ServiceProvider
         ], 'kuleshov-auth-policies');
 
         ChatRoomMessage::observe(config('kuleshov-auth.observers.chat_room_message', ChatRoomMessageObserver::class));
+        ChatRoomMessage::observe(config('kuleshov-auth.observers.user_observer', UserObserver::class));
         Gate::policy(ChatRoom::class, config('kuleshov-auth.policies.chat_room', ChatPolicy::class));// Укажите ваш собственный класс политики
 
     }
