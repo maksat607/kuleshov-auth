@@ -16,24 +16,26 @@ trait AuthService
 
     public function createToken($str = '')
     {
+        $token['token'] = '';
         if (str_contains(request()->url(), 'login')) {
             $token = RequestEndpoints::from('login')->send($this);
         }
         if (str_contains(request()->url(), 'register')) {
             $token =  RequestEndpoints::from('register')->send($this);
         }
-        dump('12121212 '.json_encode($token));
-        $this->setToken();
+
+        $this->setToken($token);
         return $this;
     }
 
-    public function setToken()
+    public function setToken($token)
     {
+        $this->plainTextToken = $token['token'];
 //        $this->accesstoken()->delete();
-        $this->accesstoken()->create([
-            'expired_at' => Carbon::now()->addYears(2),
-            'token' => $this->plainTextToken = sprintf('%s%s', $entropy = Str::random(40), hash('crc32b', $entropy))
-        ]);
+//        $this->accesstoken()->create([
+//            'expired_at' => Carbon::now()->addYears(2),
+//            'token' => $this->plainTextToken = sprintf('%s%s', $entropy = Str::random(40), hash('crc32b', $entropy))
+//        ]);
     }
 
     public function accesstoken()
