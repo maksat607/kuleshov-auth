@@ -25,5 +25,14 @@
   "require": {
     "awobaz/compoships": "^2.2"
   },
-  "minimum-stability": "dev"
+  "minimum-stability": "dev",
+  "require-dev": {
+    "pestphp/pest": "3.x-dev",
+    "guzzlehttp/guzzle": "8.0.x-dev"
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  }
 }
