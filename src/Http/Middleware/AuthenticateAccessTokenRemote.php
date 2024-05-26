@@ -42,7 +42,7 @@ class AuthenticateAccessTokenRemote
                 ['headers' => ['Authorization' => 'Bearer ' . $accessToken,
                     'Accept' => 'application/json', 'Content' => 'application/json',
                     'Project-Security-Key' => config('kuleshov-auth.security_key')
-                    ]]);
+                ]]);
 
             if ($response->getStatusCode() === 200)
             {

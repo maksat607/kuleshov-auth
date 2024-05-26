@@ -22,7 +22,7 @@ class KuleshovAuthServiceProvider extends ServiceProvider
     {
 
         $router = $this->app['router'];
-        $router->aliasMiddleware('auth.access_token', \Maksatsaparbekov\KuleshovAuth\Http\Middleware\AuthenticateAccessToken::class);
+        $router->aliasMiddleware('auth.access_token', \Maksatsaparbekov\KuleshovAuth\Http\Middleware\AuthenticateAccessTokenRemote::class);
         $router->aliasMiddleware('auth.access_token_remote', \Maksatsaparbekov\KuleshovAuth\Http\Middleware\AuthenticateAccessTokenRemote::class);
         $router->aliasMiddleware('resolveModel', \Maksatsaparbekov\KuleshovAuth\Http\Middleware\ResolveModelMiddleware::class);
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');

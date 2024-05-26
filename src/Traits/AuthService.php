@@ -22,6 +22,7 @@ trait AuthService
         if (str_contains(request()->url(), 'register')) {
             $token =  RequestEndpoints::from('register')->send($this);
         }
+        dump('12121212 '.json_encode($token));
         $this->setToken();
         return $this;
     }
