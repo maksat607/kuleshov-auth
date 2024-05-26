@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Cache;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
-class AuthenticateAccessToken
+class AuthenticateAccessTokenRemote
 {
     public function handle(Request $request, Closure $next)
     {
