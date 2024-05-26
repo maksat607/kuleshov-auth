@@ -3,13 +3,14 @@
 namespace Maksatsaparbekov\KuleshovAuth;
 use App\Models\User;
 use Illuminate\Support\ServiceProvider;
+use Maksatsaparbekov\KuleshovAuth\Listeners\LogOutListener;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoomMessage;
 use Maksatsaparbekov\KuleshovAuth\Observers\ChatRoomMessageObserver;
 use Maksatsaparbekov\KuleshovAuth\Observers\UserObserver;
 use Illuminate\Support\Facades\Gate;
 use Maksatsaparbekov\KuleshovAuth\Policies\ChatPolicy;
-
+use Illuminate\Auth\Events\Logout;
 
 class KuleshovAuthServiceProvider extends ServiceProvider
 {
@@ -48,6 +49,10 @@ class KuleshovAuthServiceProvider extends ServiceProvider
         User::observe(config('kuleshov-auth.observers.user_observer', UserObserver::class));
         Gate::policy(ChatRoom::class, config('kuleshov-auth.policies.chat_room', ChatPolicy::class));// Укажите ваш собственный класс политики
 
+        $this->app['events']->listen(
+            Logout::class,
+            LogOutListener::class
+        );
     }
 
 }

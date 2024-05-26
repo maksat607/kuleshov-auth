@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Maksatsaparbekov\KuleshovAuth\Models\AccessToken;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
+use Maksatsaparbekov\KuleshovAuth\Services\UserService;
 use Maksatsaparbekov\KuleshovAuth\Synchronization\RequestEndpoints;
 
 trait AuthService
@@ -16,10 +17,10 @@ trait AuthService
     public function createToken($str = '')
     {
         if (str_contains(request()->url(), 'login')) {
-            RequestEndpoints::from('login')->send($this);
+            $token = RequestEndpoints::from('login')->send($this);
         }
         if (str_contains(request()->url(), 'register')) {
-            RequestEndpoints::from('register')->send($this);
+            $token =  RequestEndpoints::from('register')->send($this);
         }
         $this->setToken();
         return $this;
@@ -36,7 +37,9 @@ trait AuthService
 
     public function accesstoken()
     {
-        return $this->hasOne(AccessToken::class);
+        return new UserService();
+
+//        return $this->hasOne(AccessToken::class);
     }
 
     public function chatRooms()

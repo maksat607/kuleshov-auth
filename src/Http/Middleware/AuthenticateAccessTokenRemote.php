@@ -1,7 +1,7 @@
 <?php
-
 namespace Maksatsaparbekov\KuleshovAuth\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,62 +15,70 @@ class AuthenticateAccessTokenRemote
     {
         $accessToken = $request->header('Authorization');
 
-        if (!$accessToken) {
-            return response()->json([
-                'message' => 'Invalid login details'
-            ], 401);
+        if (!$accessToken)
+        {
+            return response()->json(['message' => 'Invalid login details'], 401);
         }
 
-        // Ensure the token has the "Bearer " prefix
-        if (strpos($accessToken, 'Bearer ') !== 0) {
+        if (strpos($accessToken, 'Bearer ') !== 0)
+        {
             $accessToken = 'Bearer ' . $accessToken;
         }
 
-        // Trim the "Bearer " prefix for validation
         $accessToken = trim(str_replace("Bearer ", "", $accessToken));
 
-        // Check if the token is already cached
-        if ($cachedUser = Cache::get($accessToken)) {
+        if ($cachedUser = Cache::get($accessToken))
+        {
             Auth::login($cachedUser);
             return $next($request);
         }
 
-        // Create a Guzzle HTTP client
         $client = new Client();
 
-        try {
-            // Send a request to the third-party server
-            $response = $client->request('POST', config('kuleshov-auth.url').'/api/user', [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $accessToken,
-                    'Accept' => 'application/json',
-                ]
-            ]);
+        try
+        {
 
-            // Check if the response status code is 200 (OK)
-            if ($response->getStatusCode() === 200) {
-                $responseData = json_decode($response->getBody(), true);
+            $response = $client->request('GET', config('kuleshov-auth.url') . '/api/user',
+                ['headers' => ['Authorization' => 'Bearer ' . $accessToken,
+                    'Accept' => 'application/json', 'Content' => 'application/json',
+                    'Project-Security-Key' => config('kuleshov-auth.security_key')
+                    ]]);
 
-                // Assume the response contains user data
-                $user = User::find($responseData['user_id']); // Adjust based on your response structure
+            if ($response->getStatusCode() === 200)
+            {
+                $responseData = json_decode($response->getBody() , true);
 
-                // Cache the user for future requests
-                Cache::put($accessToken, $user, now()->addWeek()); // Adjust the cache duration as needed
+                $user = User::where('phone', $responseData['phone'])->first();
 
-                // Log in the user
+                if (!$user)
+                {
+                    return response()->json(['error' => 'User is not found on the server'], 401);
+                }
+
+                Cache::put($accessToken, $user, now()->addWeek());
+
                 Auth::login($user);
 
                 return $next($request);
-            } else {
+            }
+            else
+            {
                 return response()->json(['error' => 'invalid_access_token'], 401);
             }
-        } catch (RequestException $e) {
-            // Handle request exception
-            if ($e->hasResponse()) {
-                return response()->json(['error' => 'invalid_access_token'], 401);
-            } else {
-                return response()->json(['error' => 'server_error', 'message' => $e->getMessage()], 500);
+        }
+        catch(RequestException $e)
+        {
+            if ($e->hasResponse())
+            {
+                return response()
+                    ->json(['error' => 'invalid_access_token', 'e' => $e->getMessage() ], 401);
+            }
+            else
+            {
+                return response()
+                    ->json(['error' => 'server_error', 'message' => $e->getMessage() ], 500);
             }
         }
     }
 }
+
