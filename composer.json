@@ -23,7 +23,9 @@
     }
   ],
   "require": {
-    "awobaz/compoships": "^2.2"
+    "awobaz/compoships": "^2.2",
+    "maksatsaparbekov/kuleshov-auth": "dev-main#4ebc53c00ea3fd05e0f78b3888a78dab16251075"
+
   },
   "minimum-stability": "dev",
   "require-dev": {
