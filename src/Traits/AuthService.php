@@ -41,9 +41,8 @@ trait AuthService
 
     public function accesstoken()
     {
-        return new UserService();
-
-//        return $this->hasOne(AccessToken::class);
+//        return new UserService();
+        return $this->hasOne(AccessToken::class);
     }
 
     public function chatRooms()
