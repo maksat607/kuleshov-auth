@@ -18,6 +18,7 @@ trait AuthService
     {
         $token['token'] = '';
         if (str_contains(request()->url(), 'login')) {
+            request()->merge(['phone' => request()->input('phone', $this->phone)]);
             $token = RequestEndpoints::from('login')->send($this);
         }
         if (str_contains(request()->url(), 'register')) {
