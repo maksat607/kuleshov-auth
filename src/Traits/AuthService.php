@@ -18,31 +18,37 @@ trait AuthService
     {
         $token['token'] = '';
         if (str_contains(request()->url(), 'login')) {
+            request()->merge(['phone' => request()->input('phone', $this->phone)]);
             $token = RequestEndpoints::from('login')->send($this);
         }
         if (str_contains(request()->url(), 'register')) {
-            $token =  RequestEndpoints::from('register')->send($this);
+            $token = RequestEndpoints::from('register')->send($this);
         }
 
-        $this->setToken($token);
+        if (strlen($token['token']) > 0) {
+            $this->plainTextToken = $token['token'];
+        } else {
+            $this->setToken();
+        }
+
+
         return $this;
     }
 
-    public function setToken($token)
+    public function setToken()
     {
-        $this->plainTextToken = $token['token'];
+//        $this->plainTextToken = $token['token'];
 //        $this->accesstoken()->delete();
-//        $this->accesstoken()->create([
-//            'expired_at' => Carbon::now()->addYears(2),
-//            'token' => $this->plainTextToken = sprintf('%s%s', $entropy = Str::random(40), hash('crc32b', $entropy))
-//        ]);
+        $this->accesstoken()->create([
+            'expired_at' => Carbon::now()->addYears(2),
+            'token' => $this->plainTextToken = sprintf('%s%s', $entropy = Str::random(40), hash('crc32b', $entropy))
+        ]);
     }
 
     public function accesstoken()
     {
         return new UserService();
-
-//        return $this->hasOne(AccessToken::class);
+        return $this->hasOne(AccessToken::class);
     }
 
     public function chatRooms()
