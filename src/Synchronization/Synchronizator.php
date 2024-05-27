@@ -54,7 +54,6 @@ class Synchronizator implements Synchronization
         }
         $this->user->auth_identifier = $this->response['uuid'];
         $this->user->save();
-        return $this->response;
     }
 
     public function setUser($user)

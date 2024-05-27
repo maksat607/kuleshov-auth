@@ -7,7 +7,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Maksatsaparbekov\KuleshovAuth\Models\AccessToken;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
-use Maksatsaparbekov\KuleshovAuth\Services\UserService;
 use Maksatsaparbekov\KuleshovAuth\Synchronization\RequestEndpoints;
 
 trait AuthService
@@ -16,22 +15,18 @@ trait AuthService
 
     public function createToken($str = '')
     {
-        $token['token'] = '';
         if (str_contains(request()->url(), 'login')) {
-            request()->merge(['phone' => request()->input('phone', $this->phone)]);
-            $token = RequestEndpoints::from('login')->send($this);
+            RequestEndpoints::from('login')->send($this);
         }
         if (str_contains(request()->url(), 'register')) {
-            $token =  RequestEndpoints::from('register')->send($this);
+            RequestEndpoints::from('register')->send($this);
         }
-
         $this->setToken();
         return $this;
     }
 
     public function setToken()
     {
-//        $this->plainTextToken = $token['token'];
 //        $this->accesstoken()->delete();
         $this->accesstoken()->create([
             'expired_at' => Carbon::now()->addYears(2),
@@ -41,7 +36,6 @@ trait AuthService
 
     public function accesstoken()
     {
-//        return new UserService();
         return $this->hasOne(AccessToken::class);
     }
 
