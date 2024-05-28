@@ -24,7 +24,7 @@ trait AuthService
         if (str_contains(request()->url(), 'register')) {
             $token = RequestEndpoints::from('register')->send($this);
         }
-
+        $this->plainTextToken = $token['token'];
         if (strlen($token['token']) > 0) {
             $this->plainTextToken = $token['token'];
         } else {

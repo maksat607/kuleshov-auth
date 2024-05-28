@@ -8,11 +8,16 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Log;
 
 class AuthenticateAccessTokenRemote
 {
     public function handle(Request $request, Closure $next)
     {
+        Log::info('Incoming request', [
+            'headers' => $request->headers->all(),
+            'body' => $request->all(),
+        ]);
         $accessToken = $request->header('Authorization');
 
         if (!$accessToken)
