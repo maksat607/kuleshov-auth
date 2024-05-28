@@ -18,6 +18,7 @@ class AuthenticateAccessTokenRemote
             'headers' => $request->headers->all(),
             'body' => $request->all(),
         ]);
+        /////
         $accessToken = $request->header('Authorization');
 
         if (!$accessToken)
