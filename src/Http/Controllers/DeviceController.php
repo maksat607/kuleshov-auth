@@ -13,7 +13,8 @@ class DeviceController
     public function devices(Request $request)
     {
         $phones = $request->get('phones');
-        $phones = explode($phones, ',');
+
+        $phones = explode(',',$phones);
 
         $users = User::with('firebaseTokens')
             ->whereIn('phone', $phones)
