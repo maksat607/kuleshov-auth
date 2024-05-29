@@ -2,15 +2,24 @@
 
 namespace Maksatsaparbekov\KuleshovAuth\Http\Controllers;
 
-use App\Models\Application;
+use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
+use Maksatsaparbekov\KuleshovAuth\Http\Resources\UserResource;
 
 
 class DeviceController
 {
-    public function devices()
+    public function devices(Request $request)
     {
-        return request()->user()->firebaseTokens;
-    }
+        $phones = $request->get('phones');
+        $phones = explode($phones, ',');
 
+        $users = User::with('firebaseTokens')
+            ->whereIn('phone', $phones)
+            ->select('phone')
+            ->get();
+
+        return UserResource::collection($users);
+    }
 }
