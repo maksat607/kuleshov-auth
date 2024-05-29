@@ -14,11 +14,7 @@ class AuthenticateAccessTokenRemote
 {
     public function handle(Request $request, Closure $next)
     {
-        Log::info('Incoming request', [
-            'headers' => $request->headers->all(),
-            'body' => $request->all(),
-        ]);
-        /////
+
         $accessToken = $request->header('Authorization');
 
         if (!$accessToken)

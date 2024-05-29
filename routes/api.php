@@ -9,6 +9,9 @@ use Maksatsaparbekov\KuleshovAuth\Http\Controllers\ChatController;
 Route::prefix('api')->middleware(config('kuleshov-auth.routes.middleware'))->group(function () {
 
 
+    Route::get('/mydevices', [\Maksatsaparbekov\KuleshovAuth\Http\Controllers\DeviceController::class, 'devices'])
+        ;
+
     Route::get('/chats/{chatRoom}/read', [ChatController::class, 'makeReadChatMessagesForGivenChatRoom'])
         ->name('makeReadChatMessagesForGivenChatRoom')
         ->where('chatRoom', '[0-9]+');
