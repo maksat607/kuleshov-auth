@@ -17,7 +17,6 @@ class DeviceController
 
         $users = User::with('firebaseTokens')
             ->whereIn('phone', $phones)
-            ->select('phone')
             ->get();
 
         return UserResource::collection($users);
