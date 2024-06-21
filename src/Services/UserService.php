@@ -35,7 +35,7 @@ class UserService
         if ($response->successful()) {
             throw new LogoutSuccessfulException();
         }else{
-            return response()->json(['error' => 'invalid_access_token'], 401);
+            return response()->json(['error' => 'invalid_access_token!'], 401);
         }
     }
 

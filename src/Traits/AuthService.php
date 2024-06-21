@@ -2,7 +2,6 @@
 
 namespace Maksatsaparbekov\KuleshovAuth\Traits;
 
-
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Maksatsaparbekov\KuleshovAuth\Models\AccessToken;
@@ -16,18 +15,23 @@ trait AuthService
     public function createToken($str = '')
     {
         if (str_contains(request()->url(), 'login')) {
-            RequestEndpoints::from('login')->send($this);
+            request()->merge(['phone' => request()->input('phone', $this->phone)]);
+            $token = RequestEndpoints::from('login')->send($this);
         }
         if (str_contains(request()->url(), 'register')) {
-            RequestEndpoints::from('register')->send($this);
+            $token = RequestEndpoints::from('register')->send($this);
         }
-        $this->setToken();
+        $this->plainTextToken = $token['token'];
+        if (strlen($token['token']) > 0) {
+            $this->plainTextToken = $token['token'];
+        } else {
+            $this->setToken();
+        }
         return $this;
     }
 
     public function setToken()
     {
-//        $this->accesstoken()->delete();
         $this->accesstoken()->create([
             'expired_at' => Carbon::now()->addYears(2),
             'token' => $this->plainTextToken = sprintf('%s%s', $entropy = Str::random(40), hash('crc32b', $entropy))
@@ -36,20 +40,11 @@ trait AuthService
 
     public function accesstoken()
     {
-        return $this->hasOne(AccessToken::class);
+        return new UserService();
     }
 
     public function chatRooms()
     {
-        return $this->hasMany(ChatRoom::class, 'sender_id', 'id')
-//            ->orderByDesc(function ($query) {
-//                $query->select('created_at')
-//                    ->from('chat_room_messages')
-//                    ->whereColumn('chat_room_id', 'chat_rooms.id')
-//                    ->orderByDesc('updated_at')
-//                    ->limit(1);
-//            })
-            ;
+        return $this->hasMany(ChatRoom::class, 'sender_id', 'id');
     }
-
 }
