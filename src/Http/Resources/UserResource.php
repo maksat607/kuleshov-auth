@@ -10,6 +10,7 @@ class UserResource extends JsonResource
     {
         return [
             'phone' => $this->phone,
+            'role' => $this->getRoleNames(),
             'firebaseTokens' => $this->whenLoaded('firebaseTokens'),
         ];
     }
