@@ -39,7 +39,7 @@ trait Chattable
             $query->select('created_at')
                 ->from('chat_room_messages')
                 ->whereColumn('chat_room_id', 'chat_rooms.id')
-                ->orderByDesc('updated_at')
+                    ->orderByDesc('updated_at')
                 ->limit(1);
         });
     }

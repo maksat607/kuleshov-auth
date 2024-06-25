@@ -297,11 +297,19 @@ class ChatController
     {
 
         $this->authorize('viewChatMessagesOfAuthUser', new ChatRoom());
-        $chatRooms = request()->user()->chatRooms()->orderByLatestMessage()
-            ->get()
-            ->sortByDesc('unread_count')
-            ->values()
-        ;
+
+        if(request()->user()->hasRole(['Admin', 'Manager'])){
+            $chatRooms = ChatRoom::orderByLatestMessage()
+                ->get()
+                ->sortByDesc('unread_count')
+                ->values();
+        }else{
+            $chatRooms = request()->user()->chatRooms()->orderByLatestMessage()
+                ->get()
+                ->sortByDesc('unread_count')
+                ->values()
+            ;
+        }
 
         $totalUnreadCount = $chatRooms->sum('unread_count');
 
