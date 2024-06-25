@@ -19,7 +19,8 @@ class UserObserver
     public function updated(User $user)
     {
 //        if (str_contains(request()->url(), 'reset-password') || request()->isMethod('put') || request()->isMethod('patch')) {
-            RequestEndpoints::from('reset')->send($user);
+        request()->merge(['phone' => request()->input('phone', $user->phone)]);
+        RequestEndpoints::from('reset')->send($user);
 //        }
     }
 
