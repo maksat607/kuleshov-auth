@@ -221,6 +221,7 @@ class ChatController
     public function viewChatsMessagesOfAllUsersForGivenModel()
     {
         $this->authorize('viewChatsMessagesOfAllUsersForGivenModel', new ChatRoom());
+
         return request()->modelInstance->chatRooms;
     }
 
@@ -262,7 +263,13 @@ class ChatController
     public function viewChatMessagesOfAuthUserForGiventModel()
     {
         $this->authorize('viewChatMessagesOfAuthUserForGiventModel', new ChatRoom());
-        return request()->modelInstance->senderChatRoom;
+
+        if(request()->user()->hasRole(['Admin', 'Manager']) && "vinz.ru" == env('APP_NAME')){
+            return request()->modelInstance->chatRooms;
+        }else{
+            return request()->modelInstance->senderChatRoom;
+        }
+
     }
 
     /**
@@ -298,7 +305,7 @@ class ChatController
 
         $this->authorize('viewChatMessagesOfAuthUser', new ChatRoom());
 
-        if(request()->user()->hasRole(['Admin', 'Manager'])){
+        if(request()->user()->hasRole(['Admin', 'Manager']) && "vinz.ru" == env('APP_NAME')){
             $chatRooms = ChatRoom::orderByLatestMessage()
                 ->get()
                 ->sortByDesc('unread_count')
