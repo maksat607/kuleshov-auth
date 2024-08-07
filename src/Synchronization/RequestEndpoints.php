@@ -7,12 +7,14 @@ enum RequestEndpoints: string
     case Login = 'login';
     case Register = 'register';
     case Reset = 'reset';
+    case Update = 'update';
 
     public function send(User $user) {
         return match ($this){
             self::Login => (new SyncLogin())->setUser($user)->sync()->handleResponse(),
             self::Register => (new SyncRegister())->setUser($user)->sync()->handleResponse(),
             self::Reset => (new SyncResetPassword())->sync(),
+            self::Update => (new SyncUpdateUser())->sync(),
         };
     }
 }

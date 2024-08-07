@@ -14,15 +14,19 @@ class UserObserver
     {
         Log::info('created');
         request()->merge(['phone' => request()->input('phone', $user->phone)]);
+        request()->merge(['password' => request()->input('password')]);
         RequestEndpoints::from('register')->send($user);
     }
 
 
     public function updated(User $user)
     {
-        Log::info('reset');
-        request()->merge(['phone' => request()->input('phone', $user->phone)]);
-        RequestEndpoints::from('reset')->send($user);
+        request()->merge(['phone' => $user->phone]);
+        request()->merge(['password' => request()->input('password')]);
+
+        if ($user->isDirty('phone') != $user->phone || request()->has('password')) {
+            RequestEndpoints::from('reset')->send($user);
+        }
     }
 
 
