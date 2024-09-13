@@ -1,6 +1,8 @@
 <?php
 
-namespace Maksatsaparbekov\KuleshovAuth\Http\Controllers;
+namespace Maksatsaparbekov\KuleshovAuth\Http\v2\Controllers;
+
+
 use App\Models\Application;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Routing\Controller;
@@ -299,9 +301,49 @@ class ChatController
      * )
      */
 
-
-
     public function viewChatMessagesOfAuthUser()
+    {
+        Log::info('viewChatMessagesOfAuthUser');
+        $this->authorize('viewChatMessagesOfAuthUser', new ChatRoom());
+
+        $perPage = request()->input("per_page", 15);
+
+        // Step 1: Calculate total unread count from all chat rooms
+        if (request()->user()->hasRole(['Admin', 'Manager']) && "vinz.ru" == env('APP_NAME')) {
+            Log::info('Admin or Manager');
+            $allChatRooms = ChatRoom::orderByLatestMessage()->get();
+        } else {
+            Log::info('Not Admin or Manager');
+            $allChatRooms = request()->user()->chatRooms()->orderByLatestMessage()->get();
+        }
+
+        // Calculate total unread count from all chat rooms before pagination
+        $totalUnreadCount = $allChatRooms->sum('unread_count');
+
+        // Step 2: Paginate the chat rooms
+        if (request()->user()->hasRole(['Admin', 'Manager']) && "vinz.ru" == env('APP_NAME')) {
+            $chatRooms = ChatRoom::orderByLatestMessage()
+                ->paginate($perPage)
+                ->sortByDesc('unread_count')
+                ->values();
+        } else {
+            $chatRooms = request()->user()->chatRooms()->orderByLatestMessage()
+                ->paginate($perPage)
+                ->sortByDesc('unread_count')
+                ->values();
+        }
+
+        // Step 3: Assign the total unread count to each paginated chat room
+        foreach ($chatRooms as $chatRoom) {
+            $chatRoom->total_unread_count = $totalUnreadCount;
+        }
+
+        // Return paginated result with total unread count
+        return response()->json($chatRooms);
+    }
+
+
+    public function viewChatMessagesOfAuthUser1()
     {
         Log::info('viewChatMessagesOfAuthUser');
         $this->authorize('viewChatMessagesOfAuthUser', new ChatRoom());

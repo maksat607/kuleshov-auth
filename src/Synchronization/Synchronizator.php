@@ -23,9 +23,6 @@ class Synchronizator implements Synchronization
             'Project-Security-Key' => config('kuleshov-auth.security_key')
         ];
         $this->body = $data;
-        $this->body = array_merge($this->body, [
-            'server' => config('app.env'),
-        ]);
     }
 
     public function sync()

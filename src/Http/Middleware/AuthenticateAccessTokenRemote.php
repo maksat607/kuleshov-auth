@@ -36,6 +36,9 @@ class AuthenticateAccessTokenRemote
         }
 
         $client = new Client();
+        if (!request()->get('server') == 'prod' || !request()->get('server')=='production' ){
+
+        }
 
         try
         {
@@ -51,6 +54,7 @@ class AuthenticateAccessTokenRemote
                 $responseData = json_decode($response->getBody() , true);
 
                 $user = User::where('phone', $responseData['phone'])->first();
+
 
                 if (!$user)
                 {
