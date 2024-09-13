@@ -41,6 +41,11 @@ use Maksatsaparbekov\KuleshovAuth\Jobs\MessageReadJob;
  *         description="The user ID of the chat room creator."
  *     ),
  *     @OA\Property(
+ *         property="status_id",
+ *         type="integer",
+ *         description="The status_id of chattable."
+ *     ),
+ *     @OA\Property(
  *         property="messages",
  *         type="array",
  *         @OA\Items(ref="#/components/schemas/ChatRoomMessage")
@@ -57,8 +62,8 @@ class ChatRoom extends Model
     use \Awobaz\Compoships\Compoships;
     use HasFactory;
 
-    protected $appends = ['chat_room_id', 'title', 'thumbnail', 'model_id', 'model_type', 'chat_creator_id', 'chat_creator_name', 'chat_creator_phone', 'route_name', 'unread_count', 'total_count', 'read_by_manager'];
-    protected $visible = ['chat_room_id', 'title', 'thumbnail', 'model_id', 'model_type', 'chat_creator_id', 'chat_creator_name', 'chat_creator_phone', 'messages', 'messages.user', 'route_name', 'unread_count', 'unread_count', 'total_count', 'read_by_manager'];
+    protected $appends = ['chat_room_id', 'title', 'thumbnail', 'model_id', 'model_type', 'chat_creator_id', 'chat_creator_name', 'chat_creator_phone', 'route_name', 'unread_count', 'total_count', 'read_by_manager','status_id'];
+    protected $visible = ['chat_room_id', 'title', 'thumbnail', 'model_id', 'model_type', 'chat_creator_id', 'chat_creator_name', 'chat_creator_phone', 'messages', 'messages.user', 'route_name', 'unread_count', 'unread_count', 'total_count', 'read_by_manager','status_id'];
     protected $guarded = [];
 
     protected static function boot()
@@ -108,6 +113,10 @@ class ChatRoom extends Model
     public function getChatCreatorNameAttribute()
     {
         return $this->user->name;
+    }
+    public function getStatusIdAttribute()
+    {
+        return  $this->chattable?->status_id;
     }
     public function getChatCreatorPhoneAttribute()
     {
