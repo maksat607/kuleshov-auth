@@ -14,6 +14,7 @@ use Maksatsaparbekov\KuleshovAuth\Http\Services\ChatService;
 use Maksatsaparbekov\KuleshovAuth\Jobs\MessageReadJob;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoomMessage;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 
 class ChatController
