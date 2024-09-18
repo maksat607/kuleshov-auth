@@ -323,14 +323,12 @@ class ChatController
         // Step 2: Paginate the chat rooms
         if (request()->user()->hasRole(['Admin', 'Manager']) && "vinz.ru" == env('APP_NAME')) {
             $chatRooms = ChatRoom::orderByLatestMessage()
-                ->paginate($perPage)
-                ->sortByDesc('unread_count')
-                ->values();
+                ->orderByDesc('unread_count') // Sort by unread count in the query
+                ->paginate($perPage);
         } else {
             $chatRooms = request()->user()->chatRooms()->orderByLatestMessage()
-                ->paginate($perPage)
-                ->sortByDesc('unread_count')
-                ->values();
+                ->orderByDesc('unread_count') // Sort by unread count in the query
+                ->paginate($perPage);
         }
 
         // Step 3: Assign the total unread count to each paginated chat room
@@ -339,8 +337,9 @@ class ChatController
         }
 
         // Return paginated result with total unread count
-        return response()->json($chatRooms);
+        return $chatRooms;
     }
+
 
 
     public function viewChatMessagesOfAuthUser1()
