@@ -55,6 +55,8 @@ trait Chattable
 //    }
     public function scopeOrderByUnread($query)
     {
+        $tableName = $query->getModel()->getTable();
+
         return $query->withCount([
             'checkableStatuses as unread_count' => function ($q) {
                 $q->where('checked', 0); // Count unread statuses
@@ -71,7 +73,7 @@ trait Chattable
                 SELECT MAX(chat_room_messages.updated_at) 
                 FROM chat_rooms
                 JOIN chat_room_messages ON chat_rooms.id = chat_room_messages.chat_room_id
-                WHERE chat_rooms.chattable_id = models.id
+                WHERE chat_rooms.chattable_id = {$tableName}.id
                 AND chat_rooms.chattable_type = ?
             )
             ELSE NULL
