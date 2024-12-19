@@ -120,7 +120,7 @@ class ChatController
 
         $chatRoom->readables()->firstOrCreate(['role'=>'Manager']);
 
-        $chatRoom->chattable->checkableStatuses()->firstOrCreate(['checked'=>0]);
+        $chatRoom->chattable->checkableStatuses()->updateOrCreate(['checked' => 0], ['updated_at' => now()] );
 
         return response()->json($message, 201);
     }
@@ -177,7 +177,7 @@ class ChatController
             'text'
         );
         $message->chatRoom->readables()->firstOrCreate(['role'=>'Manager']);
-        request()->modelInstance->checkableStatuses()->firstOrCreate(['checked'=>0]);
+        request()->modelInstance->checkableStatuses()->updateOrCreate(['checked' => 0], ['updated_at' => now()] );
 
         return response()->json(['message' => 'Message created successfully', 'data' => $message], 201);
     }

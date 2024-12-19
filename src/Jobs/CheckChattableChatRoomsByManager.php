@@ -28,10 +28,11 @@ class CheckChattableChatRoomsByManager implements ShouldQueue
     {
         $this->chatRoom->readables()->delete();
         $count = $this->chatRoom->chattable->chatRooms()->whereHas('readables')->count();
-        if ($count>0){
-            $this->chatRoom->chattable->checkableStatuses()->firstOrCreate(['checked'=>0]);
-        }else{
-            $this->chatRoom->chattable->checkableStatuses()->delete();
+        if ($count > 0) {
+            $this->chatRoom->chattable->checkableStatuses()->updateOrCreate(['checked' => 0], ['updated_at' => now()] );
+        } else {
+//            $this->chatRoom->chattable->checkableStatuses()->delete();
+            $this->chatRoom->chattable->checkableStatuses()->update(['checked' => 1]);
         }
     }
 }

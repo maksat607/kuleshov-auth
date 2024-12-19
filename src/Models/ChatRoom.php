@@ -266,6 +266,11 @@ class ChatRoom extends Model
                 ->limit(1);
         });
     }
+
+    public function scopeFilter($query, $filters)
+    {
+        return $filters->apply($query);
+    }
 //    public function users()
 //    {
 //        // Assuming you need to use an additional column in the relationship

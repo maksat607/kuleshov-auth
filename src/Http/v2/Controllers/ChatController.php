@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller;
 use App\Models\ChatMessages;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+use Maksatsaparbekov\KuleshovAuth\Filters\ChatFilter;
 use Maksatsaparbekov\KuleshovAuth\Http\Requests\ChatRequest;
 use Maksatsaparbekov\KuleshovAuth\Http\Services\ChatService;
 use Maksatsaparbekov\KuleshovAuth\Jobs\MessageReadJob;
@@ -124,7 +125,7 @@ class ChatController
 
         $chatRoom->readables()->firstOrCreate(['role'=>'Manager']);
 
-        $chatRoom->chattable->checkableStatuses()->firstOrCreate(['checked'=>0]);
+        $chatRoom->chattable->checkableStatuses()->updateOrCreate(['checked' => 0], ['updated_at' => now()] );
 
         return response()->json($message, 201);
     }
@@ -181,7 +182,7 @@ class ChatController
             'text'
         );
         $message->chatRoom->readables()->firstOrCreate(['role'=>'Manager']);
-        request()->modelInstance->checkableStatuses()->firstOrCreate(['checked'=>0]);
+        request()->modelInstance->checkableStatuses()->updateOrCreate(['checked' => 0], ['updated_at' => now()] );
 
         return response()->json(['message' => 'Message created successfully', 'data' => $message], 201);
     }
@@ -303,7 +304,7 @@ class ChatController
      * )
      */
 
-    public function viewChatMessagesOfAuthUser()
+    public function viewChatMessagesOfAuthUser(ChatFilter $filters)
     {
         Log::info('viewChatMessagesOfAuthUser');
         $this->authorize('viewChatMessagesOfAuthUser', new ChatRoom());
@@ -314,10 +315,10 @@ class ChatController
         // Step 1: Get all chat rooms (without pagination)
         if (request()->user()->hasRole(['Admin', 'Manager']) && "vinz.ru" == env('APP_NAME')) {
             Log::info('Admin or Manager');
-            $allChatRooms = ChatRoom::orderByLatestMessage()->get();
+            $allChatRooms = ChatRoom::orderByLatestMessage()->filter($filters)->get();
         } else {
             Log::info('Not Admin or Manager');
-            $allChatRooms = request()->user()->chatRooms()->orderByLatestMessage()->get();
+            $allChatRooms = request()->user()->chatRooms()->orderByLatestMessage()->filter($filters)->get();
         }
 
         // Step 2: Since the getUnreadCountAttribute is available, use it directly for sorting
