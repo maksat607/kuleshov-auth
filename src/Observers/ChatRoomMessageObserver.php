@@ -16,6 +16,7 @@ class ChatRoomMessageObserver
 
     public function created(ChatRoomMessage $message)
     {
+
 //        $push = (new FirebasePush())
 //            ->setTitle('Новое сообщение')
 //            ->setBody(Str::limit($message->content, 20, '...'))

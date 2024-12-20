@@ -70,9 +70,9 @@ trait Chattable
             ->orderByRaw(
                 "CASE 
             WHEN unread_count = 0 AND read_count = 0 THEN (
-                SELECT MAX(chat_room_messages.updated_at) 
+                SELECT COALESCE(MAX(chat_room_messages.updated_at), '1970-01-01 00:00:00') 
                 FROM chat_rooms
-                JOIN chat_room_messages ON chat_rooms.id = chat_room_messages.chat_room_id
+                LEFT JOIN chat_room_messages ON chat_rooms.id = chat_room_messages.chat_room_id
                 WHERE chat_rooms.chattable_id = {$tableName}.id
                 AND chat_rooms.chattable_type = ?
             )
@@ -81,6 +81,7 @@ trait Chattable
                 [addslashes(get_class($query->getModel()))] // Dynamic morph class
             );
     }
+
 
 
 
