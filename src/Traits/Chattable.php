@@ -44,6 +44,15 @@ trait Chattable
         });
     }
 
+    public function chatRoomsForSort()
+    {
+        return $this->morphMany(ChatRoom::class, 'chattable')
+            ->join('chat_room_messages', 'chat_rooms.id', '=', 'chat_room_messages.chat_room_id')
+            ->select('chat_rooms.*') // Ensures only chat_rooms fields are selected
+            ->groupBy('chat_rooms.id')
+            ->orderByRaw('MAX(chat_room_messages.updated_at) DESC');
+    }
+
     public function checkableStatuses()
     {
         return $this->morphMany(CheckableStatus::class, 'checkable');
@@ -70,15 +79,15 @@ trait Chattable
             ->orderBy('unread_count', 'desc') // Primary sorting by unread count
             ->orderBy('read_count', 'desc')  // Secondary sorting by read count
             ->orderByRaw(
-                "(SELECT COALESCE(MAX(chat_room_messages.updated_at), '1970-01-01 00:00:00') 
-              FROM chat_rooms
-              LEFT JOIN chat_room_messages ON chat_rooms.id = chat_room_messages.chat_room_id
-              WHERE chat_rooms.chattable_id = {$tableName}.id
-              AND chat_rooms.chattable_type = ?
-            ) DESC",
-                [addslashes(get_class($query->getModel()))] // Dynamic morph class
+                "(SELECT COALESCE(MAX(updated_at), '1970-01-01 00:00:00') 
+         FROM ({$this->chatRoomsForSort()->toSql()}) AS sorted_chat_rooms
+         WHERE sorted_chat_rooms.chattable_id = {$tableName}.id
+         AND sorted_chat_rooms.chattable_type = ? 
+        ) DESC",
+                [addslashes(get_class($query->getModel()))]
             );
     }
+
 
 
 
