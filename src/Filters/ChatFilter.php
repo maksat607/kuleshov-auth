@@ -1,7 +1,8 @@
 <?php
 
 namespace Maksatsaparbekov\KuleshovAuth\Filters;
-
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 class ChatFilter
 {
     protected $request;
