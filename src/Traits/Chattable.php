@@ -21,7 +21,7 @@ trait Chattable
 
     public function getHasUnreadAttribute()
     {
-        if ($this->checkableStatuses()->count()>0){
+        if ($this->checkableStatuses()->where('checked',0)->count()>0){
             return true;
         }
         return false;
