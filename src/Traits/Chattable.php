@@ -53,9 +53,10 @@ trait Chattable
 //    {
 //        return $query->withCount('checkableStatuses')->orderBy('checkable_statuses_count', 'desc');
 //    }
+
+
     public function scopeOrderByUnread($query)
     {
-        $modelClass = addslashes(get_class($query->getModel()));
         $tableName = $query->getModel()->getTable();
 
         return $query->withCount([
@@ -69,20 +70,16 @@ trait Chattable
             ->orderBy('unread_count', 'desc') // Primary sorting by unread count
             ->orderBy('read_count', 'desc')  // Secondary sorting by read count
             ->orderByRaw(
-                "CASE 
-            WHEN unread_count = 0 AND read_count = 0 THEN (
-                SELECT COALESCE(MAX(chat_room_messages.updated_at), '1970-01-01 00:00:00') 
-                FROM chat_rooms
-                LEFT JOIN chat_room_messages ON chat_rooms.id = chat_room_messages.chat_room_id
-                WHERE chat_rooms.chattable_id = {$tableName}.id
-                AND chat_rooms.chattable_type = ?
-            )
-            ELSE NULL
-        END DESC",
-                [$modelClass]
-            )
-            ->orderBy('updated_at', 'desc'); // Fallback if no statuses exist
+                "(SELECT COALESCE(MAX(chat_room_messages.updated_at), '1970-01-01 00:00:00') 
+              FROM chat_rooms
+              LEFT JOIN chat_room_messages ON chat_rooms.id = chat_room_messages.chat_room_id
+              WHERE chat_rooms.chattable_id = {$tableName}.id
+              AND chat_rooms.chattable_type = ?
+            ) DESC",
+                [addslashes(get_class($query->getModel()))] // Dynamic morph class
+            );
     }
+
 
 
 
