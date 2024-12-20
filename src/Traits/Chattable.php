@@ -55,6 +55,7 @@ trait Chattable
 //    }
     public function scopeOrderByUnread($query)
     {
+        $modelClass = addslashes(get_class($query->getModel()));
         $tableName = $query->getModel()->getTable();
 
         return $query->withCount([
@@ -78,9 +79,11 @@ trait Chattable
             )
             ELSE NULL
         END DESC",
-                [addslashes(get_class($query->getModel()))] // Dynamic morph class
-            );
+                [$modelClass]
+            )
+            ->orderBy('updated_at', 'desc'); // Fallback if no statuses exist
     }
+
 
 
 
