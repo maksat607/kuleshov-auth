@@ -24,7 +24,7 @@ class ChatFilter
         $this->builder = $builder;
 
         foreach ($this->filters() as $filter => $value) {
-
+            // Check if a method exists for the filter and the value is not null
             if (method_exists($this, $filter) && !is_null($value)) {
                 $this->$filter($value);
             }
@@ -67,17 +67,20 @@ class ChatFilter
     public function date($value)
     {
         if (str_starts_with($value, '-')) {
-            $field = ltrim($value, '-');
-            $this->builder->whereHas('messages', function ($query) use ($field) {
-                $query->orderBy($field, 'desc');
-            });
+            $this->builder->with(['messages' => function ($query) {
+                $query->latest('created_at'); // Ensure latest message for eager loading
+            }])->orderByDesc(
+                \DB::raw('(SELECT MAX(created_at) FROM chat_room_messages WHERE chat_room_messages.chat_room_id = chat_rooms.id)')
+            );
         } else {
-            $field = $value;
-            $this->builder->whereHas('messages', function ($query) use ($field) {
-                $query->orderBy($field, 'asc');
-            });
+            $this->builder->with(['messages' => function ($query) {
+                $query->oldest('created_at'); // Ensure earliest message for eager loading
+            }])->orderBy(
+                \DB::raw('(SELECT MAX(created_at) FROM chat_room_messages WHERE chat_room_messages.chat_room_id = chat_rooms.id)')
+            );
         }
     }
+
 
 
 
