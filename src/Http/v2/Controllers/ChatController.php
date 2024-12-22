@@ -323,9 +323,13 @@ class ChatController
             $allChatRooms = request()->user()->chatRooms()->orderByLatestMessage()->filter($filters)->get();
         }
 
-        // Step 2: Since the getUnreadCountAttribute is available, use it directly for sorting
-//        $sortedChatRooms = $allChatRooms->sortByDesc('unread_count')->values();
         $sortedChatRooms = $allChatRooms;
+        if (request()->has('read_status')){
+            $sortedChatRooms = $allChatRooms->sortByDesc('unread_count')->values();
+        }
+
+
+
 
         // Step 3: Paginate the sorted collection manually
         $paginatedChatRooms = $this->paginateCollection($sortedChatRooms, $perPage, $currentPage);
