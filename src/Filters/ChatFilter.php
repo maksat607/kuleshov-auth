@@ -84,25 +84,11 @@ class ChatFilter
 
 
 
-    public function read_status($value)
+    public function read_status()
     {
-        $participantId = $this->request->input('participant_id');
-
-        $this->builder->with(['messages' => function ($query) use ($participantId) {
-            $query->withCount([
-                'messageReadStatuses as is_read' => function ($subQuery) use ($participantId) {
-                    $subQuery->where('chat_room_participant_id', $participantId);
-                }
-            ]);
-        }])->orderBy(
-            \DB::raw('(
-            SELECT MAX(is_read) 
-            FROM chat_room_messages 
-            WHERE chat_room_messages.chat_room_id = chat_rooms.id
-        )'),
-            'desc'
-        );
+        $this->builder->orderByLatestMessage();
     }
+
 
 
 
