@@ -88,18 +88,22 @@ class ChatFilter
     {
         $participantId = $this->request->input('participant_id');
 
-        $this->builder->whereHas('messages', function ($query) use ($value, $participantId) {
-            if ($value == 1) { // Read messages
-                $query->whereHas('messageReadStatuses', function ($subQuery) use ($participantId) {
+        $this->builder->with(['messages' => function ($query) use ($participantId) {
+            $query->withCount([
+                'messageReadStatuses as is_read' => function ($subQuery) use ($participantId) {
                     $subQuery->where('chat_room_participant_id', $participantId);
-                });
-            } elseif ($value == 0) { // Unread messages
-                $query->whereDoesntHave('messageReadStatuses', function ($subQuery) use ($participantId) {
-                    $subQuery->where('chat_room_participant_id', $participantId);
-                });
-            }
-        });
+                }
+            ]);
+        }])->orderBy(
+            \DB::raw('(
+            SELECT MAX(is_read) 
+            FROM chat_room_messages 
+            WHERE chat_room_messages.chat_room_id = chat_rooms.id
+        )'),
+            'desc'
+        );
     }
+
 
 
     // Date filters for the pivot table (delivered messages) + Eager Loading
