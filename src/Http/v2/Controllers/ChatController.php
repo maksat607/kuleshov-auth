@@ -312,11 +312,12 @@ class ChatController
         $perPage = request()->input("per_page", 15);
         $currentPage = request()->input("page", 1);
 
-        return 2323452345;
+
 
         // Step 1: Get all chat rooms (without pagination)
         if (request()->user()->hasRole(['Admin', 'Manager']) && "vinz.ru" == env('APP_NAME')) {
             Log::info('Admin or Manager');
+            return 777777777;
             $allChatRooms = ChatRoom::filter($filters)->get();
         } else {
             Log::info('Not Admin or Manager');
