@@ -71,16 +71,17 @@ class ChatFilter
     {
         if (str_starts_with($value, '-')) {
             $field = ltrim($value, '-');
-            $this->builder->with(['messages' => function ($query) use ($field) {
+            $this->builder->whereHas('messages', function ($query) use ($field) {
                 $query->orderBy($field, 'desc');
-            }]);
+            });
         } else {
             $field = $value;
-            $this->builder->with(['messages' => function ($query) use ($field) {
+            $this->builder->whereHas('messages', function ($query) use ($field) {
                 $query->orderBy($field, 'asc');
-            }]);
+            });
         }
     }
+
 
 
     public function read_status($value)
