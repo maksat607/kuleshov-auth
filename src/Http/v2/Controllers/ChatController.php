@@ -317,7 +317,7 @@ class ChatController
         // Step 1: Get all chat rooms (without pagination)
         if (request()->user()->hasRole(['Admin', 'Manager']) && "vinz.ru" == env('APP_NAME')) {
             Log::info('Admin or Manager');
-            $allChatRooms = ChatRoom::with('messages')->orderByLatestMessage()->filter($filters)->get();
+            $allChatRooms = ChatRoom::with('messages')->filter($filters)->get();
         } else {
             Log::info('Not Admin or Manager');
             $allChatRooms = request()->user()->chatRooms()->orderByLatestMessage()->filter($filters)->get();
