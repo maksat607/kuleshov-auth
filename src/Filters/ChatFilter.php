@@ -24,9 +24,6 @@ class ChatFilter
         $this->builder = $builder;
 
         foreach ($this->filters() as $filter => $value) {
-            if ($filter === 'date' && method_exists($this, $value)) {
-                $this->$value();
-            }
 
             if (method_exists($this, $filter) && !is_null($value)) {
                 $this->$filter($value);
