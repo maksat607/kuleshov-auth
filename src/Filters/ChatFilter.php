@@ -67,7 +67,38 @@ class ChatFilter
     {
         $this->builder->where('status', $value);
     }
+    public function date($value)
+    {
+        if (str_starts_with($value, '-')) {
+            $field = ltrim($value, '-');
+            $this->builder->with(['messages' => function ($query) use ($field) {
+                $query->orderBy($field, 'desc');
+            }]);
+        } else {
+            $field = $value;
+            $this->builder->with(['messages' => function ($query) use ($field) {
+                $query->orderBy($field, 'asc');
+            }]);
+        }
+    }
 
+
+    public function read_status($value)
+    {
+        $participantId = $this->request->input('participant_id');
+
+        $this->builder->whereHas('messages', function ($query) use ($value, $participantId) {
+            if ($value == 1) { // Read messages
+                $query->whereHas('messageReadStatuses', function ($subQuery) use ($participantId) {
+                    $subQuery->where('chat_room_participant_id', $participantId);
+                });
+            } elseif ($value == 0) { // Unread messages
+                $query->whereDoesntHave('messageReadStatuses', function ($subQuery) use ($participantId) {
+                    $subQuery->where('chat_room_participant_id', $participantId);
+                });
+            }
+        });
+    }
 
 
     // Date filters for the pivot table (delivered messages) + Eager Loading
