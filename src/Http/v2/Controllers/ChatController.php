@@ -317,7 +317,6 @@ class ChatController
         // Step 1: Get all chat rooms (without pagination)
         if (request()->user()->hasRole(['Admin', 'Manager']) && "vinz.ru" == env('APP_NAME')) {
             Log::info('Admin or Manager');
-            return 777777777;
             $allChatRooms = ChatRoom::filter($filters)->get();
         } else {
             Log::info('Not Admin or Manager');
@@ -325,7 +324,8 @@ class ChatController
         }
 
         // Step 2: Since the getUnreadCountAttribute is available, use it directly for sorting
-        $sortedChatRooms = $allChatRooms->sortByDesc('unread_count')->values();
+//        $sortedChatRooms = $allChatRooms->sortByDesc('unread_count')->values();
+        $sortedChatRooms = $allChatRooms;
 
         // Step 3: Paginate the sorted collection manually
         $paginatedChatRooms = $this->paginateCollection($sortedChatRooms, $perPage, $currentPage);
