@@ -329,8 +329,6 @@ class ChatController
         }
 
 
-
-
         // Step 3: Paginate the sorted collection manually
         $paginatedChatRooms = $this->paginateCollection($sortedChatRooms, $perPage, $currentPage);
 

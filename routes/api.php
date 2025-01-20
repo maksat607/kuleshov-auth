@@ -55,7 +55,7 @@ Route::prefix('api')->middleware(config('kuleshov-auth.routes.middleware'))->gro
         ;
 
     Route::get('/chats/{chatRoom}/read', [ChatController::class, 'makeReadChatMessagesForGivenChatRoom'])
-        ->name('makeReadChatMessagesForGivenChatRoom')
+        ->name('makeReadChatMessagesForGivenChatRoom1')
         ->where('chatRoom', '[0-9]+');
 
     Route::get('/chats/{chatRoom}/messages', [ChatController::class, 'viewChatMessagesForGivenChatRoom'])
