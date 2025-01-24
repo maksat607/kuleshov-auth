@@ -16,12 +16,14 @@ class MessageReadJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $userId;
-    protected $chatRoomMessage;
+    protected $model;
+    protected $type;
 
-    public function __construct($userId, $chatRoomMessage)
+    public function __construct($userId, $model)
     {
         $this->userId = $userId;
-        $this->chatRoomMessage = $chatRoomMessage;
+        $this->model = $model;
+        $this->type = class_basename($model);
     }
 
     /**
@@ -30,8 +32,26 @@ class MessageReadJob implements ShouldQueue
     public function handle(): void
     {
         DB::transaction(function () {
-            $participant = (new AddParticipantAction())->execute($this->chatRoomMessage->chatRoom, $this->userId);
-            (new MessageReadAction())->execute($this->chatRoomMessage, $participant->id);
+            match ($this->type) {
+                'ChatRoomMessage' => $this->handleChatRoomMessage(),
+                'ChatRoom' => $this->handleChatRoom(),
+                default => null
+            };
         });
+    }
+
+    private function handleChatRoomMessage()
+    {
+        $participant = (new AddParticipantAction())->execute($this->model->chatRoom, $this->userId);
+        (new MessageReadAction())->execute($this->model, $participant->id);
+    }
+
+    private function handleChatRoom()
+    {
+        $participant = (new AddParticipantAction())->execute($this->model, $this->userId);
+        $this->model->messages()->where('user_id', $this->userId)->get()
+            ->each(fn($message) =>
+            (new MessageReadAction())->execute($message, $participant->id)
+            );
     }
 }
