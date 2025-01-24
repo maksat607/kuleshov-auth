@@ -30,6 +30,8 @@ class Synchronizator implements Synchronization
         if (!request()->get('password')){
             return $this;
         }
+        Log::info('$this->body');
+        Log::info(json_encode($this->body));
         $response = Http::withHeaders($this->header)->post($this->url . '/api/' . $this->endpoint, $this->body);
         if ($response->successful()) {
             $this->response = $response->json();
