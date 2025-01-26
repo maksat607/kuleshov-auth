@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller;
 use App\Models\ChatMessages;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+use Maksatsaparbekov\KuleshovAuth\Http\Filters\ChatRoomFilter;
 use Maksatsaparbekov\KuleshovAuth\Http\Requests\ChatRequest;
 use Maksatsaparbekov\KuleshovAuth\Http\Services\ChatService;
 use Maksatsaparbekov\KuleshovAuth\Jobs\MessageReadJob;
@@ -303,36 +304,26 @@ class ChatController
      * )
      */
 
-    public function viewChatMessagesOfAuthUser()
+    public function viewChatMessagesOfAuthUser( ChatRoomFilter $filters)
     {
-        Log::info('viewChatMessagesOfAuthUser');
         $this->authorize('viewChatMessagesOfAuthUser', new ChatRoom());
 
-        $perPage = request()->input("per_page", 15);
-        $currentPage = request()->input("page", 1);
+        $perPage = request()->input('per_page', 15);
+        $currentPage = request()->input('page', 1);
 
-        // Step 1: Get all chat rooms (without pagination)
-        if (request()->user()->hasRole(['Admin', 'Manager']) && "vinz.ru" == env('APP_NAME')) {
-            Log::info('Admin or Manager');
-            $allChatRooms = ChatRoom::orderByLatestMessage()->get();
-        } else {
-            Log::info('Not Admin or Manager');
-            $allChatRooms = request()->user()->chatRooms()->orderByLatestMessage()->get();
-        }
+        $query = request()->user()->hasRole(['Admin', 'Manager']) && env('APP_NAME') === 'vinz.ru'
+            ? ChatRoom::query()
+            : request()->user()->chatRooms();
 
-        // Step 2: Since the getUnreadCountAttribute is available, use it directly for sorting
-        $sortedChatRooms = $allChatRooms->sortByDesc('unread_count')->values();
+        $allChatRooms = $query->filter($filters)->get();
 
-        // Step 3: Paginate the sorted collection manually
-        $paginatedChatRooms = $this->paginateCollection($sortedChatRooms, $perPage, $currentPage);
+        $totalUnreadCount = $allChatRooms->sum('unread_count');
+        $paginatedChatRooms = $this->paginateCollection(
+            $allChatRooms->each(fn($chat) => $chat->total_unread_count = $totalUnreadCount),
+            $perPage,
+            $currentPage
+        );
 
-        // Step 4: Assign the total unread count
-        $totalUnreadCount = $sortedChatRooms->sum('unread_count');
-        foreach ($paginatedChatRooms as $chatRoom) {
-            $chatRoom->total_unread_count = $totalUnreadCount;
-        }
-
-        // Return paginated result with total unread count
         return response()->json($paginatedChatRooms);
     }
     private function paginateCollection(Collection $items, int $perPage, int $page)

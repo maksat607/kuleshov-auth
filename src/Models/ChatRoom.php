@@ -266,6 +266,73 @@ class ChatRoom extends Model
                 ->limit(1);
         });
     }
+
+    public function scopeOrderByLatestUnreadMessage($query)
+    {
+        $userId = request()->user()->id;
+        $isAdmin = request()->user()->hasRole(['Admin', 'Manager']);
+
+        return $query->withCount([
+            'messages as unread_count' => function($query) use ($userId, $isAdmin) {
+                $query->whereDoesntHave('messageReadStatuses', function($q) use ($userId) {
+                    $q->where('chat_room_participant_id', function($sq) use ($userId) {
+                        $sq->select('id')
+                            ->from('chat_room_participants')
+                            ->where('user_id', $userId)
+                            ->whereColumn('chat_room_id', 'chat_rooms.id')
+                            ->limit(1);
+                    });
+                });
+            }
+        ])
+            ->having('unread_count', '>', 0)
+            ->orderByDesc('unread_count')
+            ->orderByDesc(function ($query) {
+                $query->select('created_at')
+                    ->from('chat_room_messages')
+                    ->whereColumn('chat_room_id', 'chat_rooms.id')
+                    ->orderByDesc('created_at')
+                    ->limit(1);
+            });
+    }
+
+
+    public function scopeFilter($query, $filters)
+    {
+        return $filters->apply($query);
+    }
+    public function scopeOrderByUnreadAndDate($query)
+    {
+        $userId = request()->user()->id;
+        $isAdmin = request()->user()->hasRole(['Admin', 'Manager']);
+
+        return $query->withCount([
+            'messages as unread_count' => function($query) use ($userId, $isAdmin) {
+                if (!$isAdmin) {
+                    $query->where('user_id', '!=', $userId);
+                }
+                $query->whereDoesntHave('messageReadStatuses', function($q) use ($userId) {
+                    $q->where('chat_room_participant_id', function($sq) use ($userId) {
+                        $sq->select('id')
+                            ->from('chat_room_participants')
+                            ->where('user_id', $userId)
+                            ->whereColumn('chat_room_id', 'chat_rooms.id')
+                            ->limit(1);
+                    });
+                });
+            }
+        ])
+            ->orderByDesc('unread_count')
+            ->orderByDesc(function ($query) {
+                $query->select('created_at')
+                    ->from('chat_room_messages')
+                    ->whereColumn('chat_room_id', 'chat_rooms.id')
+                    ->orderByDesc('created_at')
+                    ->limit(1);
+            });
+    }
+
+
 //    public function users()
 //    {
 //        // Assuming you need to use an additional column in the relationship
