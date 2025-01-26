@@ -24,6 +24,10 @@ class ChatRoomFilter
             }
         }
 
+        if (!$this->request->has('unread_only')) {
+            $this->builder->orderByUnreadAndDate();
+        }
+
         return $this->builder;
     }
 
@@ -37,7 +41,7 @@ class ChatRoomFilter
         if ($this->request->boolean('unread_only')) {
             $this->builder->orderByLatestUnreadMessage();
         } else {
-            $this->builder->orderByLatestMessage();
+            $this->builder->orderByUnreadAndDate();
         }
     }
 

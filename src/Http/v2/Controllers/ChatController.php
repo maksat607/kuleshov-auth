@@ -313,7 +313,7 @@ class ChatController
 
         $query = request()->user()->hasRole(['Admin', 'Manager']) && env('APP_NAME') === 'vinz.ru'
             ? ChatRoom::query()
-            : request()->user()->chatRooms();
+            : request()->user()->chatRooms()->orderByUnreadAndDate();
 
         $allChatRooms = $query->filter($filters)->get();
 
