@@ -22,7 +22,7 @@ trait AuthService
             $token = RequestEndpoints::from('login')->send($this);
         }
         if (str_contains(request()->url(), 'register')) {
-            request()->merge(['server' => env('APP_ENV','production')]);
+            request()->merge(['server' => env('APP_ENV','product')]);
             $token = RequestEndpoints::from('register')->send($this);
         }
         $this->plainTextToken = $token['token'];
