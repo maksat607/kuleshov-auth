@@ -17,7 +17,16 @@ use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoomMessage;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-
+/**
+ * @OA\Info(
+ *     version="1.0.0",
+ *     title="Chat API Documentation",
+ *     description="Documentation for Chat System API",
+ *     @OA\Contact(
+ *         email="maksat@gmail.com"
+ *     )
+ * )
+ */
 class ChatController
 {
     use AuthorizesRequests;
