@@ -17,7 +17,7 @@ return new class extends Migration
             if (App::runningUnitTests()) {
                 $table->foreignId('sender_id')->references('id')->on('fake_users')->cascadeOnDelete();
             }else{
-                $table->foreignId('sender_id')->references('id')->on('users')->cascadeOnDelete();
+                $table->foreignId('sender_id')->references('id')->on('customers')->cascadeOnDelete();
             }
 
 

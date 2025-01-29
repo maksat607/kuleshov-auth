@@ -18,7 +18,7 @@ return new class extends Migration
             if (App::runningUnitTests()) {
                 $table->foreignId('user_id')->constrained('fake_users')->cascadeOnDelete();
             }else{
-                $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+                $table->foreignId('user_id')->constrained('customers')->cascadeOnDelete();
             }
             $table->timestamps();
         });
