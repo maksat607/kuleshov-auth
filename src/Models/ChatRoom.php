@@ -193,10 +193,10 @@ class ChatRoom extends Model
 
     public function getTitleAttribute()
     {
-        if ($this->chattable?->car_title) {
-            return $this->chattable->car_title;
+        if ($this->chattable?->title) {
+            return $this->chattable->title;
         }
-        return $this->chattable?->car_title;
+        return $this->chattable?->title;
     }
 
     public function getThumbnailAttribute()
