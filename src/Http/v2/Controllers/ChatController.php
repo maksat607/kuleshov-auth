@@ -405,23 +405,26 @@ class ChatController
 
 
 
-    public function viewAllChatMessagesForGivenModelType()
+    public function viewAllChatMessagesForGivenModelType(ChatRoomFilter $filters)
     {
         $this->authorize('viewAllChatMessagesForGivenModelType', new ChatRoom());
-        $chatRooms = ChatRoom::where('chattable_type', request()->modelNamespace)
-            ->orderByLatestMessage()
-            ->get()
-            ->sortByDesc('unread_count')
-            ->values()
-        ;
 
-        $totalUnreadCount = $chatRooms->sum('unread_count');
+        $perPage = request()->input('per_page', 15);
+        $currentPage = request()->input('page', 1);
 
-        foreach ($chatRooms as $chatRoom) {
-            $chatRoom->total_unread_count = $totalUnreadCount;
-        }
+        $query = ChatRoom::query()
+            ->where('chattable_type', request()->modelNamespace);
 
-        return $chatRooms;
+        $allChatRooms = $query->filter($filters)->get();
+
+        $totalUnreadCount = $allChatRooms->sum('unread_count');
+        $paginatedChatRooms = $this->paginateCollection(
+            $allChatRooms->each(fn($chat) => $chat->total_unread_count = $totalUnreadCount),
+            $perPage,
+            $currentPage
+        );
+
+        return response()->json($paginatedChatRooms);
     }
 
 }
