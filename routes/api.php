@@ -8,7 +8,7 @@ Route::prefix('api/v2')->middleware(config('kuleshov-auth.routes.middleware'))->
     ;
 
     Route::get('/chats/{chatRoom}/read', [\Maksatsaparbekov\KuleshovAuth\Http\v2\Controllers\ChatController::class, 'makeReadChatMessagesForGivenChatRoom'])
-        ->name('makeReadChatMessagesForGivenChatRoom')
+        ->name('makeReadChatMessagesForGivenChatRoom1')
         ->where('chatRoom', '[0-9]+');
 
     Route::get('/chats/{chatRoom}/messages', [\Maksatsaparbekov\KuleshovAuth\Http\v2\Controllers\ChatController::class, 'viewChatMessagesForGivenChatRoom'])
@@ -55,27 +55,27 @@ Route::prefix('api')->middleware(config('kuleshov-auth.routes.middleware'))->gro
         ;
 
     Route::get('/chats/{chatRoom}/read', [ChatController::class, 'makeReadChatMessagesForGivenChatRoom'])
-        ->name('makeReadChatMessagesForGivenChatRoom')
+        ->name('makeReadChatMessagesForGivenChatRoom2')
         ->where('chatRoom', '[0-9]+');
 
     Route::get('/chats/{chatRoom}/messages', [ChatController::class, 'viewChatMessagesForGivenChatRoom'])
-        ->name('viewChatMessagesForGivenChatRoom')
+        ->name('viewChatMessagesForGivenChatRoom2')
         ->where('chatRoom', '[0-9]+');
 
     Route::post('/chats/{chatRoom}/messages', [ChatController::class, 'createMessageForGivenChatRoom'])
-        ->name('createMessageForGivenChatRoom')
+        ->name('createMessageForGivenChatRoom2')
         ->where('chatRoom', '[0-9]+');
 
 
     Route::post('/{model}/{modelId}/messages', [ChatController::class, 'createChatOrMessageForGivenModel'])
-        ->name('createChatOrMessageForGivenModel')
+        ->name('createChatOrMessageForGivenModel2')
         ->where('model', '^(?!chats$).*')
         ->where('modelId', '[0-9]+');
 
     Route::get('/{model}/{modelId}/chats', [ChatController::class, 'viewChatsMessagesOfAllUsersForGivenModel'])
         ->where('model', '^(?!chats$).*')
         ->where('modelId', '[0-9]+')
-        ->name('viewChatsMessagesOfAllUsersForGivenModel');
+        ->name('viewChatsMessagesOfAllUsersForGivenModel2');
 
     Route::get('/{model}/{modelId}/chat', [ChatController::class, 'viewChatMessagesOfAuthUserForGiventModel'])
         ->name('viewChatMessagesOfAuthUserForGiventModel')
@@ -84,12 +84,12 @@ Route::prefix('api')->middleware(config('kuleshov-auth.routes.middleware'))->gro
 
 
     Route::get('{model}/auth-user-chats', [ChatController::class, 'viewChatMessagesOfAuthUser'])
-        ->name('viewChatMessagesOfAuthUser');
+        ->name('viewChatMessagesOfAuthUser2');
 
 
     Route::get('/{model}/chats', [ChatController::class, 'viewAllChatMessagesForGivenModelType'])
         ->where('model', '^(?!chats$).*')
-        ->name('viewAllChatMessagesForGivenModelType');
+        ->name('viewAllChatMessagesForGivenModelType2');
 
 
 });
