@@ -78,7 +78,7 @@ Route::prefix('api')->middleware(config('kuleshov-auth.routes.middleware'))->gro
         ->name('viewChatsMessagesOfAllUsersForGivenModel2');
 
     Route::get('/{model}/{modelId}/chat', [ChatController::class, 'viewChatMessagesOfAuthUserForGiventModel'])
-        ->name('viewChatMessagesOfAuthUserForGiventModel')
+        ->name('viewChatMessagesOfAuthUserForGiventModel2')
         ->where('model', '^(?!chats$).*')
         ->where('modelId', '[0-9]+');
 
