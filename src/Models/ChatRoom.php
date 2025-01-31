@@ -322,7 +322,7 @@ class ChatRoom extends Model
                 });
             }
         ])
-            ->orderByDesc('unread_count')
+//            ->orderByDesc('unread_count')
             ->orderByDesc(function ($query) {
                 $query->select('created_at')
                     ->from('chat_room_messages')
