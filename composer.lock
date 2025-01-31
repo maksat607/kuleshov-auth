@@ -5551,7 +5551,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "pestphp/pest": 20
+        "pestphp/pest": 20,
+        "guzzlehttp/guzzle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
