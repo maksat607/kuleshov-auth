@@ -23,12 +23,20 @@
     }
   ],
   "require": {
-    "awobaz/compoships": "^2.2"
+    "awobaz/compoships": "^2.2",
+    "php": "^8.1",
+    "symfony/event-dispatcher": "^6.4",
+    "symfony/http-kernel": "^6.4",
+    "beyondcode/laravel-websockets": "^1.13"
   },
   "minimum-stability": "dev",
   "require-dev": {
     "pestphp/pest": "3.x-dev",
-    "guzzlehttp/guzzle": "8.0.x-dev"
+    "guzzlehttp/guzzle": "8.0.x-dev",
+    "php": "^8.1",
+    "symfony/event-dispatcher": "^6.4",
+    "symfony/http-kernel": "^6.4",
+    "beyondcode/laravel-websockets": "^1.13"
   },
   "config": {
     "allow-plugins": {
