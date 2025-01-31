@@ -322,14 +322,11 @@ class ChatRoom extends Model
                 });
             }
         ])
-//            ->orderByDesc('unread_count')
-            ->orderByDesc(function ($query) {
-                $query->select('created_at')
-                    ->from('chat_room_messages')
-                    ->whereColumn('chat_room_id', 'chat_rooms.id')
-                    ->orderByDesc('created_at')
-                    ->limit(1);
-            });
+            ->orderByRaw('CASE WHEN unread_count > 0 THEN 1 ELSE 0 END DESC, (
+        SELECT MAX(created_at)
+        FROM chat_room_messages
+        WHERE chat_room_messages.chat_room_id = chat_rooms.id
+    ) DESC');
     }
 
 
