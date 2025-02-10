@@ -31,6 +31,8 @@ class ChatRoomMessage extends Model
     use \Awobaz\Compoships\Compoships;
     use HasFactory;
 
+    protected $dates = ['created_at', 'updated_at'];
+
     protected $guarded = [];
 
     protected $appends = ['name', 'seen', 'phone', 'role', 'time_diff', 'sender_user_id', 'part_id'];
@@ -46,6 +48,7 @@ class ChatRoomMessage extends Model
     {
         return ChatRoomMessageFactory::new();
     }
+
 
     protected static function boot()
     {
@@ -72,6 +75,7 @@ class ChatRoomMessage extends Model
         });
     }
 
+
     public function getSenderUserIdAttribute()
     {
         return $this->user_id;
@@ -92,11 +96,7 @@ class ChatRoomMessage extends Model
         return null;
     }
 
-    public function getCreatedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->format('d.m.Y H:i');
-//            ->format('H:i:s d.m.Y');
-    }
+
 
     public function getParticipantIdAttribute()
     {
@@ -136,10 +136,9 @@ class ChatRoomMessage extends Model
         return $this->user?->getRoleNames()[0] ?? '';
     }
 
-
-    public function getUpdatedAtAttribute($value)
+    protected function serializeDate(\DateTimeInterface $date)
     {
-        return \Carbon\Carbon::parse($value)->format('H:i:s d.m.Y');
+        return $date->format('Y-m-d\TH:i:s\Z'); // Directly formats to ISO 8601 UTC
     }
 
     public function chatRoom()

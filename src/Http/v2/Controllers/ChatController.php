@@ -34,6 +34,7 @@ class ChatController
 
 
 
+
     public function makeReadChatMessagesForGivenChatRoom($chatRoom)
     {
         $chatRoom = ChatRoom::findOrFail($chatRoom);

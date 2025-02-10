@@ -100,6 +100,11 @@ class ChatRoom extends Model
         return ChatRoomFactory::new();
     }
 
+    protected function serializeDate(\DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d\TH:i:s\Z'); // Directly formats to ISO 8601 UTC
+    }
+
     public function getChatRoomIdAttribute()
     {
         return $this->id;
@@ -166,15 +171,8 @@ class ChatRoom extends Model
             ->get();
     }
 
-    public function getCreatedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->format('H:i:s d.m.Y');
-    }
+ 
 
-    public function getUpdatedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->format('H:i:s d.m.Y');
-    }
 
     public function getReadByManagerAttribute()
     {
