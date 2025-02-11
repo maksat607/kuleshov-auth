@@ -138,7 +138,7 @@ class ChatRoomMessage extends Model
 
     protected function serializeDate(\DateTimeInterface $date)
     {
-        return $date->format('Y-m-d\TH:i:s\Z'); // Directly formats to ISO 8601 UTC
+        return $date->format('Y-m-d\TH:i:s.v\Z');
     }
 
     public function chatRoom()
