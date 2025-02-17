@@ -424,5 +424,46 @@ class ChatController
 
         return $chatRooms;
     }
+    /**
+     * @OA\Post(
+     *     path="/api/prioritize/{chatRoom}",
+     *     operationId="prioritizeChatRoom",
+     *     tags={"Chats"},
+     *     summary="Increase the priority of a specific chat room",
+     *     description="Increases the priority of a given chat room, moving it higher in sorting order. Accessible for privileged users like managers or administrators.",
+     *     @OA\Parameter(
+     *         name="chatRoom",
+     *         in="path",
+     *         required=true,
+     *         description="The ID of the chat room to prioritize",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Chat room priority successfully updated",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Chat room priority increased")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Chat room not found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Chat room not found")
+     *         )
+     *     ),
+     *     security={{"bearerAuth": {}}}
+     * )
+     */
 
+
+    public function prioritize($chatRoom)
+    {
+        $chatRoom = ChatRoom::findOrFail($chatRoom);
+        $chatRoom->priority = $chatRoom->priority + 1;
+        $chatRoom->save();
+        return;
+    }
 }

@@ -1,9 +1,10 @@
 <?php
 namespace Maksatsaparbekov\KuleshovAuth\Http\Filters;
+
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Maksatsaparbekov\KuleshovAuth\Models\ChatRoom;
-
+use Illuminate\Support\Facades\Schema;
 class ChatRoomFilter
 {
     protected $request;
@@ -24,11 +25,27 @@ class ChatRoomFilter
             }
         }
 
+        // If not explicitly requesting only unread, default to ordering by unread and date
         if (!$this->request->has('unread_only')) {
             $this->builder->orderByUnreadAndDate();
         }
 
+        // Sort by priority if the priority column exists
+        $this->sortByPriority();
+
         return $this->builder;
+    }
+
+    /**
+     * Sort by priority after all other filters
+     */
+    protected function sortByPriority()
+    {
+        // Check if the priority column exists in the table
+        if (Schema::hasColumn('chat_rooms', 'priority')) {
+            // Add priority sorting if value is 1 or more
+            $this->builder->orderBy('priority', 'asc');
+        }
     }
 
     protected function filters()

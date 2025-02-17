@@ -136,10 +136,10 @@ class ChatRoomMessage extends Model
         return $this->user?->getRoleNames()[0] ?? '';
     }
 
-    protected function serializeDate(\DateTimeInterface $date)
-    {
-        return $date->format('Y-m-d\TH:i:s.v\Z');
-    }
+//    protected function serializeDate(\DateTimeInterface $date)
+//    {
+//        return $date->format('Y-m-d\TH:i:s.v\Z');
+//    }
 
     public function chatRoom()
     {

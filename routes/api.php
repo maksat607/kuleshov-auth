@@ -44,6 +44,12 @@ Route::prefix('api/v2')->middleware(config('kuleshov-auth.routes.middleware'))->
         ->where('model', '^(?!chats$).*')
         ->name('viewAllChatMessagesForGivenModelType');
 
+
+
+    Route::post('/prioritize/{chatRoom}', [\Maksatsaparbekov\KuleshovAuth\Http\v2\Controllers\ChatController::class, 'prioritize'])
+        ->name('prioritizeGivenChatRoom')
+        ->where('chatRoom', '[0-9]+');
+
 });
 
 
