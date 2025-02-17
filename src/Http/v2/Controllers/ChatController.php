@@ -317,7 +317,7 @@ class ChatController
             : request()->user()->chatRooms()->orderByUnreadAndDate();
 
         $allChatRooms = $query->filter($filters)
-            ->orderBy('priority', 'asc')
+//            ->orderBy('priority', 'asc')
             ->get();
 
         $totalUnreadCount = $allChatRooms->sum('unread_count');
