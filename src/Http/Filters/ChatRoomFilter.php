@@ -27,7 +27,7 @@ class ChatRoomFilter
 
         // If not explicitly requesting only unread, default to ordering by unread and date
         if (!$this->request->has('unread_only')) {
-//            $this->builder->orderByUnreadAndDate();
+            $this->builder->orderByUnreadAndDate();
         }
 
         // Sort by priority if the priority column exists
