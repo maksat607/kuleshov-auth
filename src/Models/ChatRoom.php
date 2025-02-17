@@ -328,6 +328,10 @@ class ChatRoom extends Model
     ) DESC');
     }
 
+    public function scopePrioritizeChatRooms($query)
+    {
+        return $query->orderByRaw('CASE WHEN priority > 0 THEN priority ELSE 9999 END');
+    }
 
 //    public function users()
 //    {

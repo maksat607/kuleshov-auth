@@ -41,12 +41,8 @@ class ChatRoomFilter
      */
     protected function sortByPriority()
     {
-        // Check if the priority column exists in the table
         if (Schema::hasColumn('chat_rooms', 'priority')) {
-            $priorityCount = ChatRoom::where('priority', '>', 0)->count();
-
-            \Log::info('Rooms with priority > 0: ' . $priorityCount);
-            $this->builder->orderBy('priority', 'asc');
+            $this->builder->prioritizeChatRooms();
         }
     }
 
