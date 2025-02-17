@@ -62,8 +62,8 @@ class ChatRoom extends Model
     use \Awobaz\Compoships\Compoships;
     use HasFactory;
 
-    protected $appends = ['chat_room_id', 'title', 'thumbnail', 'model_id', 'model_type', 'chat_creator_id', 'chat_creator_name', 'chat_creator_phone', 'route_name', 'unread_count', 'total_count', 'read_by_manager','status_id','priority'];
-    protected $visible = ['chat_room_id', 'title', 'thumbnail', 'model_id', 'model_type', 'chat_creator_id', 'chat_creator_name', 'chat_creator_phone', 'messages', 'messages.user', 'route_name', 'unread_count', 'unread_count', 'total_count', 'read_by_manager','status_id','priority'];
+    protected $appends = ['chat_room_id', 'title', 'thumbnail', 'model_id', 'model_type', 'chat_creator_id', 'chat_creator_name', 'chat_creator_phone', 'route_name', 'unread_count', 'total_count', 'read_by_manager','status_id'];
+    protected $visible = ['chat_room_id', 'title', 'thumbnail', 'model_id', 'model_type', 'chat_creator_id', 'chat_creator_name', 'chat_creator_phone', 'messages', 'messages.user', 'route_name', 'unread_count', 'unread_count', 'total_count', 'read_by_manager','status_id'];
     protected $guarded = [];
 
     protected static function boot()
