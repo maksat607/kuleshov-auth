@@ -42,10 +42,10 @@ class ChatRoomFilter
     protected function sortByPriority()
     {
         // Check if the priority column exists in the table
-        if (Schema::hasColumn('chat_rooms', 'priority')) {
+        //if (Schema::hasColumn('chat_rooms', 'priority')) {
             // Add priority sorting if value is 1 or more
             $this->builder->orderBy('priority', 'asc');
-        }
+//        }
     }
 
     protected function filters()
