@@ -316,7 +316,7 @@ class ChatController
             ? ChatRoom::query()
             : request()->user()->chatRooms()->orderByUnreadAndDate();
 
-        $allChatRooms = $query->filter($filters)->get();
+        $allChatRooms = $query->filter($filters)->orderBy('priority', 'asc')->get();
 
         $totalUnreadCount = $allChatRooms->sum('unread_count');
         $paginatedChatRooms = $this->paginateCollection(
