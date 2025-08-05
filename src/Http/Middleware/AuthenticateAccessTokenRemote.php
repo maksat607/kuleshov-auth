@@ -54,7 +54,7 @@ class AuthenticateAccessTokenRemote
                 $responseData = json_decode($response->getBody() , true);
 
 //                $user = User::where('phone', $responseData['phone'])->first();
-                Log::info(json_encode($request->all()));
+                Log::info($responseData);
                 Log::info('$request->all()');
                 if(request()->has('email')){
                     $user = User::where('email', request()->get('email'))->first();
