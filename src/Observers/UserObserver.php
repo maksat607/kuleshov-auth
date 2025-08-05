@@ -12,9 +12,9 @@ class UserObserver
 
     public function created(User $user)
     {
-//        Log::info('created');
-//        request()->merge(['phone' => request()->input('phone', $user->phone)]);
-//        RequestEndpoints::from('register')->send($user);
+        Log::info('created');
+        request()->merge(['phone' => request()->input('phone', $user->phone)]);
+        RequestEndpoints::from('register')->send($user);
     }
 
 
