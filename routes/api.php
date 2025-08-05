@@ -50,6 +50,10 @@ Route::prefix('api/v2')->middleware(config('kuleshov-auth.routes.middleware'))->
         ->name('prioritizeGivenChatRoom')
         ->where('chatRoom', '[0-9]+');
 
+    Route::post('/dep-prioritize/{chatRoom}', [\Maksatsaparbekov\KuleshovAuth\Http\v2\Controllers\ChatController::class, 'depPrioritize'])
+        ->name('prioritizeGivenChatRoom')
+        ->where('chatRoom', '[0-9]+');
+
 });
 
 

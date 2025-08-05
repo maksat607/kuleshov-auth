@@ -468,4 +468,12 @@ class ChatController
         $chatRoom->save();
         return;
     }
+
+    public function depPrioritize($chatRoom)
+    {
+        $chatRoom = ChatRoom::findOrFail($chatRoom);
+        $chatRoom->priority = 0;
+        $chatRoom->save();
+        return;
+    }
 }
