@@ -56,8 +56,8 @@ class AuthenticateAccessTokenRemote
 //                $user = User::where('phone', $responseData['phone'])->first();
                 Log::info($responseData);
                 Log::info('$request->all()');
-                if(request()->has('email')){
-                    $user = User::where('email', request()->get('email'))->first();
+                if(isset($responseData['email'])){
+                    $user = User::where('email', $responseData['email'])->first();
                 }else{
                     $user = User::whereRaw("REGEXP_REPLACE(phone, '[^0-9]', '') = ?", [numbers_only($responseData['phone'])])->first();
                 }
